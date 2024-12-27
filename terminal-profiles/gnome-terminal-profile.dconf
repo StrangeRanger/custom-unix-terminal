@@ -1,0 +1,20 @@
+[:2364bc7b-5b21-4eba-8ed9-a1285c311802]
+audible-bell=true
+background-color='rgb(30,30,30)'
+bold-color='rgb(226,226,226)'
+bold-color-same-as-fg=true
+cursor-background-color='rgb(139,139,139)'
+cursor-blink-mode='off'
+cursor-colors-set=true
+cursor-foreground-color='rgb(139,139,139)'
+default-size-columns=89
+default-size-rows=25
+font='MesloLGS NF 11'
+foreground-color='rgb(226,226,226)'
+highlight-background-color='rgb(59,75,77)'
+highlight-colors-set=true
+highlight-foreground-color='rgb(255,255,255)'
+palette=['rgb(0,0,0)', 'rgb(153,0,0)', 'rgb(77,156,68)', 'rgb(176,176,1)', 'rgb(0,93,255)', 'rgb(178,0,178)', 'rgb(0,166,178)', 'rgb(142,142,142)', 'rgb(102,102,102)', 'rgb(229,0,0)', 'rgb(0,217,0)', 'rgb(228,227,2)', 'rgb(0,143,255)', 'rgb(229,0,229)', 'rgb(0,229,229)', 'rgb(229,229,229)']
+use-system-font=false
+use-theme-colors=false
+visible-name='Custom Profile'
