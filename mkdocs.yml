@@ -4,8 +4,8 @@ site_author: Hunter T.
 # TODO: Add a site description.
 site_description: ...
 
-repo_name: Customized Unix Terminal
-repo_url: https://github.com/StrangeRanger/customized-unix-terminal
+repo_name: Custom Unix Terminal
+repo_url: https://github.com/StrangeRanger/custom-unix-terminal
 
 theme:
   name: material

@@ -1,4 +1,4 @@
-name: Deploy Customized Unix Terminal GitHub Page
+name: Deploy 'Custom Unix Terminal' GitHub Page
 
 on:
   push:
