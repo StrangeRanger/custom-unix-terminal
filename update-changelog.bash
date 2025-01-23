@@ -3,7 +3,7 @@
 # Automate the process of updating the CHANGELOG.md file, based on the latest commit
 # messages from the dotfiles submodule.
 #
-# Version: v1.1.0
+# Version: v1.1.1
 # License: MIT License
 #          Copyright (c) 2024-2025 Hunter T. (StrangeRanger)
 #
@@ -46,7 +46,7 @@ declare -A sections
 
 
 echo "${C_INFO}Initializing submodule..."
-git submodule init
+git submodule update --init "$C_SUBMODULE_PATH"
 
 ###
 ### Checkout the latest commit of the submodule 'dotfiles' in the reference branch.
