@@ -15,7 +15,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout target branch (main)
+        run: |
+          git fetch origin main
+          git checkout main
+      
+      - name: Checkout pull request branch with submodules
         uses: actions/checkout@v4
         with:
           # Checkout the repository at the merge commit
