@@ -3,7 +3,7 @@
 # Automate the process of updating the CHANGELOG.md file, based on the latest commit
 # messages from the dotfiles submodule.
 #
-# Version: v1.1.1
+# Version: v1.1.2
 # License: MIT License
 #          Copyright (c) 2024-2025 Hunter T. (StrangeRanger)
 #
@@ -11,23 +11,14 @@
 ####[ Global Variables ]################################################################
 
 
-###
-### Configurable variables.
-###
-
-readonly C_REFERENCE_BRANCH="main"
-
-###
-### Non-configurable variables.
-###
-
+readonly C_REF_BRANCH="origin/main"
 readonly C_CHANGELOG="CHANGELOG.md"
 readonly C_TMP_CHANGELOG="CHANGELOG.tmp"
 readonly C_SUBMODULE_PATH="submodules/dotfiles"
 
-C_REFERENCE_BRANCH_COMMIT=$(git rev-parse "$C_REFERENCE_BRANCH":submodules/dotfiles)
+C_REF_BRANCH_COMMIT=$(git rev-parse "$C_REF_BRANCH":submodules/dotfiles)
 C_DATE=$(date +%Y-%m-%d)
-readonly C_REFERENCE_BRANCH_COMMIT C_DATE
+readonly C_REF_BRANCH_COMMIT C_DATE
 
 ## ANSI color codes.
 C_BLUE="$(printf '\033[0;34m')"
@@ -55,7 +46,7 @@ git submodule update --init "$C_SUBMODULE_PATH"
 echo "${C_INFO}Checking out the latest commit of the submodule 'dotfiles' in the" \
     "reference branch..."
 
-git -C "$C_SUBMODULE_PATH" checkout "$C_REFERENCE_BRANCH_COMMIT"
+git -C "$C_SUBMODULE_PATH" checkout "$C_REF_BRANCH_COMMIT"
 
 ###
 ### Extract latest commit messages.
