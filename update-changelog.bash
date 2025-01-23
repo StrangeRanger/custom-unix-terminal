@@ -3,7 +3,7 @@
 # Automate the process of updating the CHANGELOG.md file, based on the latest commit
 # messages from the dotfiles submodule.
 #
-# Version: v1.0.2
+# Version: v1.0.3
 # License: MIT License
 #          Copyright (c) 2024-2025 Hunter T. (StrangeRanger)
 #
@@ -45,8 +45,8 @@ declare -A sections
 ####[ Main ]############################################################################
 
 
-echo "${C_INFO}Updating submodule..."
-git submodule update --init --remote
+echo "${C_INFO}Initializing submodule..."
+git submodule init
 
 ###
 ### Checkout the latest commit of the submodule 'dotfiles' in the reference branch.
@@ -55,19 +55,19 @@ git submodule update --init --remote
 echo "${C_INFO}Checking out the latest commit of the submodule 'dotfiles' in the" \
     "reference branch..."
 
-cd "$C_SUBMODULE_PATH" || {
-    echo "${C_ERROR}Failed to change directory to '$C_SUBMODULE_PATH'"
-    exit 1
-}
-
-git checkout "$C_REFERENCE_BRANCH_COMMIT" || {
-    echo "${C_ERROR}Failed to checkout '$C_REFERENCE_BRANCH'"
-    exit 1
-}
+git -C "$C_SUBMODULE_PATH" checkout "$C_REFERENCE_BRANCH_COMMIT"
 
 ###
 ### Extract latest commit messages.
 ###
+
+echo "${C_INFO}Updating the submodule..."
+git submodule update --remote "$C_SUBMODULE_PATH"
+
+cd "$C_SUBMODULE_PATH" || {
+    echo "${C_ERROR}Failed to change directory to the dotfiles submodule"
+    exit 1
+}
 
 echo "${C_INFO}Fetching latest commits in current branch..."
 C_COMMITS=$(git log "$(git rev-parse HEAD@"{1}")..HEAD" --pretty=format:"%s")
@@ -151,4 +151,3 @@ mv "${C_CHANGELOG}.tmp" "$C_CHANGELOG"
 
 echo "${C_INFO}Cleaning up..."
 rm "$C_TMP_CHANGELOG"
-
