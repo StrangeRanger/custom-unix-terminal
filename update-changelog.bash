@@ -112,13 +112,6 @@ while IFS= read -r commit; do
         if [[ $info == "(chezmoi)" || $info == "(dotfiles)" ]]; then
             skip=true
         fi
-    elif [[ $commit =~ ^(added|changed|removed|fixed|other):\ (.+)$ ]]; then
-        type="${BASH_REMATCH[1]^}"
-        message="${BASH_REMATCH[2]}"
-
-        ## Debugging output.
-        echo "Type: $type"
-        echo "Message: $message"
     else
         echo "Commit Message: '$commit'"
         skip=true
