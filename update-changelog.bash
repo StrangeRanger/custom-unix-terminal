@@ -3,7 +3,7 @@
 # Automate the process of updating the CHANGELOG.md file, based on the latest commit
 # messages from the dotfiles submodule.
 #
-# Version: v1.0.3
+# Version: v1.1.0
 # License: MIT License
 #          Copyright (c) 2024-2025 Hunter T. (StrangeRanger)
 #
@@ -98,7 +98,7 @@ while IFS= read -r commit; do
     skip=false
 
     # Regex to capture type, optional info, and optional message.
-    if [[ $commit =~ ^(added|changed|removed|fixed)(\([^\)]*\))?:\ (.+)$ ]]; then
+    if [[ $commit =~ ^(added|changed|removed|fixed|other)(\([^\)]*\))?:\ (.+)$ ]]; then
         type="${BASH_REMATCH[1]^}"
         info="${BASH_REMATCH[2]}"
         message="${BASH_REMATCH[3]}"
@@ -109,16 +109,28 @@ while IFS= read -r commit; do
         echo "Message: $message"
 
         ## Skip commits that only affect the dotfiles repository.
-        if [[ "$info" == "(chezmoi)" || "$info" == "(dotfiles)" ]]; then
+        if [[ $info == "(chezmoi)" || $info == "(dotfiles)" ]]; then
             skip=true
         fi
+    elif [[ $commit =~ ^(added|changed|removed|fixed|other):\ (.+)$ ]]; then
+        type="${BASH_REMATCH[1]^}"
+        message="${BASH_REMATCH[2]}"
+
+        ## Debugging output.
+        echo "Type: $type"
+        echo "Message: $message"
+    else
+        echo "Commit Message: '$commit'"
+        skip=true
     fi
 
-    if [ "$skip" = true ]; then
+    if [[ $skip == true ]]; then
+        echo "Add to CHANGELOG: false"
         echo "---"  # Debug separator.
         continue
     fi
 
+    echo "Add to CHANGELOG: true"
     # Append commit to the appropriate section.
     sections["$type"]+="- $commit"$'\n'
     echo "---"  # Debug separator.
@@ -151,3 +163,4 @@ mv "${C_CHANGELOG}.tmp" "$C_CHANGELOG"
 
 echo "${C_INFO}Cleaning up..."
 rm "$C_TMP_CHANGELOG"
+
