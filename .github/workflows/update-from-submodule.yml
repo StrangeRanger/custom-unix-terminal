@@ -14,18 +14,19 @@ jobs:
     if: github.actor == 'dependabot[bot]' && startsWith(github.event.pull_request.head.ref, 'dependabot/submodules/')
     runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout target branch (main)
-        run: |
-          git fetch origin main
-          git checkout main
-      
+    steps:  
       - name: Checkout pull request branch with submodules
         uses: actions/checkout@v4
         with:
           # Checkout the repository at the merge commit
           ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
           submodules: true
+
+      - name: Checkout target branch (main)
+        run: |
+          git fetch origin main
+          git checkout main
 
       - name: Validate PR source branch
         run: |
