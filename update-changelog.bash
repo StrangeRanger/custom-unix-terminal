@@ -3,20 +3,31 @@
 # Automate the process of updating the CHANGELOG.md file, based on the latest commit
 # messages from the dotfiles submodule.
 #
-# Version: v1.0.0
+# Version: v1.0.1
 # License: MIT License
-#          Copyright (c) 2024 Hunter T. (StrangeRanger)
+#          Copyright (c) 2024-2025 Hunter T. (StrangeRanger)
 #
 ########################################################################################
 ####[ Global Variables ]################################################################
 
 
+###
+### Configurable variables.
+###
+
+readonly C_REFERENCE_BRANCH="main"
+
+###
+### Non-configurable variables.
+###
+
 readonly C_CHANGELOG="CHANGELOG.md"
 readonly C_TMP_CHANGELOG="CHANGELOG.tmp"
 readonly C_SUBMODULE_PATH="submodules/dotfiles"
 
+C_REFERENCE_BRANCH_COMMIT=$(git rev-parse "$C_REFERENCE_BRANCH":submodules/dotfiles)
 C_DATE=$(date +%Y-%m-%d)
-readonly C_DATE
+readonly C_REFERENCE_BRANCH_COMMIT C_DATE
 
 ## ANSI color codes.
 C_BLUE="$(printf '\033[0;34m')"
@@ -32,6 +43,29 @@ declare -A sections
 
 
 ####[ Main ]############################################################################
+
+
+###
+### Checkout the latest commit of the submodule 'dotfiles' in the reference branch.
+###
+
+echo "${C_INFO}Checking out the latest commit of the submodule 'dotfiles' in the" \
+    "reference branch..."
+
+cd "$C_SUBMODULE_PATH" || {
+    echo "${C_ERROR}Failed to change directory to '$C_SUBMODULE_PATH'"
+    exit 1
+}
+
+git checkout "$C_REFERENCE_BRANCH_COMMIT" || {
+    echo "${C_ERROR}Failed to checkout '$C_REFERENCE_BRANCH'"
+    exit 1
+}
+
+cd - || {
+    echo "${C_ERROR}Failed to change directory back to project's root directory"
+    exit 1
+}
 
 
 ###
@@ -128,3 +162,5 @@ mv "${C_CHANGELOG}.tmp" "$C_CHANGELOG"
 
 echo "${C_INFO}Cleaning up..."
 rm "$C_TMP_CHANGELOG"
+
+
