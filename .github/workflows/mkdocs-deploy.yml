@@ -16,23 +16,6 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Import GPG key
-        uses: crazy-max/ghaction-import-gpg@v6
-        with:
-          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
-          passphrase: ${{ secrets.GPG_PASSPHRASE }}
-          git_user_signingkey: true
-          git_commit_gpgsign: true
-          fingerprint: "F768450FB05B817D0B4BC26FB9B6A9B428C8676A"
-          trust_level: 5
-
-      - name: Configure Git to sign commits
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git config --global commit.gpgSign true
-          git config --global user.signingKey F768450FB05B817D0B4BC26FB9B6A9B428C8676A
-
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
@@ -50,5 +33,5 @@ jobs:
         run: pipenv run mkdocs build --strict
 
       - name: Deploy to GitHub Pages
-        run: pipenv run mkdocs gh-deploy
+        run: pipenv run mkdocs gh-deploy --force
 
