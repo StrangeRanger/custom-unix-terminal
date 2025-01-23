@@ -23,6 +23,9 @@ jobs:
           fetch-depth: 0
           submodules: true
 
+      - name: Fetch main branch
+        run: git fetch origin main:refs/remotes/origin/main
+
       - name: Validate PR source branch
         run: |
           if [[ ${{ github.event.pull_request.head.repo.full_name }} != '${{ github.repository }}' ]]; then
