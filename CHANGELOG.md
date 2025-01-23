@@ -10,6 +10,12 @@ Entries under the **Removed** section indicate items removed from the entire doc
 
 ## Unreleased
 
+## 2025-01-23
+
+### Added
+
+- added(aliases): add docker start and stop aliases
+
 ## 2024-12-20
 
 ### Fixed
