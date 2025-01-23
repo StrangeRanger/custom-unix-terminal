@@ -3,20 +3,31 @@
 # Automate the process of updating the CHANGELOG.md file, based on the latest commit
 # messages from the dotfiles submodule.
 #
-# Version: v1.0.0
+# Version: v1.1.1
 # License: MIT License
-#          Copyright (c) 2024 Hunter T. (StrangeRanger)
+#          Copyright (c) 2024-2025 Hunter T. (StrangeRanger)
 #
 ########################################################################################
 ####[ Global Variables ]################################################################
 
 
+###
+### Configurable variables.
+###
+
+readonly C_REFERENCE_BRANCH="main"
+
+###
+### Non-configurable variables.
+###
+
 readonly C_CHANGELOG="CHANGELOG.md"
 readonly C_TMP_CHANGELOG="CHANGELOG.tmp"
 readonly C_SUBMODULE_PATH="submodules/dotfiles"
 
+C_REFERENCE_BRANCH_COMMIT=$(git rev-parse "$C_REFERENCE_BRANCH":submodules/dotfiles)
 C_DATE=$(date +%Y-%m-%d)
-readonly C_DATE
+readonly C_REFERENCE_BRANCH_COMMIT C_DATE
 
 ## ANSI color codes.
 C_BLUE="$(printf '\033[0;34m')"
@@ -34,19 +45,31 @@ declare -A sections
 ####[ Main ]############################################################################
 
 
+echo "${C_INFO}Initializing submodule..."
+git submodule update --init "$C_SUBMODULE_PATH"
+
+###
+### Checkout the latest commit of the submodule 'dotfiles' in the reference branch.
+###
+
+echo "${C_INFO}Checking out the latest commit of the submodule 'dotfiles' in the" \
+    "reference branch..."
+
+git -C "$C_SUBMODULE_PATH" checkout "$C_REFERENCE_BRANCH_COMMIT"
+
 ###
 ### Extract latest commit messages.
 ###
 
-echo "${C_INFO}Updating submodule..."
-git submodule update --remote
+echo "${C_INFO}Updating the submodule..."
+git submodule update --remote "$C_SUBMODULE_PATH"
 
 cd "$C_SUBMODULE_PATH" || {
-    echo "${C_ERROR}Failed to change directory to '$C_SUBMODULE_PATH'"
+    echo "${C_ERROR}Failed to change directory to the dotfiles submodule"
     exit 1
 }
 
-echo "${C_INFO}Fetching latest commits..."
+echo "${C_INFO}Fetching latest commits in current branch..."
 C_COMMITS=$(git log "$(git rev-parse HEAD@"{1}")..HEAD" --pretty=format:"%s")
 
 if [[ -z $C_COMMITS ]]; then
@@ -75,7 +98,7 @@ while IFS= read -r commit; do
     skip=false
 
     # Regex to capture type, optional info, and optional message.
-    if [[ $commit =~ ^(added|changed|removed|fixed)(\([^\)]*\))?:\ (.+)$ ]]; then
+    if [[ $commit =~ ^(added|changed|removed|fixed|other)(\([^\)]*\))?:\ (.+)$ ]]; then
         type="${BASH_REMATCH[1]^}"
         info="${BASH_REMATCH[2]}"
         message="${BASH_REMATCH[3]}"
@@ -86,16 +109,21 @@ while IFS= read -r commit; do
         echo "Message: $message"
 
         ## Skip commits that only affect the dotfiles repository.
-        if [[ "$info" == "(chezmoi)" || "$info" == "(dotfiles)" ]]; then
+        if [[ $info == "(chezmoi)" || $info == "(dotfiles)" ]]; then
             skip=true
         fi
+    else
+        echo "Commit Message: '$commit'"
+        skip=true
     fi
 
-    if [ "$skip" = true ]; then
+    if [[ $skip == true ]]; then
+        echo "Add to CHANGELOG: false"
         echo "---"  # Debug separator.
         continue
     fi
 
+    echo "Add to CHANGELOG: true"
     # Append commit to the appropriate section.
     sections["$type"]+="- $commit"$'\n'
     echo "---"  # Debug separator.
@@ -128,3 +156,4 @@ mv "${C_CHANGELOG}.tmp" "$C_CHANGELOG"
 
 echo "${C_INFO}Cleaning up..."
 rm "$C_TMP_CHANGELOG"
+

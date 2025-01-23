@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
 #
+# Automates the process of updating zsh and neovim configuration files in the 'includes'
+# directory. This is done by reading my 'dotfiles' in the 'submodules/dotfiles'
+# submodule and applying the necessary changes to the 'includes' directory.
+#
 # NOTE:
 #   - This script does not require the initialization of a virtual environment. The
 #     Pipfiles are only required when deploying the MkDocs site.
@@ -8,11 +12,6 @@
 #     good idea to keep an eye on this script when making changes to the configuration.
 #
 ########################################################################################
-"""
-Automates the process of updating zsh and neovim configuration files in the 'includes'
-directory. This is done by reading my 'dotfiles' in the 'submodules/dotfiles' submodule
-and applying the necessary changes to the 'includes' directory.
-"""
 # [ Imports ]###########################################################################
 
 
