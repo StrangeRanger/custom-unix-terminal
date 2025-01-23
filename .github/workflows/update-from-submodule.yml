@@ -44,8 +44,11 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Run update script
+      - name: Run repo update script
         run: python update_repo.py
+
+      - name: Run CHANGELOG update script                                                   
+        run: bash update-changelog.bash
 
       - name: Commit and push changes
         run: |
