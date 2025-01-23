@@ -3,7 +3,7 @@
 # Automate the process of updating the CHANGELOG.md file, based on the latest commit
 # messages from the dotfiles submodule.
 #
-# Version: v1.0.1
+# Version: v1.0.2
 # License: MIT License
 #          Copyright (c) 2024-2025 Hunter T. (StrangeRanger)
 #
@@ -45,6 +45,9 @@ declare -A sections
 ####[ Main ]############################################################################
 
 
+echo "${C_INFO}Updating submodule..."
+git submodule update --init --remote
+
 ###
 ### Checkout the latest commit of the submodule 'dotfiles' in the reference branch.
 ###
@@ -62,25 +65,11 @@ git checkout "$C_REFERENCE_BRANCH_COMMIT" || {
     exit 1
 }
 
-cd - || {
-    echo "${C_ERROR}Failed to change directory back to project's root directory"
-    exit 1
-}
-
-
 ###
 ### Extract latest commit messages.
 ###
 
-echo "${C_INFO}Updating submodule..."
-git submodule update --remote
-
-cd "$C_SUBMODULE_PATH" || {
-    echo "${C_ERROR}Failed to change directory to '$C_SUBMODULE_PATH'"
-    exit 1
-}
-
-echo "${C_INFO}Fetching latest commits..."
+echo "${C_INFO}Fetching latest commits in current branch..."
 C_COMMITS=$(git log "$(git rev-parse HEAD@"{1}")..HEAD" --pretty=format:"%s")
 
 if [[ -z $C_COMMITS ]]; then
@@ -162,5 +151,4 @@ mv "${C_CHANGELOG}.tmp" "$C_CHANGELOG"
 
 echo "${C_INFO}Cleaning up..."
 rm "$C_TMP_CHANGELOG"
-
 
