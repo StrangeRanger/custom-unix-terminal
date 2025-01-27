@@ -10,6 +10,12 @@ Entries under the **Removed** section indicate items removed from the entire doc
 
 ## Unreleased
 
+## 2025-01-27
+
+### Added
+
+- added(PATH): dotnet tools directory is included at the end of $PATH
+
 ## 2025-01-23
 
 ### Added
