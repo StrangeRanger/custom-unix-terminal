@@ -145,9 +145,9 @@ git open - Opens the GitHub page for a repo/branch in your browser.
 ## Path purpose:
 ##   $HOME/.local/bin:      User installed binaries.
 ##   $HOME/.dotnet/tools:   .NET Core tools.
-##   /opt/nvim-linux64/bin: Neovim binary.
+##   /opt/nvim/bin: Neovim binary.
 export PATH="$HOME/.local/bin:$PATH:$HOME/.dotnet/tools"
-[[ -d /opt/nvim-linux64/bin ]] && export PATH="/opt/nvim-linux64/bin:$PATH"
+[[ -d /opt/nvim/bin ]] && export PATH="/opt/nvim/bin:$PATH"
 
 # Modifies the colors of files and directories in the terminal.
 export LS_COLORS="di=34:ln=36:so=35:pi=1;33:ex=32:bd=34;46:cd=1;33;40:su=30;41:sg=30;46:tw=30;42:ow=30;1;43"
