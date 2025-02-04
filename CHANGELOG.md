@@ -10,6 +10,12 @@ Entries under the **Removed** section indicate items removed from the entire doc
 
 ## Unreleased
 
+## 2025-02-04
+
+### Changed
+
+- changed(PATH): modify path to 'nvim' when in '/opt/'
+
 ## 2025-01-27
 
 ### Added
