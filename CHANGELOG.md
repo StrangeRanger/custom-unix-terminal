@@ -10,6 +10,17 @@ Entries under the **Removed** section indicate items removed from the entire doc
 
 ## Unreleased
 
+## 2025-02-07
+
+### Changed
+
+- changed(alias): include 'docker.socket' when stopping 'docker.service'
+- changed(alias): update docker alias to include 'containerd.servic'
+
+### Added
+
+- added(PATH): add path to ruby 3.3.0 gems
+
 ## 2025-02-04
 
 ### Changed
