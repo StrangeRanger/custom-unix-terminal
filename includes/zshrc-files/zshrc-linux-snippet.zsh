@@ -24,8 +24,8 @@ alias start-vmware-networking="sudo systemctl start vmware-networks.service"
 alias stop-vmware-networking="sudo systemctl stop vmware-networks.service"
 alias start-firewalld="sudo systemctl start firewalld.service"
 alias stop-firewalld="sudo systemctl stop firewalld.service"
-alias start-docker="sudo systemctl start docker.service"
-alias stop-docker="sudo systemctl stop docker.service"
+alias start-docker="sudo systemctl start docker.service containerd.service"
+alias stop-docker="sudo systemctl stop docker.socket docker.service containerd.service"
 
 ###
 ### [ Group 2 ]

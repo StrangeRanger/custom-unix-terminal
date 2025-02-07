@@ -89,8 +89,8 @@ alias start-vmware-networking="sudo systemctl start vmware-networks.service"
 alias stop-vmware-networking="sudo systemctl stop vmware-networks.service"
 alias start-firewalld="sudo systemctl start firewalld.service"
 alias stop-firewalld="sudo systemctl stop firewalld.service"
-alias start-docker="sudo systemctl start docker.service"
-alias stop-docker="sudo systemctl stop docker.service"
+alias start-docker="sudo systemctl start docker.service containerd.service"
+alias stop-docker="sudo systemctl stop docker.socket docker.service containerd.service"
 
 ###
 ### [ Group 2 ]
@@ -143,10 +143,13 @@ git open - Opens the GitHub page for a repo/branch in your browser.
 
 
 ## Path purpose:
-##   $HOME/.local/bin:      User installed binaries.
-##   $HOME/.dotnet/tools:   .NET Core tools.
-##   /opt/nvim/bin: Neovim binary.
-export PATH="$HOME/.local/bin:$PATH:$HOME/.dotnet/tools"
+##  - $HOME/.local/bin:User installed binaries.
+##  - $HOME/.dotnet/tools: .NET Core tools.
+##  - $HOME/.local/share/gem/ruby/3.3.0/bin: Ruby gems.
+##  - /opt/nvim/bin: Neovim binary.
+export PATH="$HOME/.local/bin:$PATH"
+[[ -d $HOME/.dotnet/tools ]] && export PATH="$HOME/.dotnet/tools:$PATH"
+[[ -d $HOME/.local/share/gem/ruby/3.3.0/bin ]] && export PATH="$HOME/.local/share/gem/ruby/3.3.0/bin:$PATH"
 [[ -d /opt/nvim/bin ]] && export PATH="/opt/nvim/bin:$PATH"
 
 # Modifies the colors of files and directories in the terminal.
