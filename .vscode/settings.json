@@ -1,16 +1,24 @@
 {
     "cSpell.words": [
+        "betterem",
         "chezmoi",
         "DCONF",
         "elif",
+        "inlinehilite",
+        "linenums",
         "LSCOLORS",
         "mktemp",
         "Neovim",
         "nvim",
         "pacman",
         "Powerlevel",
+        "pygments",
+        "pymdownx",
         "Repology",
+        "smartsymbols",
+        "superfences",
         "TPPM",
+        "viewports",
         "vimscript"
     ]
 }
