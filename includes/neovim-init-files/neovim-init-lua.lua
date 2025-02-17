@@ -1,7 +1,9 @@
 -- This file is loaded after and by 'init.vim', and contains additional configurations
 -- that require the use of lua.
+----[ nvim-treesitter Configurations ]--------------------------------------------------
 
--- TODO: Add more configurations here.
+
+-- TODO: Determine if I should add more parsers or other configurations.
 require('nvim-treesitter.configs').setup {
    -- A list of parser names, or "all" (the listed parsers MUST always be installed).
    ensure_installed = {
@@ -9,7 +11,7 @@ require('nvim-treesitter.configs').setup {
       "c",
       "comment",
       "diff",
-      --"disassembly",  -- Good to have on standbye.
+      -- "disassembly",  -- Good to have on standbye.
       "dockerfile",
       "editorconfig",
       "git_config",
@@ -32,8 +34,8 @@ require('nvim-treesitter.configs').setup {
       "requirements",
       "rust",
       "sql",
-      --"strace",  -- Good to have on standbye.
-      --"tmux",  -- Maybe...
+      -- "strace",  -- Good to have on standbye.
+      -- "tmux",  -- Maybe...
       "typescript",
       "vim",
       "vimdoc",
@@ -50,3 +52,16 @@ require('nvim-treesitter.configs').setup {
       additional_vim_regex_highlighting = false,
    },
 }
+
+
+----[ mini.nvim Configurations ]--------------------------------------------------------
+
+
+-- TODO: Check other modules to enable.
+-- Module: mini.comment
+require('mini.comment').setup()
+-- Module: mini.move
+require('mini.move').setup()
+-- Module: mini.pairs
+require('mini.pairs').setup()
+

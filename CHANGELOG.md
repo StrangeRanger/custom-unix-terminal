@@ -10,6 +10,14 @@ Entries under the **Removed** section indicate items removed from the entire doc
 
 ## Unreleased
 
+## 2025-02-17
+
+### Added
+
+- added(nvim-plugin): enable mini.comment and mini.pairs
+- added(nvim-plugin): enable mini.move
+- added(nvim-plugin): add 'mini.nvim' plugin
+
 ## 2025-02-07
 
 ### Changed

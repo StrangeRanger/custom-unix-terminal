@@ -28,6 +28,9 @@ Plug 'mechatroner/rainbow_csv'
 " patterns and provides straight-forward configuration to manage the filetype detection
 " rules over your preferred log files.
 Plug 'fei6409/log-highlight.nvim'
+" Library of 40+ independent Lua modules improving overall Neovim (version 0.8 and
+" higher) experience with minimal effort.
+Plug 'echasnovski/mini.nvim'
 
 " Initialize plugin system
 call plug#end()
@@ -114,3 +117,4 @@ lua dofile(vim.fn.stdpath('config') .. '/second_init.lua')
 " :TSInstall       - Install treesitter parsers.
 " :TSUpdate        - Update treesitter parsers.
 " :TSInstallInfo   - Show treesitter information.
+
