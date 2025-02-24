@@ -80,7 +80,7 @@ hash xdg-open 2>/dev/null && alias open="xdg-open"
 
 ## Update based aliases.
 alias updateapt="sudo apt update && sudo apt upgrade -y && sudo apt autoremove -y && sudo apt autoclean"
-alias updatepacman="sudo pacman -Syu && yay && yay -Yc && update-grub-config"
+alias updatepacman="sudo pacman -Syu && yay && yay -Yc && sudo pkgfile -u && update-grub-config"
 
 ## Systemd aliases.
 alias start-bluetooth="sudo systemctl start bluetooth.service"
@@ -169,8 +169,8 @@ export NVM_DIR="$HOME/.nvm"
 
 
 ## Load NVM.
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+[[ -s $NVM_DIR/nvm.sh ]] && source "$NVM_DIR/nvm.sh"  # This loads nvm
+[[ -s $NVM_DIR/bash_completion ]] && source "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 ## Zsh plugin for syntax highlighting.
 ## This plugin is installed via chezmoi, specified in the '.chezmoiexternal.toml' file.
@@ -190,6 +190,10 @@ fzf_tab="${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/fzf-tab/fzf-tab.plugin.zsh"
 ## Source the plugins.sh file for the `op` command.
 [[ -f $HOME/.config/op/plugins.sh ]] \
     && source "$HOME/.config/op/plugins.sh"
+
+## Make the 'command-not-found' functionality available.
+[[ -f /usr/share/doc/pkgfile/command-not-found.zsh ]] \
+    && source /usr/share/doc/pkgfile/command-not-found.zsh
 
 
 ####[ Zsh Style Configurations ]########################################################

@@ -10,6 +10,14 @@ Entries under the **Removed** section indicate items removed from the entire doc
 
 ## Unreleased
 
+## 2025-02-24
+
+### Changed
+
+- changed(aliases): replace 'pacman -Fy' with 'pkgfile -u'
+- changed(aliases): update 'updatepacman' to perform 'sudo pacman -Fy'
+- changed(zshrc): modify source commands and add sourcing 'command-not-found.zsh'
+
 ## 2025-02-17
 
 ### Added
