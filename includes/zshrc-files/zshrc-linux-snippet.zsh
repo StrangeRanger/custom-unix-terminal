@@ -15,7 +15,7 @@ hash xdg-open 2>/dev/null && alias open="xdg-open"
 
 ## Update based aliases.
 alias updateapt="sudo apt update && sudo apt upgrade -y && sudo apt autoremove -y && sudo apt autoclean"
-alias updatepacman="sudo pacman -Syu && yay && yay -Yc && update-grub-config"
+alias updatepacman="sudo pacman -Syu && yay && yay -Yc && sudo pkgfile -u && update-grub-config"
 
 ## Systemd aliases.
 alias start-bluetooth="sudo systemctl start bluetooth.service"
