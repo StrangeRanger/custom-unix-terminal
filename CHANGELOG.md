@@ -10,6 +10,12 @@ Entries under the **Removed** section indicate items removed from the entire doc
 
 ## Unreleased
 
+## 2025-02-27
+
+### Added
+
+- added(zshrc): add env variable for ssh auth socket
+
 ## 2025-02-24
 
 ### Changed
