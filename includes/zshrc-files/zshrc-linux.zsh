@@ -142,6 +142,9 @@ git open - Opens the GitHub page for a repo/branch in your browser.
 ####[ Environmental Variables ]#########################################################
 
 
+# 1Password auth socket.
+export SSH_AUTH_SOCK="$HOME/.1password/agent.sock"
+
 ## Path purpose:
 ##  - $HOME/.local/bin:User installed binaries.
 ##  - $HOME/.dotnet/tools: .NET Core tools.
