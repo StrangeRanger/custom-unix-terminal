@@ -20,8 +20,6 @@ alias updatepacman="sudo pacman -Syu && yay && yay -Yc && sudo pkgfile -u && upd
 ## Systemd aliases.
 alias start-bluetooth="sudo systemctl start bluetooth.service"
 alias stop-bluetooth="sudo systemctl stop bluetooth.service"
-alias start-vmware-networking="sudo systemctl start vmware-networks.service"
-alias stop-vmware-networking="sudo systemctl stop vmware-networks.service"
 alias start-firewalld="sudo systemctl start firewalld.service"
 alias stop-firewalld="sudo systemctl stop firewalld.service"
 alias start-docker="sudo systemctl start docker.service containerd.service"
