@@ -10,6 +10,12 @@ Entries under the **Removed** section indicate items removed from the entire doc
 
 ## Unreleased
 
+## 2025-03-06
+
+### Removed
+
+- removed(aliases): Remove vmware network aliases
+
 ## 2025-02-27
 
 ### Added
