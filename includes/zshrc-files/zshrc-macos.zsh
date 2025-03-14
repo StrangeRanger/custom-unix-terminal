@@ -137,12 +137,11 @@ git open - Opens the GitHub page for a repo/branch in your browser.
 export SSH_AUTH_SOCK="$HOME/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
 
 # Path purpose:
-#   /usr/local/opt/curl/bin:       ...
-#   /usr/local/sbin:               ???
-#   /usr/local/opt/openjdk@17/bin: Prefered java version.
-#   /usr/local/opt/node@18/bin:    Prefered node version.
-#   /usr/local/opt/ruby/bin:       Prefered ruby version.
-export PATH="/usr/local/opt/curl/bin:/usr/local/sbin:/usr/local/opt/openjdk@17/bin:/usr/local/opt/node@18/bin:/usr/local/opt/ruby/bin:$PATH"
+#   $HOME/.local/bin:        User installed binaries.
+#   /usr/local/opt/curl/bin: ...
+#   /usr/local/sbin:         ???
+#   /usr/local/opt/ruby/bin: Prefered ruby version.
+export PATH="$HOME/.local/bin:/usr/local/opt/curl/bin:/usr/local/sbin:/usr/local/opt/ruby/bin:$PATH"
 
 # Modifies the colors of files and directories when using `ls`.
 export LSCOLORS="exgxfxDxcxegDaabagacaD"
@@ -218,4 +217,5 @@ hash starship 2>/dev/null \
 
 ####[ Others ]##########################################################################
 #### These are generally configurations set up by setup scripts or other programs.
+
 
