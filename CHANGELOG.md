@@ -10,6 +10,12 @@ Entries under the **Removed** section indicate items removed from the entire doc
 
 ## Unreleased
 
+## 2025-03-14
+
+### Changed
+
+- changed(PATH): Modify existing paths for $PATH
+
 ## 2025-03-06
 
 ### Removed
