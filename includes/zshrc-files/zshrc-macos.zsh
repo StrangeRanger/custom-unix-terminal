@@ -156,16 +156,9 @@ if hash nvim 2>/dev/null; then
     export VISUAL=$EDITOR
 fi
 
-# Node Version Manager (NVM) configurations.
-export NVM_DIR="$HOME/.nvm"
-
 
 ####[ Sourced Files ]###################################################################
 
-
-## Load NVM.
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 ## Zsh plugin for syntax highlighting.
 ## This plugin is installed via chezmoi, specified in the '.chezmoiexternal.toml' file.
