@@ -10,6 +10,12 @@ Entries under the **Removed** section indicate items removed from the entire doc
 
 ## Unreleased
 
+## 2025-03-17
+
+### Changed
+
+- changed(nvm): Remove 'nvm' and its configurations
+
 ## 2025-03-14
 
 ### Changed
