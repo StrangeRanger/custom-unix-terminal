@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "61b0b216356ce40df4ce5666583f5dfd5b06e47341610babfc026024d1f6774e"
+            "sha256": "bb0ee680d8d8d75674eca2a12e454e6486d1545ec3ebeb78d8db3b3f3d5331d3"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -298,12 +298,12 @@
         },
         "mkdocs-git-revision-date-localized-plugin": {
             "hashes": [
-                "sha256:81b7ae57c2c7f8d0a7ff5eb4d2c51120bf131165a357f73dcc5c22af9f91f41a",
-                "sha256:eec56395cf647a148f9ac013f42a3e61de6ec42c59df0232fc2054c4db275eae"
+                "sha256:395ae0b9eec565c78a76fffc938b70f52774bf2971245482d31aba47018c5fa9",
+                "sha256:9e37f1343d314c9cd8f9cbbf117c4bdc1d2d24a0653c5bbd7059d072f2cd0972"
             ],
             "index": "pypi",
             "markers": "python_version >= '3.8'",
-            "version": "==1.4.2"
+            "version": "==1.4.5"
         },
         "mkdocs-material": {
             "hashes": [
