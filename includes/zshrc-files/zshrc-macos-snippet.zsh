@@ -7,62 +7,38 @@
 ###
 
 ## General aliases.
-alias ic="cd ~/Library/Mobile\ Documents/com~apple~CloudDocs"
-alias edisk="cd /Volumes && ll"
 alias zls="eza"
-alias rmdsstore="find . -name '*.DS_Store' -type f -delete"
 alias code="open -a 'Visual Studio Code.app' ."
-alias formatc="find . -name '*.cs' -type f -exec clang-format --style='file:$HOME/Programs/Mine/Formatter Configs/CSharp_clang-format/_clang-format' -i {} +"
-alias deletelocalbranches="git branch | grep -v 'main' | xargs git branch -D"
+
+## Directory related aliases.
+alias move_to_icloud="cd ~/Library/Mobile\ Documents/com~apple~CloudDocs"
+alias move_to_volumes="cd /Volumes && ll"
+
+## File action related aliases.
+alias remove_ds_store="find . -name '*.DS_Store' -type f -delete"
+alias format_csharp_code="find . -name '*.cs' -type f -exec clang-format --style='file:$HOME/Programs/Mine/Formatter Configs/CSharp_clang-format/_clang-format' -i {} +"
+alias delete_local_git_branches="git branch | grep -v 'main' | xargs git branch -D"
+
+## Audio related aliases.
+# Restarting the Core Audio Process can often resolve issues such as no sound, crackling
+# noise, or intermittent audio problems.
+alias restart_core_audio_process="sudo killall coreaudiod"
 
 ## Update based aliases.
-alias updatebrew="brew update && brew upgrade && brew autoremove && brew cleanup && brew doctor"
+alias update_brew="homebrew_update_and_cleanup"
 
 ###
 ### [ Group 2 ]
 ###
-### Due to the number of commands that I find to be useful, I've created aliases
-### containing some of these commands. They are specifically commands that I don't
-### often use, but are useful to have on hand. Having these aliases allows me to see
-### a list of these commands, without having to commit them to memory.
+### Due to the number of commands that I find to be useful, I've created aliases containing
+### some of these commands. They are specifically commands that I don't often use, but are
+### useful to have on hand. Having these aliases allows me to see a list of these commands,
+### without having to commit them to memory.
 ###
 
-alias lt="echo -e \"
-####[ Installed Commands ]##############################################################
-
-bandwhich  - Terminal bandwidth utilization tool.
-bat        - A cat(1) clone with wings.
-cheat      - Allows you to create and view interactive cheatsheets on the command-line.
-codespell  - Check code for common misspellings.
-duf        - Disk Usage/Free Utility - a better 'df' alternative.
-fzf        - A command-line fuzzy finder.
-ncdu       - ncdu (NCurses Disk Usage) is a curses-based version of the well-known 'du'.
-pstree     - List processes as a tree.
-tmux       - Terminal multiplexer.
-
-####[[ Grouped Commands ]]##############################################################
-
-lt_conversion - List of programs used for converting the formats of videos, images, etc.
-lt_git        - List of programs used for git related commands.
-
-
-####[ Keyboard Combinations ]###########################################################
-
-Ctrl + O - Allows you to copy what you are currently typing, via 'Ctrl' + 'O'.
-\""
-alias lt_conversion="echo -e \"
-####[ Image and Video Formatters ]######################################################
-
-ffmpeg - FFmpeg is a collection of libraries and tools to process multimedia content.
-magick - Convert between image formats as well as resize an image, blur, crop,
-         despeckle, dither, draw on, flip, join, re-sample, and much more.
-\""
-alias lt_git="echo -e \"
-####[ Git Related Commands ]############################################################
-
-lazygit  - Simple terminal UI for git commands.
-git open - Opens the GitHub page for a repo/branch in your browser.
-\""
+alias lt="alias_lt"
+alias lt_conversion="alias_lt_conversion"
+alias lt_git="alias_lt_git"
 
 
 # --8<-- [end:user_config]

@@ -10,6 +10,24 @@ Entries under the **Removed** section indicate items removed from the entire doc
 
 ## Unreleased
 
+## 2025-03-24
+
+### Changed
+
+- changed(style/alias): modify format and style of comments and aliases
+- changed(function): implement functions for update aliases
+- changed(function): Update the description of the functions
+- changed(alias): update the style and seperation of aliases
+
+### Fixed
+
+- fixed(white-space): remove extra blank line
+
+### Added
+
+- added(alias): add section for functions to improve alias functionality
+- added(alias): alias restarts the Core Auido Process (can resolve audio issues)
+
 ## 2025-03-17
 
 ### Changed

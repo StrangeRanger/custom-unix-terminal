@@ -1,4 +1,4 @@
-####[ Oh-My-Zsh Configurations ]########################################################
+####[ Oh-My-Zsh Configurations ]############################################################
 
 
 # Path to your oh-my-zsh installation.
@@ -23,7 +23,7 @@ export ZSH="$HOME/.oh-my-zsh"
 # Uncomment the following line to enable command auto-correction.
 # ENABLE_CORRECTION="true"
 
-# Disable audo updates for ohmyzsh. This is taken care of by chezmoi.
+# Disable auto updates for ohmyzsh. This is taken care of by chezmoi.
 DISABLE_AUTO_UPDATE="true"
 
 # Uncomment the following line if you want to change the command execution time
@@ -43,9 +43,9 @@ HIST_STAMPS="yyyy-mm-dd"
 plugins=(colored-man-pages copybuffer copypath copyfile bgnotify)
 
 
-####[ Pre `compinit` ]##################################################################
-#### These are configurations that have to be set before the `compinit` function is
-#### called, which is done when sourcing the 'oh-my-zsh.sh' file.
+####[ Pre `compinit` ]######################################################################
+#### These are configurations that have to be set before the `compinit` function is called,
+#### which is done when sourcing the 'oh-my-zsh.sh' file.
 
 
 ## Zsh plugin for completions.
@@ -56,6 +56,86 @@ zsh_completion="${ZSH_CUSTOM:-${ZSH:-~/.oh-my-zsh}/custom}/plugins/zsh-completio
 # Rustup completions.
 # $ rustup completions zsh > ~/.zfunc/_rustup
 [[ -f ~/.zfunc/_rustup ]] && fpath+=~/.zfunc
+
+
+####[ Resource File - Functions ]###########################################################
+
+
+####
+# Perform the update, upgrade, and cleanup operations for Homebrew.
+homebrew_update_and_cleanup() {
+    echo "[INFO] Executing: $ brew update"
+    brew update
+    echo "[INFO] Executing: $ brew upgrade"
+    brew upgrade
+    echo "[INFO] Executing: $ brew autoremove"
+    brew autoremove
+    echo "[INFO] Executing: $ brew cleanup"
+    brew cleanup
+    echo "[INFO] Executing: $ brew doctor"
+    brew doctor
+}
+
+###
+### [ Alias Related Functions ]
+###
+
+####
+# List of Aliases
+alias_lt() {
+    cat <<EOF
+####[ Installed Commands ]######################################################
+
+bandwhich  - Terminal bandwidth utilization tool.
+bat        - A cat(1) clone with wings.
+cheat      - Allows you to create and view interactive cheatsheets on the
+             command-line.
+codespell  - Check code for common misspellings.
+duf        - Disk Usage/Free Utility - a better 'df' alternative.
+fzf        - A command-line fuzzy finder.
+ncdu       - ncdu (NCurses Disk Usage) is a curses-based version of the
+             well-known 'du'.
+pstree     - List processes as a tree.
+tmux       - Terminal multiplexer.
+
+###
+### [ Grouped Commands ]
+###
+
+lt_conversion - List of programs used for converting the formats of videos,
+                images, etc.
+lt_git        - List of programs used for git related commands.
+
+
+####[ Keyboard Combinations ]###################################################
+
+Ctrl + O - Allows you to copy what you are currently typing, via 'Ctrl' + 'O'.
+EOF
+}
+
+####
+# Image and Video Formatters
+alias_lt_conversion() {
+    cat <<EOF
+####[ Image and Video Formatters ]##############################################
+
+ffmpeg - FFmpeg is a collection of libraries and tools to process multimedia
+         content.
+magick - Convert between image formats as well as resize an image, blur, crop,
+         despeckle, dither, draw on, flip, join, re-sample, and much more.
+EOF
+}
+
+####
+# Git Related Commands
+alias_lt_git() {
+    cat <<EOF
+####[ Git Related Commands ]####################################################
+
+lazygit  - Simple terminal UI for git commands.
+git open - Opens the GitHub page for a repo/branch in your browser.
+EOF
+}
 
 
 ####[ Source Oh-My-Zsh ]################################################################
@@ -72,65 +152,41 @@ source "$ZSH/oh-my-zsh.sh"
 ###
 
 ## General aliases.
-alias ic="cd ~/Library/Mobile\ Documents/com~apple~CloudDocs"
-alias edisk="cd /Volumes && ll"
 alias zls="eza"
-alias rmdsstore="find . -name '*.DS_Store' -type f -delete"
 alias code="open -a 'Visual Studio Code.app' ."
-alias formatc="find . -name '*.cs' -type f -exec clang-format --style='file:$HOME/Programs/Mine/Formatter Configs/CSharp_clang-format/_clang-format' -i {} +"
-alias deletelocalbranches="git branch | grep -v 'main' | xargs git branch -D"
+
+## Directory related aliases.
+alias move_to_icloud="cd ~/Library/Mobile\ Documents/com~apple~CloudDocs"
+alias move_to_volumes="cd /Volumes && ll"
+
+## File action related aliases.
+alias remove_ds_store="find . -name '*.DS_Store' -type f -delete"
+alias format_csharp_code="find . -name '*.cs' -type f -exec clang-format --style='file:$HOME/Programs/Mine/Formatter Configs/CSharp_clang-format/_clang-format' -i {} +"
+alias delete_local_git_branches="git branch | grep -v 'main' | xargs git branch -D"
+
+## Audio related aliases.
+# Restarting the Core Audio Process can often resolve issues such as no sound, crackling
+# noise, or intermittent audio problems.
+alias restart_core_audio_process="sudo killall coreaudiod"
 
 ## Update based aliases.
-alias updatebrew="brew update && brew upgrade && brew autoremove && brew cleanup && brew doctor"
+alias update_brew="homebrew_update_and_cleanup"
 
 ###
 ### [ Group 2 ]
 ###
-### Due to the number of commands that I find to be useful, I've created aliases
-### containing some of these commands. They are specifically commands that I don't
-### often use, but are useful to have on hand. Having these aliases allows me to see
-### a list of these commands, without having to commit them to memory.
+### Due to the number of commands that I find to be useful, I've created aliases containing
+### some of these commands. They are specifically commands that I don't often use, but are
+### useful to have on hand. Having these aliases allows me to see a list of these commands,
+### without having to commit them to memory.
 ###
 
-alias lt="echo -e \"
-####[ Installed Commands ]##############################################################
-
-bandwhich  - Terminal bandwidth utilization tool.
-bat        - A cat(1) clone with wings.
-cheat      - Allows you to create and view interactive cheatsheets on the command-line.
-codespell  - Check code for common misspellings.
-duf        - Disk Usage/Free Utility - a better 'df' alternative.
-fzf        - A command-line fuzzy finder.
-ncdu       - ncdu (NCurses Disk Usage) is a curses-based version of the well-known 'du'.
-pstree     - List processes as a tree.
-tmux       - Terminal multiplexer.
-
-####[[ Grouped Commands ]]##############################################################
-
-lt_conversion - List of programs used for converting the formats of videos, images, etc.
-lt_git        - List of programs used for git related commands.
+alias lt="alias_lt"
+alias lt_conversion="alias_lt_conversion"
+alias lt_git="alias_lt_git"
 
 
-####[ Keyboard Combinations ]###########################################################
-
-Ctrl + O - Allows you to copy what you are currently typing, via 'Ctrl' + 'O'.
-\""
-alias lt_conversion="echo -e \"
-####[ Image and Video Formatters ]######################################################
-
-ffmpeg - FFmpeg is a collection of libraries and tools to process multimedia content.
-magick - Convert between image formats as well as resize an image, blur, crop,
-         despeckle, dither, draw on, flip, join, re-sample, and much more.
-\""
-alias lt_git="echo -e \"
-####[ Git Related Commands ]############################################################
-
-lazygit  - Simple terminal UI for git commands.
-git open - Opens the GitHub page for a repo/branch in your browser.
-\""
-
-
-####[ Environmental Variables ]#########################################################
+####[ Environmental Variables ]#############################################################
 
 
 # 1Password auth socket.
@@ -157,7 +213,7 @@ if hash nvim 2>/dev/null; then
 fi
 
 
-####[ Sourced Files ]###################################################################
+####[ Sourced Files ]#######################################################################
 
 
 ## Zsh plugin for syntax highlighting.
@@ -173,14 +229,15 @@ zsh_autosuggestions="${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggesti
 ## Zsh plugin for fzf-tab.
 ## This plugin is installed via chezmoi, specified in the '.chezmoiexternal.toml' file.
 fzf_tab="${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/fzf-tab/fzf-tab.plugin.zsh"
-[[ -f $fzf_tab ]] && hash fzf 2>/dev/null && source "$fzf_tab"
+[[ -f $fzf_tab ]] \
+    && hash fzf 2>/dev/null \
+    && source "$fzf_tab"
 
 ## Source the plugins.sh file for the `op` command.
-[[ -f $HOME/.config/op/plugins.sh ]] \
-    && source "$HOME/.config/op/plugins.sh"
+[[ -f $HOME/.config/op/plugins.sh ]] && source "$HOME/.config/op/plugins.sh"
 
 
-####[ Zsh Style Configurations ]########################################################
+####[ Zsh Style Configurations ]############################################################
 
 
 # Disable sort when completing `git checkout`.
@@ -197,9 +254,9 @@ hash eza 2>/dev/null \
 zstyle ':fzf-tab:*' switch-group '<' '>'
 
 
-####[ End of File Configurations ]######################################################
-#### These are configurations that are specified to be placed at the end of the file, by
-#### the developer/documentation.
+####[ End of File Configurations ]##########################################################
+#### These are configurations that are specified to be placed at the end of the file, by the
+#### developer/documentation.
 
 
 # Initialize Starship prompt, if it is installed and $ZSH_THEME is not set.
@@ -208,7 +265,5 @@ hash starship 2>/dev/null \
     && eval "$(starship init zsh)"
 
 
-####[ Others ]##########################################################################
+####[ Others ]##############################################################################
 #### These are generally configurations set up by setup scripts or other programs.
-
-
