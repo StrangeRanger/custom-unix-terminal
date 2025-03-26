@@ -1,4 +1,4 @@
-""""[ vim-plug Configurations ]"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""[ vim-plug Configurations ]"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 
 call plug#begin(stdpath('data') . '/plugged')
@@ -28,8 +28,8 @@ Plug 'mechatroner/rainbow_csv'
 " patterns and provides straight-forward configuration to manage the filetype detection
 " rules over your preferred log files.
 Plug 'fei6409/log-highlight.nvim'
-" Library of 40+ independent Lua modules improving overall Neovim (version 0.8 and
-" higher) experience with minimal effort.
+" Library of 40+ independent Lua modules improving overall Neovim (version 0.8 and higher)
+" experience with minimal effort.
 Plug 'echasnovski/mini.nvim'
 
 " Initialize plugin system
@@ -45,7 +45,7 @@ call plug#end()
 "   PlugSnapshot - Generate script for restoring the current snapshot of the plugins
 
 
-""""[ General Configurations ]"""""""""""""""""""""""""""""""""""""""""""""
+""""[ General Configurations ]""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 
 """
@@ -59,7 +59,7 @@ set shiftwidth=4    " Number of spaces to use for each step of (auto)indent.
 set softtabstop=4   " Number of spaces that a <Tab> in the file counts for.
 set endofline       " Keep the last line of a file if it has no newline.
 set fixendofline    " Ensures a newline at the end of the file, if endofline is enabled.
-set colorcolumn=88  " Set a colored line at column 88 in every row.
+set colorcolumn=92  " Set a colored line at column 88 in every row.
 
 "" Filetype-specific configurations.
 autocmd Filetype markdown,text,csv setlocal colorcolumn=0
@@ -71,7 +71,7 @@ autocmd Filetype lua setlocal tabstop=3 shiftwidth=3 softtabstop=3
 autocmd Filetype html,css,vue,javascript,typescript setlocal colorcolumn=100 tabstop=2 shiftwidth=2 softtabstop=2
 
 
-""""[ vim-plug Plugin Configurations ]""""""""""""""""""""""""""""""""""""""""""""""""""
+""""[ vim-plug Plugin Configurations ]""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 
 " Font: Power Line Font
