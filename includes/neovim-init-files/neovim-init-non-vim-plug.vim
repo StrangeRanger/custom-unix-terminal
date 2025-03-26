@@ -1,4 +1,4 @@
-""""[ General Configurations ]"""""""""""""""""""""""""""""""""""""""""""""
+""""[ General Configurations ]""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 
 """
@@ -12,7 +12,7 @@ set shiftwidth=4    " Number of spaces to use for each step of (auto)indent.
 set softtabstop=4   " Number of spaces that a <Tab> in the file counts for.
 set endofline       " Keep the last line of a file if it has no newline.
 set fixendofline    " Ensures a newline at the end of the file, if endofline is enabled.
-set colorcolumn=88  " Set a colored line at column 88 in every row.
+set colorcolumn=92  " Set a colored line at column 88 in every row.
 
 "" Filetype-specific configurations.
 autocmd Filetype markdown,text,csv setlocal colorcolumn=0

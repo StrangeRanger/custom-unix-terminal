@@ -10,6 +10,12 @@ Entries under the **Removed** section indicate items removed from the entire doc
 
 ## Unreleased
 
+## 2025-03-26
+
+### Changed
+
+- changed(neovim): modify default color column length
+
 ## 2025-03-24
 
 ### Changed
