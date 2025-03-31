@@ -2976,7 +2976,20 @@
 <span class="normal"><a href="#__codelineno-6-116">116</a></span>
 <span class="normal"><a href="#__codelineno-6-117">117</a></span>
 <span class="normal"><a href="#__codelineno-6-118">118</a></span>
-<span class="normal"><a href="#__codelineno-6-119">119</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1"></a><span class="c">&quot;&quot;&quot;&quot;[ vim-plug Configurations ]&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;</span>
+<span class="normal"><a href="#__codelineno-6-119">119</a></span>
+<span class="normal"><a href="#__codelineno-6-120">120</a></span>
+<span class="normal"><a href="#__codelineno-6-121">121</a></span>
+<span class="normal"><a href="#__codelineno-6-122">122</a></span>
+<span class="normal"><a href="#__codelineno-6-123">123</a></span>
+<span class="normal"><a href="#__codelineno-6-124">124</a></span>
+<span class="normal"><a href="#__codelineno-6-125">125</a></span>
+<span class="normal"><a href="#__codelineno-6-126">126</a></span>
+<span class="normal"><a href="#__codelineno-6-127">127</a></span>
+<span class="normal"><a href="#__codelineno-6-128">128</a></span>
+<span class="normal"><a href="#__codelineno-6-129">129</a></span>
+<span class="normal"><a href="#__codelineno-6-130">130</a></span>
+<span class="normal"><a href="#__codelineno-6-131">131</a></span>
+<span class="normal"><a href="#__codelineno-6-132">132</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1"></a><span class="c">&quot;&quot;&quot;&quot;[ vim-plug Configurations ]&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;</span>
 </span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2"></a>
 </span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3"></a>
 </span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4"></a><span class="k">call</span> plug#begin<span class="p">(</span>stdpath<span class="p">(</span><span class="s1">&#39;data&#39;</span><span class="p">)</span> . <span class="s1">&#39;/plugged&#39;</span><span class="p">)</span>
@@ -3040,61 +3053,74 @@
 </span><span id="__span-6-62"><a id="__codelineno-6-62" name="__codelineno-6-62"></a><span class="k">set</span> <span class="nb">colorcolumn</span><span class="p">=</span><span class="m">92</span>  <span class="c">&quot; Set a colored line at column 88 in every row.</span>
 </span><span id="__span-6-63"><a id="__codelineno-6-63" name="__codelineno-6-63"></a>
 </span><span id="__span-6-64"><a id="__codelineno-6-64" name="__codelineno-6-64"></a><span class="c">&quot;&quot; Filetype-specific configurations.</span>
-</span><span id="__span-6-65"><a id="__codelineno-6-65" name="__codelineno-6-65"></a>autocmd Filetype markdown<span class="p">,</span>text<span class="p">,</span>csv <span class="k">setlocal</span> <span class="nb">colorcolumn</span><span class="p">=</span><span class="m">0</span>
-</span><span id="__span-6-66"><a id="__codelineno-6-66" name="__codelineno-6-66"></a>autocmd Filetype java <span class="k">setlocal</span> <span class="nb">colorcolumn</span><span class="p">=</span><span class="m">100</span>
-</span><span id="__span-6-67"><a id="__codelineno-6-67" name="__codelineno-6-67"></a>autocmd Filetype <span class="k">cs</span> <span class="k">setlocal</span> <span class="nb">colorcolumn</span><span class="p">=</span><span class="m">120</span>
-</span><span id="__span-6-68"><a id="__codelineno-6-68" name="__codelineno-6-68"></a><span class="c">&quot; As recommended by the luarocks Style Guide:</span>
-</span><span id="__span-6-69"><a id="__codelineno-6-69" name="__codelineno-6-69"></a><span class="c">&quot; https://github.com/luarocks/lua-style-guide/blob/master/README.md</span>
-</span><span id="__span-6-70"><a id="__codelineno-6-70" name="__codelineno-6-70"></a>autocmd Filetype <span class="k">lua</span> <span class="k">setlocal</span> <span class="nb">tabstop</span><span class="p">=</span><span class="m">3</span> <span class="nb">shiftwidth</span><span class="p">=</span><span class="m">3</span> <span class="nb">softtabstop</span><span class="p">=</span><span class="m">3</span>
-</span><span id="__span-6-71"><a id="__codelineno-6-71" name="__codelineno-6-71"></a>autocmd Filetype html<span class="p">,</span>css<span class="p">,</span>vue<span class="p">,</span>javascript<span class="p">,</span>typescript <span class="k">setlocal</span> <span class="nb">colorcolumn</span><span class="p">=</span><span class="m">100</span> <span class="nb">tabstop</span><span class="p">=</span><span class="m">2</span> <span class="nb">shiftwidth</span><span class="p">=</span><span class="m">2</span> <span class="nb">softtabstop</span><span class="p">=</span><span class="m">2</span>
-</span><span id="__span-6-72"><a id="__codelineno-6-72" name="__codelineno-6-72"></a>
-</span><span id="__span-6-73"><a id="__codelineno-6-73" name="__codelineno-6-73"></a>
-</span><span id="__span-6-74"><a id="__codelineno-6-74" name="__codelineno-6-74"></a><span class="c">&quot;&quot;&quot;&quot;[ vim-plug Plugin Configurations ]&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;</span>
-</span><span id="__span-6-75"><a id="__codelineno-6-75" name="__codelineno-6-75"></a>
-</span><span id="__span-6-76"><a id="__codelineno-6-76" name="__codelineno-6-76"></a>
-</span><span id="__span-6-77"><a id="__codelineno-6-77" name="__codelineno-6-77"></a><span class="c">&quot; Font: Power Line Font</span>
-</span><span id="__span-6-78"><a id="__codelineno-6-78" name="__codelineno-6-78"></a><span class="k">set</span> <span class="nb">guifont</span><span class="p">=</span>MesloLGS_NF:h12
-</span><span id="__span-6-79"><a id="__codelineno-6-79" name="__codelineno-6-79"></a>
-</span><span id="__span-6-80"><a id="__codelineno-6-80" name="__codelineno-6-80"></a><span class="c">&quot;&quot; Plugin: gruvbox-material</span>
-</span><span id="__span-6-81"><a id="__codelineno-6-81" name="__codelineno-6-81"></a><span class="k">colorscheme</span> gruvbox<span class="p">-</span>material
-</span><span id="__span-6-82"><a id="__codelineno-6-82" name="__codelineno-6-82"></a><span class="k">set</span> <span class="nb">background</span><span class="p">=</span><span class="nb">dark</span>
-</span><span id="__span-6-83"><a id="__codelineno-6-83" name="__codelineno-6-83"></a><span class="k">let</span> <span class="k">g</span>:gruvbox_material_foreground <span class="p">=</span> <span class="s1">&#39;original&#39;</span>
-</span><span id="__span-6-84"><a id="__codelineno-6-84" name="__codelineno-6-84"></a><span class="k">let</span> <span class="k">g</span>:gruvbox_material_enable_bold <span class="p">=</span> <span class="m">1</span>
-</span><span id="__span-6-85"><a id="__codelineno-6-85" name="__codelineno-6-85"></a><span class="k">let</span> <span class="k">g</span>:gruvbox_material_enable_italic <span class="p">=</span> <span class="m">1</span>
+</span><span id="__span-6-65"><a id="__codelineno-6-65" name="__codelineno-6-65"></a>augroup FiletypeConfigs
+</span><span id="__span-6-66"><a id="__codelineno-6-66" name="__codelineno-6-66"></a>  autocmd<span class="p">!</span>
+</span><span id="__span-6-67"><a id="__codelineno-6-67" name="__codelineno-6-67"></a>  autocmd Filetype markdown<span class="p">,</span>text<span class="p">,</span>csv <span class="k">setlocal</span> <span class="nb">colorcolumn</span><span class="p">=</span><span class="m">0</span>
+</span><span id="__span-6-68"><a id="__codelineno-6-68" name="__codelineno-6-68"></a>  autocmd Filetype java <span class="k">setlocal</span> <span class="nb">colorcolumn</span><span class="p">=</span><span class="m">100</span>
+</span><span id="__span-6-69"><a id="__codelineno-6-69" name="__codelineno-6-69"></a>  autocmd Filetype <span class="k">cs</span> <span class="k">setlocal</span> <span class="nb">colorcolumn</span><span class="p">=</span><span class="m">120</span>
+</span><span id="__span-6-70"><a id="__codelineno-6-70" name="__codelineno-6-70"></a><span class="c">  &quot; As recommended by the luarocks Style Guide:</span>
+</span><span id="__span-6-71"><a id="__codelineno-6-71" name="__codelineno-6-71"></a><span class="c">  &quot; https://github.com/luarocks/lua-style-guide/blob/master/README.md</span>
+</span><span id="__span-6-72"><a id="__codelineno-6-72" name="__codelineno-6-72"></a>  autocmd Filetype <span class="k">lua</span> <span class="k">setlocal</span> <span class="nb">tabstop</span><span class="p">=</span><span class="m">3</span> <span class="nb">shiftwidth</span><span class="p">=</span><span class="m">3</span> <span class="nb">softtabstop</span><span class="p">=</span><span class="m">3</span>
+</span><span id="__span-6-73"><a id="__codelineno-6-73" name="__codelineno-6-73"></a>  autocmd Filetype html<span class="p">,</span>css<span class="p">,</span>vue<span class="p">,</span>javascript<span class="p">,</span>typescript <span class="k">setlocal</span> <span class="nb">colorcolumn</span><span class="p">=</span><span class="m">100</span> <span class="nb">tabstop</span><span class="p">=</span><span class="m">2</span> <span class="nb">shiftwidth</span><span class="p">=</span><span class="m">2</span> <span class="nb">softtabstop</span><span class="p">=</span><span class="m">2</span>
+</span><span id="__span-6-74"><a id="__codelineno-6-74" name="__codelineno-6-74"></a>  autocmd Filetype <span class="k">vim</span> <span class="k">setlocal</span> <span class="nb">tabstop</span><span class="p">=</span><span class="m">2</span> <span class="nb">shiftwidth</span><span class="p">=</span><span class="m">2</span> <span class="nb">softtabstop</span><span class="p">=</span><span class="m">2</span>
+</span><span id="__span-6-75"><a id="__codelineno-6-75" name="__codelineno-6-75"></a>augroup END
+</span><span id="__span-6-76"><a id="__codelineno-6-76" name="__codelineno-6-76"></a>augroup CsprojSettings
+</span><span id="__span-6-77"><a id="__codelineno-6-77" name="__codelineno-6-77"></a>  autocmd<span class="p">!</span>
+</span><span id="__span-6-78"><a id="__codelineno-6-78" name="__codelineno-6-78"></a>  autocmd <span class="nb">BufRead</span><span class="p">,</span><span class="nb">BufNewFile</span> *.csproj <span class="k">setlocal</span> <span class="nb">tabstop</span><span class="p">=</span><span class="m">2</span> <span class="nb">shiftwidth</span><span class="p">=</span><span class="m">2</span> <span class="nb">softtabstop</span><span class="p">=</span><span class="m">2</span>
+</span><span id="__span-6-79"><a id="__codelineno-6-79" name="__codelineno-6-79"></a>augroup END
+</span><span id="__span-6-80"><a id="__codelineno-6-80" name="__codelineno-6-80"></a>augroup SlnSettings
+</span><span id="__span-6-81"><a id="__codelineno-6-81" name="__codelineno-6-81"></a>  autocmd<span class="p">!</span>
+</span><span id="__span-6-82"><a id="__codelineno-6-82" name="__codelineno-6-82"></a>  autocmd <span class="nb">BufRead</span><span class="p">,</span><span class="nb">BufNewFile</span> *.sln <span class="k">setlocal</span> <span class="nb">tabstop</span><span class="p">=</span><span class="m">4</span> <span class="nb">shiftwidth</span><span class="p">=</span><span class="m">4</span>
+</span><span id="__span-6-83"><a id="__codelineno-6-83" name="__codelineno-6-83"></a>augroup END
+</span><span id="__span-6-84"><a id="__codelineno-6-84" name="__codelineno-6-84"></a>
+</span><span id="__span-6-85"><a id="__codelineno-6-85" name="__codelineno-6-85"></a>
 </span><span id="__span-6-86"><a id="__codelineno-6-86" name="__codelineno-6-86"></a>
-</span><span id="__span-6-87"><a id="__codelineno-6-87" name="__codelineno-6-87"></a><span class="c">&quot;&quot; Plugin: vim-airline</span>
-</span><span id="__span-6-88"><a id="__codelineno-6-88" name="__codelineno-6-88"></a><span class="k">let</span> <span class="k">g</span>:airline#extensions#<span class="nb">tabline</span>#enabled <span class="p">=</span> <span class="m">1</span>
-</span><span id="__span-6-89"><a id="__codelineno-6-89" name="__codelineno-6-89"></a><span class="k">let</span> <span class="k">g</span>:airline#extensions#<span class="nb">tabline</span>#left_sep <span class="p">=</span> <span class="s1">&#39; &#39;</span>
-</span><span id="__span-6-90"><a id="__codelineno-6-90" name="__codelineno-6-90"></a><span class="k">let</span> <span class="k">g</span>:airline#extensions#<span class="nb">tabline</span>#left_alt_sep <span class="p">=</span> <span class="s1">&#39;|&#39;</span>
-</span><span id="__span-6-91"><a id="__codelineno-6-91" name="__codelineno-6-91"></a><span class="k">let</span> <span class="k">g</span>:airline#extensions#<span class="nb">tabline</span>#formatter <span class="p">=</span> <span class="s1">&#39;default&#39;</span>
-</span><span id="__span-6-92"><a id="__codelineno-6-92" name="__codelineno-6-92"></a><span class="k">let</span> <span class="k">g</span>:airline#extensions#ale#enabled <span class="p">=</span> <span class="m">1</span>
-</span><span id="__span-6-93"><a id="__codelineno-6-93" name="__codelineno-6-93"></a><span class="k">let</span> <span class="k">g</span>:airline_powerline_fonts <span class="p">=</span> <span class="m">1</span>
-</span><span id="__span-6-94"><a id="__codelineno-6-94" name="__codelineno-6-94"></a>
-</span><span id="__span-6-95"><a id="__codelineno-6-95" name="__codelineno-6-95"></a><span class="c">&quot;&quot; Plugin: better-whitespace</span>
-</span><span id="__span-6-96"><a id="__codelineno-6-96" name="__codelineno-6-96"></a><span class="k">let</span> <span class="k">g</span>:better_whitespace_enabled <span class="p">=</span> <span class="m">1</span>
-</span><span id="__span-6-97"><a id="__codelineno-6-97" name="__codelineno-6-97"></a><span class="k">let</span> <span class="k">g</span>:strip_whitespace_on_save <span class="p">=</span> <span class="m">1</span>
-</span><span id="__span-6-98"><a id="__codelineno-6-98" name="__codelineno-6-98"></a>
-</span><span id="__span-6-99"><a id="__codelineno-6-99" name="__codelineno-6-99"></a><span class="c">&quot;&quot; Plugin: ale</span>
-</span><span id="__span-6-100"><a id="__codelineno-6-100" name="__codelineno-6-100"></a><span class="c">&quot;let g:ale_use_neovim_diagnostics_api = 0</span>
-</span><span id="__span-6-101"><a id="__codelineno-6-101" name="__codelineno-6-101"></a>
-</span><span id="__span-6-102"><a id="__codelineno-6-102" name="__codelineno-6-102"></a>
-</span><span id="__span-6-103"><a id="__codelineno-6-103" name="__codelineno-6-103"></a><span class="c">&quot;&quot;&quot;&quot;[ Lua Configurations ]&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;</span>
-</span><span id="__span-6-104"><a id="__codelineno-6-104" name="__codelineno-6-104"></a>
-</span><span id="__span-6-105"><a id="__codelineno-6-105" name="__codelineno-6-105"></a>
-</span><span id="__span-6-106"><a id="__codelineno-6-106" name="__codelineno-6-106"></a><span class="c">&quot; Load &#39;nvim-treesitter&#39; configurations.</span>
-</span><span id="__span-6-107"><a id="__codelineno-6-107" name="__codelineno-6-107"></a><span class="k">lua</span> dofile<span class="p">(</span><span class="k">vim</span>.fn.stdpath<span class="p">(</span><span class="s1">&#39;config&#39;</span><span class="p">)</span> .. <span class="s1">&#39;/second_init.lua&#39;</span><span class="p">)</span>
-</span><span id="__span-6-108"><a id="__codelineno-6-108" name="__codelineno-6-108"></a>
-</span><span id="__span-6-109"><a id="__codelineno-6-109" name="__codelineno-6-109"></a>
-</span><span id="__span-6-110"><a id="__codelineno-6-110" name="__codelineno-6-110"></a><span class="c">&quot;&quot;&quot;&quot;[ Useful Commands ]&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;</span>
+</span><span id="__span-6-87"><a id="__codelineno-6-87" name="__codelineno-6-87"></a><span class="c">&quot;&quot;&quot;&quot;[ vim-plug Plugin Configurations ]&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;</span>
+</span><span id="__span-6-88"><a id="__codelineno-6-88" name="__codelineno-6-88"></a>
+</span><span id="__span-6-89"><a id="__codelineno-6-89" name="__codelineno-6-89"></a>
+</span><span id="__span-6-90"><a id="__codelineno-6-90" name="__codelineno-6-90"></a><span class="c">&quot; Font: Power Line Font</span>
+</span><span id="__span-6-91"><a id="__codelineno-6-91" name="__codelineno-6-91"></a><span class="k">set</span> <span class="nb">guifont</span><span class="p">=</span>MesloLGS_NF:h12
+</span><span id="__span-6-92"><a id="__codelineno-6-92" name="__codelineno-6-92"></a>
+</span><span id="__span-6-93"><a id="__codelineno-6-93" name="__codelineno-6-93"></a><span class="c">&quot;&quot; Plugin: gruvbox-material</span>
+</span><span id="__span-6-94"><a id="__codelineno-6-94" name="__codelineno-6-94"></a><span class="k">colorscheme</span> gruvbox<span class="p">-</span>material
+</span><span id="__span-6-95"><a id="__codelineno-6-95" name="__codelineno-6-95"></a><span class="k">set</span> <span class="nb">background</span><span class="p">=</span><span class="nb">dark</span>
+</span><span id="__span-6-96"><a id="__codelineno-6-96" name="__codelineno-6-96"></a><span class="k">let</span> <span class="k">g</span>:gruvbox_material_foreground <span class="p">=</span> <span class="s1">&#39;original&#39;</span>
+</span><span id="__span-6-97"><a id="__codelineno-6-97" name="__codelineno-6-97"></a><span class="k">let</span> <span class="k">g</span>:gruvbox_material_enable_bold <span class="p">=</span> <span class="m">1</span>
+</span><span id="__span-6-98"><a id="__codelineno-6-98" name="__codelineno-6-98"></a><span class="k">let</span> <span class="k">g</span>:gruvbox_material_enable_italic <span class="p">=</span> <span class="m">1</span>
+</span><span id="__span-6-99"><a id="__codelineno-6-99" name="__codelineno-6-99"></a>
+</span><span id="__span-6-100"><a id="__codelineno-6-100" name="__codelineno-6-100"></a><span class="c">&quot;&quot; Plugin: vim-airline</span>
+</span><span id="__span-6-101"><a id="__codelineno-6-101" name="__codelineno-6-101"></a><span class="k">let</span> <span class="k">g</span>:airline#extensions#<span class="nb">tabline</span>#enabled <span class="p">=</span> <span class="m">1</span>
+</span><span id="__span-6-102"><a id="__codelineno-6-102" name="__codelineno-6-102"></a><span class="k">let</span> <span class="k">g</span>:airline#extensions#<span class="nb">tabline</span>#left_sep <span class="p">=</span> <span class="s1">&#39; &#39;</span>
+</span><span id="__span-6-103"><a id="__codelineno-6-103" name="__codelineno-6-103"></a><span class="k">let</span> <span class="k">g</span>:airline#extensions#<span class="nb">tabline</span>#left_alt_sep <span class="p">=</span> <span class="s1">&#39;|&#39;</span>
+</span><span id="__span-6-104"><a id="__codelineno-6-104" name="__codelineno-6-104"></a><span class="k">let</span> <span class="k">g</span>:airline#extensions#<span class="nb">tabline</span>#formatter <span class="p">=</span> <span class="s1">&#39;default&#39;</span>
+</span><span id="__span-6-105"><a id="__codelineno-6-105" name="__codelineno-6-105"></a><span class="k">let</span> <span class="k">g</span>:airline#extensions#ale#enabled <span class="p">=</span> <span class="m">1</span>
+</span><span id="__span-6-106"><a id="__codelineno-6-106" name="__codelineno-6-106"></a><span class="k">let</span> <span class="k">g</span>:airline_powerline_fonts <span class="p">=</span> <span class="m">1</span>
+</span><span id="__span-6-107"><a id="__codelineno-6-107" name="__codelineno-6-107"></a>
+</span><span id="__span-6-108"><a id="__codelineno-6-108" name="__codelineno-6-108"></a><span class="c">&quot;&quot; Plugin: better-whitespace</span>
+</span><span id="__span-6-109"><a id="__codelineno-6-109" name="__codelineno-6-109"></a><span class="k">let</span> <span class="k">g</span>:better_whitespace_enabled <span class="p">=</span> <span class="m">1</span>
+</span><span id="__span-6-110"><a id="__codelineno-6-110" name="__codelineno-6-110"></a><span class="k">let</span> <span class="k">g</span>:strip_whitespace_on_save <span class="p">=</span> <span class="m">1</span>
 </span><span id="__span-6-111"><a id="__codelineno-6-111" name="__codelineno-6-111"></a>
-</span><span id="__span-6-112"><a id="__codelineno-6-112" name="__codelineno-6-112"></a>
-</span><span id="__span-6-113"><a id="__codelineno-6-113" name="__codelineno-6-113"></a><span class="c">&quot; :NERDTree        - Opens NERDTree file system explorer.</span>
-</span><span id="__span-6-114"><a id="__codelineno-6-114" name="__codelineno-6-114"></a><span class="c">&quot; :StripWhitespace - Clean extra whitespace.</span>
-</span><span id="__span-6-115"><a id="__codelineno-6-115" name="__codelineno-6-115"></a><span class="c">&quot; :ALEInfo         - Show ALE information.</span>
-</span><span id="__span-6-116"><a id="__codelineno-6-116" name="__codelineno-6-116"></a><span class="c">&quot; :ALEToggle       - Toggle ALE on/off.</span>
-</span><span id="__span-6-117"><a id="__codelineno-6-117" name="__codelineno-6-117"></a><span class="c">&quot; :TSInstall       - Install treesitter parsers.</span>
-</span><span id="__span-6-118"><a id="__codelineno-6-118" name="__codelineno-6-118"></a><span class="c">&quot; :TSUpdate        - Update treesitter parsers.</span>
-</span><span id="__span-6-119"><a id="__codelineno-6-119" name="__codelineno-6-119"></a><span class="c">&quot; :TSInstallInfo   - Show treesitter information.</span>
+</span><span id="__span-6-112"><a id="__codelineno-6-112" name="__codelineno-6-112"></a><span class="c">&quot;&quot; Plugin: ale</span>
+</span><span id="__span-6-113"><a id="__codelineno-6-113" name="__codelineno-6-113"></a><span class="c">&quot;let g:ale_use_neovim_diagnostics_api = 0</span>
+</span><span id="__span-6-114"><a id="__codelineno-6-114" name="__codelineno-6-114"></a>
+</span><span id="__span-6-115"><a id="__codelineno-6-115" name="__codelineno-6-115"></a>
+</span><span id="__span-6-116"><a id="__codelineno-6-116" name="__codelineno-6-116"></a><span class="c">&quot;&quot;&quot;&quot;[ Lua Configurations ]&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;</span>
+</span><span id="__span-6-117"><a id="__codelineno-6-117" name="__codelineno-6-117"></a>
+</span><span id="__span-6-118"><a id="__codelineno-6-118" name="__codelineno-6-118"></a>
+</span><span id="__span-6-119"><a id="__codelineno-6-119" name="__codelineno-6-119"></a><span class="c">&quot; Load &#39;nvim-treesitter&#39; configurations.</span>
+</span><span id="__span-6-120"><a id="__codelineno-6-120" name="__codelineno-6-120"></a><span class="k">lua</span> dofile<span class="p">(</span><span class="k">vim</span>.fn.stdpath<span class="p">(</span><span class="s1">&#39;config&#39;</span><span class="p">)</span> .. <span class="s1">&#39;/second_init.lua&#39;</span><span class="p">)</span>
+</span><span id="__span-6-121"><a id="__codelineno-6-121" name="__codelineno-6-121"></a>
+</span><span id="__span-6-122"><a id="__codelineno-6-122" name="__codelineno-6-122"></a>
+</span><span id="__span-6-123"><a id="__codelineno-6-123" name="__codelineno-6-123"></a><span class="c">&quot;&quot;&quot;&quot;[ Useful Commands ]&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;</span>
+</span><span id="__span-6-124"><a id="__codelineno-6-124" name="__codelineno-6-124"></a>
+</span><span id="__span-6-125"><a id="__codelineno-6-125" name="__codelineno-6-125"></a>
+</span><span id="__span-6-126"><a id="__codelineno-6-126" name="__codelineno-6-126"></a><span class="c">&quot; :NERDTree        - Opens NERDTree file system explorer.</span>
+</span><span id="__span-6-127"><a id="__codelineno-6-127" name="__codelineno-6-127"></a><span class="c">&quot; :StripWhitespace - Clean extra whitespace.</span>
+</span><span id="__span-6-128"><a id="__codelineno-6-128" name="__codelineno-6-128"></a><span class="c">&quot; :ALEInfo         - Show ALE information.</span>
+</span><span id="__span-6-129"><a id="__codelineno-6-129" name="__codelineno-6-129"></a><span class="c">&quot; :ALEToggle       - Toggle ALE on/off.</span>
+</span><span id="__span-6-130"><a id="__codelineno-6-130" name="__codelineno-6-130"></a><span class="c">&quot; :TSInstall       - Install treesitter parsers.</span>
+</span><span id="__span-6-131"><a id="__codelineno-6-131" name="__codelineno-6-131"></a><span class="c">&quot; :TSUpdate        - Update treesitter parsers.</span>
+</span><span id="__span-6-132"><a id="__codelineno-6-132" name="__codelineno-6-132"></a><span class="c">&quot; :TSInstallInfo   - Show treesitter information.</span>
 </span></code></pre></div></td></tr></table></div>
 </div>
 <div class="tabbed-block">
@@ -3122,7 +3148,19 @@
 <span class="normal"><a href="#__codelineno-7-21">21</a></span>
 <span class="normal"><a href="#__codelineno-7-22">22</a></span>
 <span class="normal"><a href="#__codelineno-7-23">23</a></span>
-<span class="normal"><a href="#__codelineno-7-24">24</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1"></a><span class="c">&quot;&quot;&quot;&quot;[ General Configurations ]&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;</span>
+<span class="normal"><a href="#__codelineno-7-24">24</a></span>
+<span class="normal"><a href="#__codelineno-7-25">25</a></span>
+<span class="normal"><a href="#__codelineno-7-26">26</a></span>
+<span class="normal"><a href="#__codelineno-7-27">27</a></span>
+<span class="normal"><a href="#__codelineno-7-28">28</a></span>
+<span class="normal"><a href="#__codelineno-7-29">29</a></span>
+<span class="normal"><a href="#__codelineno-7-30">30</a></span>
+<span class="normal"><a href="#__codelineno-7-31">31</a></span>
+<span class="normal"><a href="#__codelineno-7-32">32</a></span>
+<span class="normal"><a href="#__codelineno-7-33">33</a></span>
+<span class="normal"><a href="#__codelineno-7-34">34</a></span>
+<span class="normal"><a href="#__codelineno-7-35">35</a></span>
+<span class="normal"><a href="#__codelineno-7-36">36</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1"></a><span class="c">&quot;&quot;&quot;&quot;[ General Configurations ]&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;</span>
 </span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2"></a>
 </span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3"></a>
 </span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4"></a><span class="c">&quot;&quot;&quot;</span>
@@ -3139,13 +3177,25 @@
 </span><span id="__span-7-15"><a id="__codelineno-7-15" name="__codelineno-7-15"></a><span class="k">set</span> <span class="nb">colorcolumn</span><span class="p">=</span><span class="m">92</span>  <span class="c">&quot; Set a colored line at column 88 in every row.</span>
 </span><span id="__span-7-16"><a id="__codelineno-7-16" name="__codelineno-7-16"></a>
 </span><span id="__span-7-17"><a id="__codelineno-7-17" name="__codelineno-7-17"></a><span class="c">&quot;&quot; Filetype-specific configurations.</span>
-</span><span id="__span-7-18"><a id="__codelineno-7-18" name="__codelineno-7-18"></a>autocmd Filetype markdown<span class="p">,</span>text<span class="p">,</span>csv <span class="k">setlocal</span> <span class="nb">colorcolumn</span><span class="p">=</span><span class="m">0</span>
-</span><span id="__span-7-19"><a id="__codelineno-7-19" name="__codelineno-7-19"></a>autocmd Filetype java <span class="k">setlocal</span> <span class="nb">colorcolumn</span><span class="p">=</span><span class="m">100</span>
-</span><span id="__span-7-20"><a id="__codelineno-7-20" name="__codelineno-7-20"></a>autocmd Filetype <span class="k">cs</span> <span class="k">setlocal</span> <span class="nb">colorcolumn</span><span class="p">=</span><span class="m">120</span>
-</span><span id="__span-7-21"><a id="__codelineno-7-21" name="__codelineno-7-21"></a><span class="c">&quot; As recommended by the luarocks Style Guide:</span>
-</span><span id="__span-7-22"><a id="__codelineno-7-22" name="__codelineno-7-22"></a><span class="c">&quot; https://github.com/luarocks/lua-style-guide/blob/master/README.md</span>
-</span><span id="__span-7-23"><a id="__codelineno-7-23" name="__codelineno-7-23"></a>autocmd Filetype <span class="k">lua</span> <span class="k">setlocal</span> <span class="nb">tabstop</span><span class="p">=</span><span class="m">3</span> <span class="nb">shiftwidth</span><span class="p">=</span><span class="m">3</span> <span class="nb">softtabstop</span><span class="p">=</span><span class="m">3</span>
-</span><span id="__span-7-24"><a id="__codelineno-7-24" name="__codelineno-7-24"></a>autocmd Filetype html<span class="p">,</span>css<span class="p">,</span>vue<span class="p">,</span>javascript<span class="p">,</span>typescript <span class="k">setlocal</span> <span class="nb">colorcolumn</span><span class="p">=</span><span class="m">100</span> <span class="nb">tabstop</span><span class="p">=</span><span class="m">2</span> <span class="nb">shiftwidth</span><span class="p">=</span><span class="m">2</span> <span class="nb">softtabstop</span><span class="p">=</span><span class="m">2</span>
+</span><span id="__span-7-18"><a id="__codelineno-7-18" name="__codelineno-7-18"></a>augroup FiletypeConfigs
+</span><span id="__span-7-19"><a id="__codelineno-7-19" name="__codelineno-7-19"></a>  autocmd<span class="p">!</span>
+</span><span id="__span-7-20"><a id="__codelineno-7-20" name="__codelineno-7-20"></a>  autocmd Filetype markdown<span class="p">,</span>text<span class="p">,</span>csv <span class="k">setlocal</span> <span class="nb">colorcolumn</span><span class="p">=</span><span class="m">0</span>
+</span><span id="__span-7-21"><a id="__codelineno-7-21" name="__codelineno-7-21"></a>  autocmd Filetype java <span class="k">setlocal</span> <span class="nb">colorcolumn</span><span class="p">=</span><span class="m">100</span>
+</span><span id="__span-7-22"><a id="__codelineno-7-22" name="__codelineno-7-22"></a>  autocmd Filetype <span class="k">cs</span> <span class="k">setlocal</span> <span class="nb">colorcolumn</span><span class="p">=</span><span class="m">120</span>
+</span><span id="__span-7-23"><a id="__codelineno-7-23" name="__codelineno-7-23"></a><span class="c">  &quot; As recommended by the luarocks Style Guide:</span>
+</span><span id="__span-7-24"><a id="__codelineno-7-24" name="__codelineno-7-24"></a><span class="c">  &quot; https://github.com/luarocks/lua-style-guide/blob/master/README.md</span>
+</span><span id="__span-7-25"><a id="__codelineno-7-25" name="__codelineno-7-25"></a>  autocmd Filetype <span class="k">lua</span> <span class="k">setlocal</span> <span class="nb">tabstop</span><span class="p">=</span><span class="m">3</span> <span class="nb">shiftwidth</span><span class="p">=</span><span class="m">3</span> <span class="nb">softtabstop</span><span class="p">=</span><span class="m">3</span>
+</span><span id="__span-7-26"><a id="__codelineno-7-26" name="__codelineno-7-26"></a>  autocmd Filetype html<span class="p">,</span>css<span class="p">,</span>vue<span class="p">,</span>javascript<span class="p">,</span>typescript <span class="k">setlocal</span> <span class="nb">colorcolumn</span><span class="p">=</span><span class="m">100</span> <span class="nb">tabstop</span><span class="p">=</span><span class="m">2</span> <span class="nb">shiftwidth</span><span class="p">=</span><span class="m">2</span> <span class="nb">softtabstop</span><span class="p">=</span><span class="m">2</span>
+</span><span id="__span-7-27"><a id="__codelineno-7-27" name="__codelineno-7-27"></a>  autocmd Filetype <span class="k">vim</span> <span class="k">setlocal</span> <span class="nb">tabstop</span><span class="p">=</span><span class="m">2</span> <span class="nb">shiftwidth</span><span class="p">=</span><span class="m">2</span> <span class="nb">softtabstop</span><span class="p">=</span><span class="m">2</span>
+</span><span id="__span-7-28"><a id="__codelineno-7-28" name="__codelineno-7-28"></a>augroup END
+</span><span id="__span-7-29"><a id="__codelineno-7-29" name="__codelineno-7-29"></a>augroup CsprojSettings
+</span><span id="__span-7-30"><a id="__codelineno-7-30" name="__codelineno-7-30"></a>  autocmd<span class="p">!</span>
+</span><span id="__span-7-31"><a id="__codelineno-7-31" name="__codelineno-7-31"></a>  autocmd <span class="nb">BufRead</span><span class="p">,</span><span class="nb">BufNewFile</span> *.csproj <span class="k">setlocal</span> <span class="nb">tabstop</span><span class="p">=</span><span class="m">2</span> <span class="nb">shiftwidth</span><span class="p">=</span><span class="m">2</span> <span class="nb">softtabstop</span><span class="p">=</span><span class="m">2</span>
+</span><span id="__span-7-32"><a id="__codelineno-7-32" name="__codelineno-7-32"></a>augroup END
+</span><span id="__span-7-33"><a id="__codelineno-7-33" name="__codelineno-7-33"></a>augroup SlnSettings
+</span><span id="__span-7-34"><a id="__codelineno-7-34" name="__codelineno-7-34"></a>  autocmd<span class="p">!</span>
+</span><span id="__span-7-35"><a id="__codelineno-7-35" name="__codelineno-7-35"></a>  autocmd <span class="nb">BufRead</span><span class="p">,</span><span class="nb">BufNewFile</span> *.sln <span class="k">setlocal</span> <span class="nb">tabstop</span><span class="p">=</span><span class="m">4</span> <span class="nb">shiftwidth</span><span class="p">=</span><span class="m">4</span>
+</span><span id="__span-7-36"><a id="__codelineno-7-36" name="__codelineno-7-36"></a>augroup END
 </span></code></pre></div></td></tr></table></div>
 </div>
 </div>
