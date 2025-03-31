@@ -10,6 +10,16 @@ Entries under the **Removed** section indicate items removed from the entire doc
 
 ## Unreleased
 
+## 2025-03-31
+
+### Changed
+
+- changed(neovim): remove redundant expandtab from one augroup
+
+### Added
+
+- added(nvim): autocmd for *.sln, *.csproj, and vim; wrap autocmd in augroup
+
 ## 2025-03-26
 
 ### Changed
