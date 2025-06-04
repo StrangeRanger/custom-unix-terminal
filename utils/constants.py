@@ -28,11 +28,11 @@ ZSH_CONFIG_PATHS = {
         "to": Path("includes/zshrc-files/zshrc-linux-snippet.zsh"),
     },
     "zshrc_macos": {
-        "from": Path("submodules/dotfiles/.zshrc_darwin"),
+        "from": Path("submodules/dotfiles/.zshrc_darwin.tmpl"),
         "to": Path("includes/zshrc-files/zshrc-macos.zsh"),
     },
     "zshrc_macos_snippet": {
-        "from": Path("submodules/dotfiles/.zshrc_darwin"),
+        "from": Path("submodules/dotfiles/.zshrc_darwin.tmpl"),
         "to": Path("includes/zshrc-files/zshrc-macos-snippet.zsh"),
     },
 }
