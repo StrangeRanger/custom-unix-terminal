@@ -56,21 +56,21 @@ def neovim_config():
             write_file(paths["to"], data)
 
 
-def chezmoi_edge_case(line, data, line_number):
+def chezmoi_edge_case(current_line, data, line_number):
     """Handles edge cases when chezmoi statements are encountered. These are hard coded
     strings that need to be processed in a very specific way. This means that changes to
     the configuration files can easily break or negate the functionality of this
     method. Keep a close eye when making changes to the configuration files.
 
     Args:
-        line (str): The line to process.
+        current_line (str): The line to process.
         data (list[str]): The data from the file.
         line_number (int): The current line number.
 
     Returns:
         int: The number of lines to skip.
     """
-    if "{{ if $data.isGUIEnvironment -}}" in line:
+    if "{{ if $data.isGUIEnvironment -}}" in current_line:
         if (
             "plugins=(" in data[line_number + 1]
             and "plugins=(" in data[line_number + 2]
@@ -99,8 +99,8 @@ def zsh_config():
             print(f"Processing line {line_number + 1} of {file_paths['from']}")
             print(f"Line: {current_line}")
 
-            if any(marker in line for marker in CHEZMOI_STATEMENTS):
-                skip_line = chezmoi_edge_case(line, data, line_number)
+            if any(marker in current_line for marker in CHEZMOI_STATEMENTS):
+                skip_line = chezmoi_edge_case(current_line, data, line_number)
                 line_number += skip_line
                 continue
 
