@@ -40,17 +40,17 @@ def neovim_config():
 
         if operation == "init_vim_no_plug":
             filtered_data: list[str] = []
-            for line in data:
-                if NEOVIM_MARKERS.start_marker in line:
+            for current_line in data:
+                if NEOVIM_MARKERS.start_marker in current_line:
                     NEOVIM_MARKERS.is_within_section = True
                 if (
-                    NEOVIM_MARKERS.end_marker in line
+                    NEOVIM_MARKERS.end_marker in current_line
                     and NEOVIM_MARKERS.is_within_section
                 ):
                     NEOVIM_MARKERS.is_within_section = False
                     break
                 if NEOVIM_MARKERS.is_within_section:
-                    filtered_data.append(line)
+                    filtered_data.append(current_line)
             write_file(paths["to"], "".join(filtered_data))
         else:
             write_file(paths["to"], data)
@@ -64,37 +64,37 @@ def zsh_config():
         line_number = 0
 
         while line_number < len(data):
-            line = data[line_number]
+            current_line = data[line_number]
 
             ## DEBUG: The below lines help with debugging, especially when running in a
             ##  CI/CD environment.
             print(f"Processing line {line_number + 1} of {file_paths['from']}")
-            print(f"Line: {line}")
+            print(f"Line: {current_line}")
 
-            if any(marker in line for marker in CHEZMOI_STATEMENTS):
+            if any(marker in current_line for marker in CHEZMOI_STATEMENTS):
                 line_number += 1
                 continue
 
             if not file_operation.endswith("snippet"):
-                output_data.append(line)
+                output_data.append(current_line)
                 line_number += 1
                 continue
 
-            if ZSH_ALIAS_MARKERS.start_marker in line:
+            if ZSH_ALIAS_MARKERS.start_marker in current_line:
                 ZSH_ALIAS_MARKERS.is_within_section = True
                 output_data.append(MKDOCS_USER_CONFIG_MARKERS.start_marker)
-            elif ZSH_LS_COLORS_MARKERS.start_marker in line:
+            elif ZSH_LS_COLORS_MARKERS.start_marker in current_line:
                 ZSH_LS_COLORS_MARKERS.is_within_section = True
                 output_data.append(MKDOCS_LS_COLORS_MARKERS.start_marker)
 
             if (
-                ZSH_ALIAS_MARKERS.end_marker in line
+                ZSH_ALIAS_MARKERS.end_marker in current_line
                 and ZSH_ALIAS_MARKERS.is_within_section
             ):
                 ZSH_ALIAS_MARKERS.is_within_section = False
                 output_data.append(MKDOCS_USER_CONFIG_MARKERS.end_marker)
             elif (
-                ZSH_LS_COLORS_MARKERS.end_marker in line
+                ZSH_LS_COLORS_MARKERS.end_marker in current_line
                 and ZSH_LS_COLORS_MARKERS.is_within_section
             ):
                 ZSH_LS_COLORS_MARKERS.is_within_section = False
@@ -106,7 +106,7 @@ def zsh_config():
                 ZSH_ALIAS_MARKERS.is_within_section
                 or ZSH_LS_COLORS_MARKERS.is_within_section
             ):
-                output_data.append(line)
+                output_data.append(current_line)
 
             line_number += 1
 
