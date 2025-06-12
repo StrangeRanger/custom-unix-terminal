@@ -75,12 +75,15 @@ def chezmoi_edge_case(current_line, data, line_number):
             "plugins=(" in data[line_number + 1]
             and "plugins=(" in data[line_number + 2]
         ):
-            return 3
+            return 12
         elif (
             "hash xdg-open" in data[line_number + 1]
             and "{{- end }}" in data[line_number + 2]
         ):
             return 1
+    elif "{{ if $data.isTailscaleInstalled -}}" in current_line:
+        return 2
+
     return 1
 
 
