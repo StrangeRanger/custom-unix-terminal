@@ -10,6 +10,12 @@ Entries under the **Removed** section indicate items removed from the entire doc
 
 ## Unreleased
 
+## 2025-06-11
+
+### Changed
+
+- changed(terminal): update macOS terminal profile
+
 ## 2025-06-04
 
 ### Added
