@@ -70,9 +70,9 @@ def chezmoi_edge_case(current_line, data, line_number):
     Returns:
         int: The number of lines to skip.
     """
-    if "{{ if $data.isGUIEnvironment -}}" in current_line:
+    if "data.isGUIEnvironment" in current_line:
         if (
-            "plugins=(" in data[line_number + 1]
+            "data.isTailscaleInstalled" in data[line_number + 1]
             and "plugins=(" in data[line_number + 2]
         ):
             return 12
@@ -81,7 +81,7 @@ def chezmoi_edge_case(current_line, data, line_number):
             and "{{- end }}" in data[line_number + 2]
         ):
             return 1
-    elif "{{ if $data.isTailscaleInstalled -}}" in current_line:
+    elif "data.isTailscaleInstalled" in current_line:
         return 2
 
     return 1
