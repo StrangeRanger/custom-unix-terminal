@@ -887,7 +887,7 @@
 	<key>WindowTitle</key>
 	<string>Terminal</string>
 	<key>columnCount</key>
-	<integer>92</integer>
+	<integer>93</integer>
 	<key>fontAllowsDisableAntialias</key>
 	<integer>0</integer>
 	<key>name</key>
