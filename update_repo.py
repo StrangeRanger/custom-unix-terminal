@@ -72,17 +72,15 @@ def chezmoi_edge_case(current_line, data, line_number):
     """
     if "data.isGUIEnvironment" in current_line:
         if (
-            "data.isTailscaleInstalled" in data[line_number + 1]
+            "plugins=(" in data[line_number + 1]
             and "plugins=(" in data[line_number + 2]
         ):
-            return 12
+            return 3
         elif (
             "hash xdg-open" in data[line_number + 1]
             and "{{- end }}" in data[line_number + 2]
         ):
             return 1
-    elif "data.isTailscaleInstalled" in current_line:
-        return 2
 
     return 1
 
