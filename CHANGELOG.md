@@ -10,6 +10,12 @@ Entries under the **Removed** section indicate items removed from the entire doc
 
 ## Unreleased
 
+## 2025-07-21
+
+### Changed
+
+- changed(zshrc): remove 'tailscale' from oh-my-zsh plugins
+
 ## 2025-06-12
 
 ### Changed
