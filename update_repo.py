@@ -88,7 +88,7 @@ def chezmoi_edge_case(current_line, data, line_number):
 def zsh_config():
     """Updates the zsh configuration files."""
     for file_operation, file_paths in ZSH_CONFIG_PATHS.items():
-        data: list[str] = read_file(file_paths["from"], read_lines=True)
+        data: list[str] | str = read_file(file_paths["from"], read_lines=True)
         output_data: list[str] = []
         line_number = 0
 
