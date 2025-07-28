@@ -1,0 +1,11 @@
+[project]
+name = "custom-unix-terminal"
+version = "2"
+description = "A project that uses mkdocs to host documentation for customizations of my Unix terminal."
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "mkdocs-git-revision-date-localized-plugin==1.4.7",
+    "mkdocs-material==9.6.15",
+    "mkdocs-table-reader-plugin==3.1.0",
+]
