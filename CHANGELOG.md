@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to the documented terminal configurations and setups will be documented in this file. This includes changes to configuration files (.zshrc, neovim configs), terminal profiles, aliases, functions, and plugins that are shared through this documentation. Changes to automation scripts, repository maintenance, dependency updates, and other backend changes will not be included here.
+All notable changes to this project will be documented in this file. This includes changes to configuration files (such as `.zshrc`, Neovim configs), terminal profiles, aliases, functions, and plugins that are shared through this documentation. Changes to automation scripts, repository maintenance, dependency updates, and other backend changes are **not** included here.
 
 /// admonition | Note
 
