@@ -164,7 +164,7 @@ source "$ZSH/oh-my-zsh.sh"
 ###
 
 ## General aliases.
-alias zls="eza"
+alias python="python3"
 hash xdg-open 2>/dev/null && alias open="xdg-open"
 
 ## Configuration related aliases.

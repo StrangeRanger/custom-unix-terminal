@@ -11,6 +11,13 @@ Entries under the **Removed** section indicate items removed from the entire doc
 
 ## Unreleased
 
+## 2025-07-28
+
+### Changed
+
+- changed(alias): remove alias for 'eza'
+- changed(alias): add alias python for python3
+
 ## 2025-07-21
 
 ### Changed

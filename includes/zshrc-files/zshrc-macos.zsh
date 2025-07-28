@@ -152,8 +152,8 @@ source "$ZSH/oh-my-zsh.sh"
 ###
 
 ## General aliases.
-alias zls="eza"
 alias code="open -a 'Visual Studio Code.app' ."
+alias python="python3"
 
 ## Directory related aliases.
 alias move_to_icloud="cd ~/Library/Mobile\ Documents/com~apple~CloudDocs"
