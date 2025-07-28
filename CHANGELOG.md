@@ -4,7 +4,7 @@ All notable changes to the documented terminal configurations and setups will be
 
 /// admonition | Note
 
-Entries under the **Removed** section indicate items removed from the entire documented setup unless specified otherwise. If an item is removed from a specific configuration file, it will be specified in the entry.
+Entries under the **Removed** section indicate items removed from the entire document unless specified otherwise. If an item is removed from a specific section, it will be specified in the entry.
 
 ///
 
