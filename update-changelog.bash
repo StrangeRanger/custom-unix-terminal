@@ -147,4 +147,3 @@ mv "${C_CHANGELOG}.tmp" "$C_CHANGELOG"
 
 echo "${C_INFO}Cleaning up..."
 rm "$C_TMP_CHANGELOG"
-

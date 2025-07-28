@@ -1,12 +1,13 @@
 # Changelog
 
-All notable changes to this project will be documented in this file.
+All notable changes to this project will be documented in this file. This includes changes to configuration files (such as `.zshrc`, Neovim configs), terminal profiles, aliases, functions, and plugins that are shared through this documentation. Changes to automation scripts, repository maintenance, dependency updates, and other backend changes are **not** included here.
 
 /// admonition | Note
 
 Entries under the **Removed** section indicate items removed from the entire document unless specified otherwise. If an item is removed from a specific section, it will be specified in the entry.
 
 ///
+
 
 ## Unreleased
 
