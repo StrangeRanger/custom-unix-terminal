@@ -1,6 +1,6 @@
 # Custom Unix Terminal
 
-[![Project Tracker](https://img.shields.io/badge/repo%20status-Project%20Tracker-lightgrey)](https://wiki.hthompson.dev/en/project-tracker) [![Static Badge](https://img.shields.io/badge/Click%20to%20Access%20Custom%20Unix%20Terminal-blue)](https://bsg.hthompson.dev)
+[![Project Tracker](https://img.shields.io/badge/repo%20status-Project%20Tracker-lightgrey)](https://hthompson.dev/project-tracker#project-146955022) [![Static Badge](https://img.shields.io/badge/Click%20to%20Access%20Custom%20Unix%20Terminal-blue)](https://bsg.hthompson.dev) [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
 > [!NOTE]
 > To access the full Custom Unix Terminal document, click the blue badge above or navigate to [cut.hthompson.dev](https://cut.hthompson.dev).
