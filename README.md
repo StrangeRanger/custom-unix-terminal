@@ -3,7 +3,7 @@
 [![Project Tracker](https://img.shields.io/badge/repo%20status-Project%20Tracker-lightgrey)](https://hthompson.dev/project-tracker#project-146955022)
 [![GitHub License](https://img.shields.io/github/license/StrangeRanger/custom-unix-terminal)](LICENSE)
 <br />
-[![Static Badge](https://img.shields.io/badge/Click%20to%20Access%20Custom%20Unix%20Terminal-blue)](https://bsg.hthompson.dev)
+[![Static Badge](https://img.shields.io/badge/Click%20to%20access%20Custom%20Unix%20Terminal-blue)](https://cut.hthompson.dev)
 
 > [!NOTE]
 > To access the full Custom Unix Terminal document, click the blue badge above or navigate to [cut.hthompson.dev](https://cut.hthompson.dev).
