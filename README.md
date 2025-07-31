@@ -81,7 +81,6 @@ Manual usage:
     ```bash
     git submodule update --init --remote submodules/dotfiles
     ```
-
 2. Run the script:
     ```bash
     python3 update_repo.py
@@ -97,7 +96,6 @@ Manual usage:
     ```bash
     git submodule update --init --remote submodules/dotfiles
     ```
-
 2. Run the script:
     ```bash
     bash update-changelog.bash
