@@ -12,96 +12,87 @@ I've attempted to make this repository as automated as possible so it always sta
 <summary><strong>Table of Contents</strong></summary>
 
 - [Custom Unix Terminal](#custom-unix-terminal)
-  - [Requirements](#requirements)
-  - [Quick Start](#quick-start)
-  - [Build \& Development](#build--development)
-    - [Automation Scripts](#automation-scripts)
-      - [`update_repo.py`](#update_repopy)
-      - [`update-changelog.bash`](#update-changelogbash)
+  - [What's Included](#whats-included)
+  - [Local Development](#local-development)
+    - [Prerequisites](#prerequisites)
+    - [Download and Setup](#download-and-setup)
+  - [Automation Scripts](#automation-scripts)
+    - [`update_repo.py`](#update_repopy)
+    - [`update-changelog.bash`](#update-changelogbash)
   - [License](#license)
 
 </details>
 
-## Requirements
+## What's Included
 
-These tools are necessary **only** if you wish to build or preview the documentation locally.
+The documentation includes:
+- **Package recommendations** for native package managers and other tools
+- **Zsh configurations** with aliases, functions, and environment setup
+- **Color schemes and themes** for enhanced terminal experience
+- **Neovim configurations** for various use cases
+- **Terminal profiles** for macOS and GNOME Terminal
 
-- Python 3.10 or higher ([Download Python](https://www.python.org/downloads/))
-- [uv](https://github.com/astral-sh/uv#installation) (a fast Python package manager and resolver)
+## Local Development
 
-## Quick Start
+> [!NOTE]
+> The documentation is hosted online at [cut.hthompson.dev](https://cut.hthompson.dev). You only need to set up a local environment if you want to preview changes or contribute to the documentation.
 
-To preview the Bash Style Guide locally:
+### Prerequisites
 
-1. Ensure you have Python 3.10+ installed.
-2. Install [uv](https://github.com/astral-sh/uv#installation).
-3. Install dependencies:
+To build and preview the documentation locally, you'll need:
+
+- **Python** 3.9 or higher
+- **[uv](https://github.com/astral-sh/uv#installation)** (a fast Python package manager and resolver)
+
+### Download and Setup
+
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/StrangeRanger/custom-unix-terminal
+   cd custom-unix-terminal
+   ```
+
+2. **Install dependencies:**
    ```bash
    uv sync
    ```
-4. Start the development server:
+
+3. **Start the development server:**
    ```bash
    uv run mkdocs serve
    ```
-5. Open [http://localhost:8000](http://localhost:8000) in your browser.
 
-Or, visit the hosted version at [cut.hthompson.dev](https://cut.hthompson.dev).
+4. **Open your browser:**
+   Visit [http://localhost:8000](http://localhost:8000) to view the documentation with live reload.
 
-## Build & Development
+## Automation Scripts
 
-- **Install dependencies:**
-  ```bash
-  uv sync
-  ```
-- **Serve locally for live preview:**
-  ```bash
-  uv run mkdocs serve
-  ```
-- **Build the static site for deployment:**
-  ```bash
-  uv run mkdocs build
-  ```
-- **Deploy to GitHub Pages (if configured):**
-  ```bash
-  uv run mkdocs gh-deploy
-  ```
+These scripts are integrated with the CI/CD workflow, but can also be run manually. Both scripts require the dotfiles submodule to be initialized and up to date:
 
-### Automation Scripts
-
-These scripts are integrated with the CI/CD workflow, but can also be run manually.
+```bash
+git submodule update --init --remote submodules/dotfiles
+```
 
 > [!NOTE]
 > The automation scripts do not require the dependencies installed via `uv`. Those dependencies are only needed for MkDocs site development and deployment.
 
-#### `update_repo.py`
+### `update_repo.py`
 
 Updates the configuration files in `includes/` from the dotfiles submodule.
 
-Manual usage:
+**Manual usage:**
+```bash
+python3 update_repo.py
+```
 
-1. Ensure the `submodules/dotfiles` submodule is initialized and up to date:
-    ```bash
-    git submodule update --init --remote submodules/dotfiles
-    ```
-2. Run the script:
-    ```bash
-    python3 update_repo.py
-    ```
-
-#### `update-changelog.bash`
+### `update-changelog.bash`
 
 Updates `CHANGELOG.md` with recent changes from the dotfiles submodule.
 
-Manual usage:
-
-1. Ensure the `submodules/dotfiles` submodule is initialized and up to date:
-    ```bash
-    git submodule update --init --remote submodules/dotfiles
-    ```
-2. Run the script:
-    ```bash
-    bash update-changelog.bash
-    ```
+**Manual usage:**
+```bash
+bash update-changelog.bash
+```
 
 ## License
 
