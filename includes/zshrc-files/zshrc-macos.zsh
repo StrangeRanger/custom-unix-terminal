@@ -62,18 +62,32 @@ zsh_completion="${ZSH_CUSTOM:-${ZSH:-~/.oh-my-zsh}/custom}/plugins/zsh-completio
 
 
 ####
+# Helper to run a brew subcommand with a nice, consistent, colored log line.
+#
+# NOTE: This function is written in zsh, rather than bash. I'm not as familiar with zsh
+#   compared to bash, so this function was written with the help of ChatGPT.
+_brew_exec() {
+    local subcmd=$1; shift
+    # Header
+    print -P -- "%F{blue}%B[INFO]%b%f %F{8}Executing:%f %F{8}$%f %B%F{white}brew%f%b %F{cyan}${subcmd}%f${*:+ ${*}}"
+    # Run and report
+    if brew "$subcmd" "$@"; then
+        print -P -- "%F{green}[OK]%f"
+    else
+        local ec=$?
+        print -P -- "%F{red}[ERROR]%f exit %B${ec}%b"
+        return $ec
+    fi
+}
+
+####
 # Perform the update, upgrade, and cleanup operations for Homebrew.
 homebrew_update_and_cleanup() {
-    echo "[INFO] Executing: $ brew update"
-    brew update
-    echo "[INFO] Executing: $ brew upgrade"
-    brew upgrade
-    echo "[INFO] Executing: $ brew autoremove"
-    brew autoremove
-    echo "[INFO] Executing: $ brew cleanup"
-    brew cleanup
-    echo "[INFO] Executing: $ brew doctor"
-    brew doctor
+    _brew_exec update
+    _brew_exec upgrade
+    _brew_exec autoremove
+    _brew_exec cleanup
+    _brew_exec doctor
 }
 
 ###

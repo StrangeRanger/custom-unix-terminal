@@ -62,21 +62,47 @@ zsh_completion="${ZSH_CUSTOM:-${ZSH:-~/.oh-my-zsh}/custom}/plugins/zsh-completio
 
 
 ####
+# Helper to run an apt subcommand with a consistent, colored log line.
+#
+# NOTE: This function is written in zsh, rather than bash. I'm not as familiar with zsh
+#   compared to bash, so this function was written with the help of ChatGPT.
+_apt_exec() {
+    local subcmd=$1; shift
+    local args=("$@")
+    local flags_str=""
+    if (( $#args )); then
+        # Present flags in gray to reduce noise
+        flags_str=" %F{8}${(j: :)args}%f"
+    fi
+
+    # Header line
+    print -P -- "%F{blue}%B[INFO]%b%f %F{8}Executing:%f %F{8}$%f %B%F{white}sudo%f%b %B%F{white}apt%f%b %F{cyan}${subcmd}%f${flags_str}"
+
+    # Execute
+    if sudo apt "$subcmd" "${args[@]}"; then
+        print -P -- "%F{green}[OK]%f"
+    else
+        local ec=$?
+        print -P -- "%F{red}[ERROR]%f exit %B${ec}%b"
+        return $ec
+    fi
+}
+
+####
 # Perform the update, upgrade, and cleanup of packages managed by the Apt Package Manager.
 apt_update_and_cleanup() {
-    echo "[INFO] Executing: $ sudo apt update"
-    sudo apt update
-    echo "[INFO] Executing: $ sudo apt upgrade -y"
-    sudo apt upgrade -y
-    echo "[INFO] Executing: $ sudo apt autoremove -y"
-    sudo apt autoremove -y
-    echo "[INFO] Executing: $ sudo apt autoclean"
-    sudo apt autoclean
+    _apt_exec update        || return $?
+    _apt_exec upgrade -y    || return $?
+    _apt_exec autoremove -y || return $?
+    _apt_exec autoclean     || return $?
 }
 
 ####
 # Perform the update, upgrade, and cleanup of packages managed by Pacman. Additionally, GRUB
 # configurations are updated to include snapshot changes.
+#
+# NOTE: This function may be updated in the future to coincide with the updates made to the
+#   `apt_update_and_cleanup` function.
 pacman_update_and_cleanup() {
     echo "[INFO] Executing: $ sudo pacman -Syu"
     sudo pacman -Syu
