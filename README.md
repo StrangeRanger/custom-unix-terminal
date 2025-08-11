@@ -19,6 +19,7 @@ I've attempted to make this repository as automated as possible so it always sta
   - [Automation Scripts](#automation-scripts)
     - [`update_repo.py`](#update_repopy)
     - [`update-changelog.bash`](#update-changelogbash)
+  - [Support and Community](#support-and-community)
   - [License](#license)
 
 </details>
@@ -93,6 +94,15 @@ Updates `CHANGELOG.md` with recent changes from the dotfiles submodule.
 ```bash
 bash update-changelog.bash
 ```
+
+## Support and Community
+
+Questions, ideas, or feedback about the configurations or docs?
+
+- Use [Discussions](https://github.com/StrangeRanger/custom-unix-terminal/discussions) for questions about setup, OS-specific tips, tooling choices (zsh, plugins, Neovim, terminal profiles), and to share tweaks. Post feature and content ideas in the Ideas category so others can discuss and upvote.
+- Use [Issues](https://github.com/StrangeRanger/custom-unix-terminal/issues) for actionable problems with the site or automation (broken links, outdated snippets, build/serve/deploy errors, submodule sync issues, profile import problems).
+
+If you run into errors with `update_repo.py` or `update-changelog.bash`, include your OS, steps to reproduce, and any relevant output. If the problem originates in the dotfiles submodule, please link to the relevant path under `submodules/dotfiles/`.
 
 ## License
 

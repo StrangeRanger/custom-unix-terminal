@@ -8,14 +8,7 @@ Entries under the **Removed** section indicate items removed from the entire doc
 
 ///
 
-
 ## Unreleased
-
-## 2025-08-06
-
-### Changed
-
-- changed: improve script safety, consistency, and shellcheck compliance
 
 ## 2025-08-04
 
