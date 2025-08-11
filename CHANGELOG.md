@@ -12,9 +12,13 @@ Entries under the **Removed** section indicate items removed from the entire doc
 
 ## 2025-08--11
 
+### Added
+
+- added(programs): add uv and ruff
+
 ### Removed
 
-- removed(programs): remove black, pipx, isort, pyenv
+- removed(programs): remove black, pipx, isort, and pyenv
 
 ## 2025-08-04
 
