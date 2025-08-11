@@ -14,11 +14,23 @@ Entries under the **Removed** section indicate items removed from the entire doc
 
 ### Added
 
-- added(programs): add uv and ruff
+- added(programs): add 'uv' and 'ruff'
+- added(programs): add 'shellharden' to native package manager table
+- added(programs): add 'wget' to native package manager table
+
+### Changed
+
+- changed(programs): modify 'git-open' to use different repo/package manager
+- changed(programs): add git as an option/recommendation for 'neovim' on Linux
 
 ### Removed
 
-- removed(programs): remove black, pipx, isort, and pyenv
+- removed(programs): remove 'black', 'pipx', 'isort', and 'pyenv'
+- removed(programs): remove 'pylint'
+
+### Fixed
+
+- fixed(programs): fix inaccurate "is a command"
 
 ## 2025-08-04
 
