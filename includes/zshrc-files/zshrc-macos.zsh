@@ -279,5 +279,9 @@ hash starship 2>/dev/null \
     && eval "$(starship init zsh)"
 
 
-####[ Others ]##############################################################################
-#### These are generally configurations set up by setup scripts or other programs.
+####[ Chezmoi Unmodified ]##################################################################
+#### This section is left untouched by chezmoi when executing 'chezmoi update' or 'chezmoi
+#### apply'.
+#### DO NOT MODIFY THE COMMENT BELOW! It acts as the delimiter for chezmoi to know where to
+#### stop modifying the file. If it's removed, chezmoi will remove everything below it.
+#### chezmoi:unmodified
