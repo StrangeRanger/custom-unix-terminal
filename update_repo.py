@@ -187,11 +187,7 @@ def zsh_config() -> None:
 
 
 def main() -> None:
-    """Execute all configuration file update routines.
-
-    Main entry point that orchestrates the complete update process by calling
-    all configuration processing functions in the correct order.
-    """
+    """Execute all configuration file update routines."""
     neovim_config()
     zsh_config()
 
