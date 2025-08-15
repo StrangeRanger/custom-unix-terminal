@@ -10,6 +10,12 @@ Entries under the **Removed** section indicate items removed from the entire doc
 
 ## Unreleased
 
+## 2025-08-14
+
+### Changed
+
+- changed(zshrc): modify end section to be excluded from modification by 'chezmoi apply'
+
 ## 2025-08-11
 
 ### Added
