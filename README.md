@@ -42,7 +42,7 @@ The documentation includes:
 
 To build and preview the documentation locally, you'll need:
 
-- **Python**: Version 3.9 or higher
+- **Python**: Version 3.10 or higher
 - **[uv](https://github.com/astral-sh/uv#installation)**: For dependency management
 
 ### Download and Setup

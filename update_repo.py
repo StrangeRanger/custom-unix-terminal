@@ -1,23 +1,34 @@
 #!/usr/bin/env python3
-#
-# Automates the process of updating zsh and neovim configuration files in the 'includes'
-# directory. This is done by reading my 'dotfiles' in the 'submodules/dotfiles'
-# submodule and applying the necessary changes to the 'includes' directory.
-#
-# NOTE:
-#   - This script does not require the initialization of a virtual environment. The
-#     Pipfiles are only required when deploying the MkDocs site.
-#   - This script has some hard-coded values that may make it fragile in some cases.
-#     I've attempted to do my best an indicate where these values are, but it's always a
-#     good idea to keep an eye on this script when making changes to the configuration.
-#
-########################################################################################
+"""Configuration file update automation script.
+
+This script automates the process of updating Neovim and zsh configuration files in the
+`includes` directory by extracting relevant sections from dotfiles stored in the
+`submodules/dotfiles` submodule.
+
+The script handles two main types of configuration updates:
+    - Neovim configuration files with selective content extraction
+    - Zsh configuration files with snippet-based processing
+
+Notes:
+    - This script is, unfortunately, fragile by nature. Changes to upstream marker text
+      or chezmoi template layout can silently break extractions. When this occurs,
+      adjust the markers in the constants module or update the `chezmoi_edge_case`
+      function as needed.
+    - No external dependencies are required; a virtual environment is not necessary.
+
+Example:
+    Run the script directly to update all configuration files:
+
+    ```bash
+    $ python3 update_repo.py
+    ```
+"""
+
 # [ Imports ]###########################################################################
 
-
-from utils.file_utils import read_file, write_file
+from utils.file_utils import read_file, read_lines, write_file
 from utils.constants import (
-    CHEZMOI_STATEMENTS,
+    CHEZMOI_DELIMITERS,
     NEOVIM_CONFIG_PATHS,
     ZSH_CONFIG_PATHS,
     NEOVIM_MARKERS,
@@ -31,15 +42,26 @@ from utils.constants import (
 # [ Functions ]#########################################################################
 
 
-def neovim_config():
-    """Updates the neovim configuration files."""
-    for operation, paths in NEOVIM_CONFIG_PATHS.items():
-        data: list[str] | str = read_file(
-            paths["from"], read_lines=(operation == "init_vim_no_plug")
-        )
+def neovim_config() -> None:
+    """Process and write Neovim config file variants to the `includes` directory.
 
+    Handles two types of Neovim config processing:
+        1. `init_vim_no_plug`: Extracts content between designated section markers,
+           excluding plugin-related configurations.
+        2. Other variants: Copies the entire source file without modification.
+
+    The function iterates through all Neovim config paths defined in
+    `NEOVIM_CONFIG_PATHS` and processes each according to its operation type.
+
+    Note:
+        The `init_vim_no_plug` operation relies on `NEOVIM_MARKERS` to identify
+        content boundaries. The end marker line itself is excluded from output.
+    """
+    for operation, paths in NEOVIM_CONFIG_PATHS.items():
         if operation == "init_vim_no_plug":
+            data: list[str] = read_lines(paths["from"])
             filtered_data: list[str] = []
+
             for current_line in data:
                 if NEOVIM_MARKERS.start_marker in current_line:
                     NEOVIM_MARKERS.is_within_section = True
@@ -53,22 +75,30 @@ def neovim_config():
                     filtered_data.append(current_line)
             write_file(paths["to"], "".join(filtered_data))
         else:
+            data: str = read_file(paths["from"])
             write_file(paths["to"], data)
 
 
-def chezmoi_edge_case(current_line, data, line_number):
-    """Handles edge cases when chezmoi statements are encountered. These are hard coded
-    strings that need to be processed in a very specific way. This means that changes to
-    the configuration files can easily break or negate the functionality of this
-    method. Keep a close eye when making changes to the configuration files.
+def chezmoi_edge_case(current_line: str, data: list[str], line_number: int) -> int:
+    """Calculate the number of lines to skip for chezmoi template actions.
+
+    Handles special cases in chezmoi template processing by analyzing the current line
+    and subsequent lines to determine how many lines should be skipped during zsh
+    configuration processing.
+
+    Note:
+        This function's logic is tightly coupled to the current structure of the
+        dotfiles. Changes to the upstream chezmoi template layout may require updates
+        to the pattern matching logic.
 
     Args:
-        current_line (str): The line to process.
-        data (list[str]): The data from the file.
-        line_number (int): The current line number.
+        current_line: The current line being processed, which contains a chezmoi
+            template delimiter.
+        data: Complete list of lines from the source zsh configuration file.
+        line_number: Zero-based index of the current line within the data list.
 
     Returns:
-        int: The number of lines to skip.
+        Number of lines to skip (minimum 1).
     """
     if "data.isGUIEnvironment" in current_line:
         if (
@@ -85,24 +115,37 @@ def chezmoi_edge_case(current_line, data, line_number):
     return 1
 
 
-def zsh_config():
-    """Updates the zsh configuration files."""
+def zsh_config() -> None:
+    """Process and write zsh config file variants and snippets to the `includes`
+    directory.
+
+    Handles two types of processing:
+        1. Full file operations: Copies entire source file, filtering chezmoi template
+           actions.
+        2. Snippet operations: Extracts specific sections and wraps with MkDocs section
+           markers.
+
+    For snippet operations, extracts alias and `LS_COLORS` sections based on predefined
+    markers and optionally appends hard-coded content.
+
+    Note:
+        Includes debug output for CI/CD troubleshooting.
+    """
     for file_operation, file_paths in ZSH_CONFIG_PATHS.items():
-        data: list[str] | str = read_file(file_paths["from"], read_lines=True)
+        data: list[str] = read_lines(file_paths["from"])
         output_data: list[str] = []
         line_number = 0
 
         while line_number < len(data):
             current_line = data[line_number]
 
-            ## DEBUG: The below lines help with debugging, especially when running in a
-            ##  CI/CD environment.
+            ## DEBUG: The below lines help with debugging...
             print(f"Processing line {line_number + 1} of {file_paths['from']}")
             print(f"Line: {current_line}")
 
-            if any(marker in current_line for marker in CHEZMOI_STATEMENTS):
-                skip_line = chezmoi_edge_case(current_line, data, line_number)
-                line_number += skip_line
+            if any(marker in current_line for marker in CHEZMOI_DELIMITERS):
+                skip_line_count = chezmoi_edge_case(current_line, data, line_number)
+                line_number += skip_line_count
                 continue
 
             if not file_operation.endswith("snippet"):
@@ -143,8 +186,8 @@ def zsh_config():
         write_file(file_paths["to"], "".join(output_data))
 
 
-def main():
-    """Main function."""
+def main() -> None:
+    """Execute all configuration file update routines."""
     neovim_config()
     zsh_config()
 
