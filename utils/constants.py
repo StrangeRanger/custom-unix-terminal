@@ -38,19 +38,19 @@ NEOVIM_CONFIG_PATHS: Final[dict[str, dict[str, Path]]] = {
 # Maps zsh config variants to their source and destination paths.
 ZSH_CONFIG_PATHS: Final[dict[str, dict[str, Path]]] = {
     "zshrc_linux": {
-        "from": Path("submodules/dotfiles/.chezmoitemplates/.zshrc_linux.tmpl"),
+        "from": Path("submodules/dotfiles/.chezmoitemplates/zshrc_linux.tmpl"),
         "to": Path("includes/zshrc-files/zshrc-linux.zsh"),
     },
     "zshrc_linux_snippet": {
-        "from": Path("submodules/dotfiles/.chezmoitemplates/.zshrc_linux.tmpl"),
+        "from": Path("submodules/dotfiles/.chezmoitemplates/zshrc_linux.tmpl"),
         "to": Path("includes/zshrc-files/zshrc-linux-snippet.zsh"),
     },
     "zshrc_macos": {
-        "from": Path("submodules/dotfiles/.chezmoitemplates/.zshrc_darwin.tmpl"),
+        "from": Path("submodules/dotfiles/.chezmoitemplates/zshrc_darwin.tmpl"),
         "to": Path("includes/zshrc-files/zshrc-macos.zsh"),
     },
     "zshrc_macos_snippet": {
-        "from": Path("submodules/dotfiles/.chezmoitemplates/.zshrc_darwin.tmpl"),
+        "from": Path("submodules/dotfiles/.chezmoitemplates/zshrc_darwin.tmpl"),
         "to": Path("includes/zshrc-files/zshrc-macos-snippet.zsh"),
     },
 }
