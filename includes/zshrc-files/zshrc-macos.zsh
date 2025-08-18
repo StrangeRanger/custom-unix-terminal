@@ -152,13 +152,15 @@ EOF
 }
 
 
-####[ Source Oh-My-Zsh ]################################################################
+####[ Source Oh-My-Zsh ]####################################################################
+#### It is in this file that the `compinit` function is called, which initializes the
+#### completion system.
 
 
 source "$ZSH/oh-my-zsh.sh"
 
 
-####[ Aliases ]#########################################################################
+####[ Aliases ]#############################################################################
 
 
 ###
@@ -249,6 +251,10 @@ fzf_tab="${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/fzf-tab/fzf-tab.plugin.zsh"
 
 ## Source the plugins.sh file for the `op` command.
 [[ -f $HOME/.config/op/plugins.sh ]] && source "$HOME/.config/op/plugins.sh"
+
+## Homebrew Command Not Found Handler
+HB_CNF_HANDLER="$(brew --repository)/Library/Taps/homebrew/homebrew-command-not-found/handler.sh"
+[[ -f $HB_CNF_HANDLER ]] && source "$HB_CNF_HANDLER"
 
 
 ####[ Zsh Style Configurations ]############################################################

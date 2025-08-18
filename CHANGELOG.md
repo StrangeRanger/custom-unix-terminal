@@ -10,6 +10,16 @@ Entries under the **Removed** section indicate items removed from the entire doc
 
 ## Unreleased
 
+## 2025-08-18
+
+### Changed
+
+- changed(zshrc): fix typos and comment format
+
+### Added
+
+- added(zshrc): add configurations for 'command-not-found' homebrew tap
+
 ## 2025-08-14
 
 ### Changed
