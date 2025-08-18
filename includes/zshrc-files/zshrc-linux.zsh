@@ -23,7 +23,7 @@ export ZSH="$HOME/.oh-my-zsh"
 # Uncomment the following line to enable command auto-correction.
 # ENABLE_CORRECTION="true"
 
-# Disable audo updates for ohmyzsh. This is taken care of by chezmoi.
+# Disable auto updates for ohmyzsh. This is taken care of by chezmoi.
 DISABLE_AUTO_UPDATE="true"
 
 # Uncomment the following line if you want to change the command execution time
@@ -177,6 +177,8 @@ EOF
 
 
 ####[ Source Oh-My-Zsh ]####################################################################
+#### It is in this file that the `compinit` function is called, which initializes the
+#### completion system.
 
 
 source "$ZSH/oh-my-zsh.sh"
