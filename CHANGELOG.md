@@ -10,6 +10,16 @@ Entries under the **Removed** section indicate items removed from the entire doc
 
 ## Unreleased
 
+## 2025-08-20
+
+### Changed
+
+- changed(zshrc): remove unused paths from $PATH
+
+### Added
+
+- added(PATH): add local cargo path to $PATH
+
 ## 2025-08-18
 
 ### Changed
