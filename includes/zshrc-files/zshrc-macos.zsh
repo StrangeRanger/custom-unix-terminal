@@ -39,7 +39,6 @@ HIST_STAMPS="yyyy-mm-dd"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-# MAYBE: Add `command-not-found` plugin.
 plugins=(colored-man-pages copybuffer copypath copyfile bgnotify)
 
 
@@ -209,11 +208,9 @@ alias lt_git="alias_lt_git"
 export SSH_AUTH_SOCK="$HOME/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
 
 # Path purpose:
-#   $HOME/.local/bin:        User installed binaries.
-#   /usr/local/opt/curl/bin: ...
-#   /usr/local/sbin:         ???
-#   /usr/local/opt/ruby/bin: Prefered ruby version.
-export PATH="$HOME/.local/bin:/usr/local/opt/curl/bin:/usr/local/sbin:/usr/local/opt/ruby/bin:$PATH"
+#   - $HOME/.local/bin: User installed binaries.
+#   - $HOME/.cargo/bin
+export PATH="$HOME/.local/bin:$HOME/.cargo/bin:$PATH"
 
 # Modifies the colors of files and directories when using `ls`.
 export LSCOLORS="exgxfxDxcxegDaabagacaD"
