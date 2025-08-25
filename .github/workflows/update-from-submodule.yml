@@ -12,7 +12,7 @@ permissions:
 
 jobs:
   update-files:
-    if: github.actor == 'dependabot[bot]' && startsWith(github.event.pull_request.head.ref, 'dependabot/submodules/')
+    if: github.actor == 'renovate[bot]' && startsWith(github.event.pull_request.head.ref, 'renovate/submodules-')
     runs-on: ubuntu-latest
 
     steps:
