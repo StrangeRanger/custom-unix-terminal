@@ -134,44 +134,11 @@ fzf        - A command-line fuzzy finder.
 ncdu       - ncdu (NCurses Disk Usage) is a curses-based version of the
              well-known 'du'.
 pstree     - List processes as a tree.
-tmux       - Terminal multiplexer.
-
-###
-### [ Grouped Commands ]
-###
-
-lt_conversion - List of programs used for converting the formats of videos,
-                images, etc.
-lt_git        - List of programs used for git related commands.
 
 
 ####[ Keyboard Combinations ]###################################################
 
 Ctrl + O - Allows you to copy what you are currently typing, via 'Ctrl' + 'O'.
-EOF
-}
-
-####
-# Image and Video Formatters
-alias_lt_conversion() {
-    cat <<EOF
-####[ Image and Video Formatters ]##############################################
-
-ffmpeg - FFmpeg is a collection of libraries and tools to process multimedia
-         content.
-magick - Convert between image formats as well as resize an image, blur, crop,
-         despeckle, dither, draw on, flip, join, re-sample, and much more.
-EOF
-}
-
-####
-# Git Related Commands
-alias_lt_git() {
-    cat <<EOF
-####[ Git Related Commands ]####################################################
-
-lazygit  - Simple terminal UI for git commands.
-git open - Opens the GitHub page for a repo/branch in your browser.
 EOF
 }
 
