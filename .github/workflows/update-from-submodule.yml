@@ -15,7 +15,7 @@ jobs:
     if: github.actor == 'dependabot[bot]' && startsWith(github.event.pull_request.head.ref, 'dependabot/submodules/')
     runs-on: ubuntu-latest
 
-    steps:  
+    steps:
       - name: Checkout pull request branch with submodules
         uses: actions/checkout@v4
         with:
@@ -49,7 +49,7 @@ jobs:
       - name: Run repo update script
         run: python update_repo.py
 
-      - name: Run CHANGELOG update script                                                   
+      - name: Run CHANGELOG update script
         run: bash update-changelog.bash
 
       - name: Commit and push changes
