@@ -10,8 +10,6 @@ Entries under the **Removed** section indicate items removed from the entire doc
 
 ## Unreleased
 
-## 2025-08-25
-
 ## 2025-08-20
 
 ### Changed
