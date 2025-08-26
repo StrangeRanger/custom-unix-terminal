@@ -10,6 +10,12 @@ Entries under the **Removed** section indicate items removed from the entire doc
 
 ## Unreleased
 
+## 2025-08-26
+
+### Added
+
+- added(PATH): add keg-only trash-cli to PATH
+
 ## 2025-08-25
 
 ### Removed
