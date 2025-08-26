@@ -174,10 +174,13 @@ alias lt_git="alias_lt_git"
 # 1Password auth socket.
 export SSH_AUTH_SOCK="$HOME/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
 
+hb_prefix="$(brew --prefix 2>/dev/null || echo "/opt/homebrew")"
 # Path purpose:
+#   - $hb_prefix/opt/trash-cli/bin: Homebrew installed trash-cli binary.
 #   - $HOME/.local/bin: User installed binaries.
-#   - $HOME/.cargo/bin
-export PATH="$HOME/.local/bin:$HOME/.cargo/bin:$PATH"
+#   - $HOME/.cargo/bin: Rust installed binaries.
+export PATH="$hb_prefix/opt/trash-cli/bin:$HOME/.local/bin:$HOME/.cargo/bin:$PATH"
+unset hb_prefix
 
 # Modifies the colors of files and directories when using `ls`.
 export LSCOLORS="exgxfxDxcxegDaabagacaD"
