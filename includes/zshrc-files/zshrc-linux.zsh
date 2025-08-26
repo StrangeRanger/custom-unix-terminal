@@ -114,34 +114,6 @@ pacman_update_and_cleanup() {
     sudo grub-mkconfig -o /boot/grub/grub.cfg
 }
 
-###
-### [ Alias Related Functions ]
-###
-
-####
-# List of Aliases
-alias_lt() {
-    cat <<EOF
-####[ Installed Commands ]######################################################
-
-bandwhich  - Terminal bandwidth utilization tool.
-bat        - A cat(1) clone with wings.
-cheat      - Allows you to create and view interactive cheatsheets on the
-             command-line.
-codespell  - Check code for common misspellings.
-duf        - Disk Usage/Free Utility - a better 'df' alternative.
-fzf        - A command-line fuzzy finder.
-ncdu       - ncdu (NCurses Disk Usage) is a curses-based version of the
-             well-known 'du'.
-pstree     - List processes as a tree.
-
-
-####[ Keyboard Combinations ]###################################################
-
-Ctrl + O - Allows you to copy what you are currently typing, via 'Ctrl' + 'O'.
-EOF
-}
-
 
 ####[ Source Oh-My-Zsh ]####################################################################
 #### It is in this file that the `compinit` function is called, which initializes the
@@ -184,15 +156,29 @@ alias stop_docker="sudo systemctl stop docker.socket docker.service containerd.s
 ###
 ### [ Group 2 ]
 ###
-### Due to the number of commands that I find to be useful, I've created aliases containing
-### some of these commands. They are specifically commands that I don't often use, but are
-### useful to have on hand. Having these aliases allows me to see a list of these commands,
-### without having to commit them to memory.
+### Below are aliases that provide a list of commands and keyboard combinations that I often
+### forget about. They act as a reference for me, so that I don't have to commit these
+### commands to memory.
 ###
 
-alias lt="alias_lt"
-alias lt_conversion="alias_lt_conversion"
-alias lt_git="alias_lt_git"
+alias list_tools="echo '
+####[ Installed Commands ]######################################################
+
+bandwhich - Terminal bandwidth utilization tool.
+bat       - A cat(1) clone with wings.
+cheat     - Allows you to create and view interactive cheatsheets on the
+            command-line.
+codespell - Check code for common misspellings.
+duf       - Disk Usage/Free Utility - a better 'df' alternative.
+fzf       - A command-line fuzzy finder.
+ncdu      - ncdu (NCurses Disk Usage) is a curses-based version of the
+            well-known 'du'.
+pstree    - List processes as a tree.
+
+
+####[ Keyboard Combinations ]###################################################
+
+Ctrl + O - Allows you to copy what you are currently typing, via 'Ctrl' + 'O'.'"
 
 
 ####[ Environmental Variables ]#############################################################

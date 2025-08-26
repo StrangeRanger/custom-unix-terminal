@@ -12,6 +12,12 @@ Entries under the **Removed** section indicate items removed from the entire doc
 
 ## 2025-08-26
 
+### Changed
+
+- changed(aliases): remove aliases for old functions and simplify aliases
+
+## 2025-08-26
+
 ### Added
 
 - added(PATH): add keg-only trash-cli to PATH
