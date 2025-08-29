@@ -16,9 +16,6 @@ from pathlib import Path
 from typing import Final
 from utils.marker_config import SectionMarkers
 
-# Chezmoi template delimiters to used to identify template blocks from my dotfiles.
-CHEZMOI_DELIMITERS: Final[list[str]] = ["{{ ", "{{- "]
-
 # Maps Neovim config variants to their source and destination paths.
 NEOVIM_CONFIG_PATHS: Final[dict[str, dict[str, Path]]] = {
     "init_lua": {

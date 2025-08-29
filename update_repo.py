@@ -26,9 +26,9 @@ Example:
 
 # [ Imports ]###########################################################################
 
+import re
 from utils.file_utils import read_file, read_lines, write_file
 from utils.constants import (
-    CHEZMOI_DELIMITERS,
     NEOVIM_CONFIG_PATHS,
     ZSH_CONFIG_PATHS,
     NEOVIM_MARKERS,
@@ -143,7 +143,7 @@ def zsh_config() -> None:
             print(f"Processing line {line_number + 1} of {file_paths['from']}")
             print(f"Line: {current_line}")
 
-            if any(marker in current_line for marker in CHEZMOI_DELIMITERS):
+            if current_line.lstrip().startswith("{{"):
                 skip_line_count = chezmoi_edge_case(current_line, data, line_number)
                 line_number += skip_line_count
                 continue
