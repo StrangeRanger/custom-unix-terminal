@@ -28,7 +28,6 @@ Example:
 
 from utils.file_utils import read_file, read_lines, write_file
 from utils.constants import (
-    CHEZMOI_DELIMITERS,
     NEOVIM_CONFIG_PATHS,
     ZSH_CONFIG_PATHS,
     NEOVIM_MARKERS,
@@ -59,7 +58,7 @@ def neovim_config() -> None:
     """
     for operation, paths in NEOVIM_CONFIG_PATHS.items():
         if operation == "init_vim_no_plug":
-            data: list[str] = read_lines(paths["from"])
+            data: list[str] = read_lines(paths.src)
             filtered_data: list[str] = []
 
             for current_line in data:
@@ -73,10 +72,10 @@ def neovim_config() -> None:
                     break
                 if NEOVIM_MARKERS.is_within_section:
                     filtered_data.append(current_line)
-            write_file(paths["to"], "".join(filtered_data))
+            write_file(paths.dest, "".join(filtered_data))
         else:
-            data: str = read_file(paths["from"])
-            write_file(paths["to"], data)
+            data: str = read_file(paths.src)
+            write_file(paths.dest, data)
 
 
 def chezmoi_edge_case(current_line: str, data: list[str], line_number: int) -> int:
@@ -132,7 +131,7 @@ def zsh_config() -> None:
         Includes debug output for CI/CD troubleshooting.
     """
     for file_operation, file_paths in ZSH_CONFIG_PATHS.items():
-        data: list[str] = read_lines(file_paths["from"])
+        data: list[str] = read_lines(file_paths.src)
         output_data: list[str] = []
         line_number = 0
 
@@ -140,10 +139,10 @@ def zsh_config() -> None:
             current_line = data[line_number]
 
             ## DEBUG: The below lines help with debugging...
-            print(f"Processing line {line_number + 1} of {file_paths['from']}")
+            print(f"Processing line {line_number + 1} of {file_paths.src}")
             print(f"Line: {current_line}")
 
-            if any(marker in current_line for marker in CHEZMOI_DELIMITERS):
+            if current_line.lstrip().startswith("{{"):
                 skip_line_count = chezmoi_edge_case(current_line, data, line_number)
                 line_number += skip_line_count
                 continue
@@ -183,7 +182,7 @@ def zsh_config() -> None:
 
             line_number += 1
 
-        write_file(file_paths["to"], "".join(output_data))
+        write_file(file_paths.dest, "".join(output_data))
 
 
 def main() -> None:
