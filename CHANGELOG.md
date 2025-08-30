@@ -12,8 +12,6 @@ Entries under the **Removed** section indicate items removed from the entire doc
 
 ## 2025-08-30
 
-## 2025-08-30
-
 ### Changed
 
 - changed(alias): remove ' .' from code alias
