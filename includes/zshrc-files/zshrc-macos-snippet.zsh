@@ -7,7 +7,7 @@
 ###
 
 ## General aliases.
-alias code="open -a 'Visual Studio Code.app' ."
+alias code="open -a 'Visual Studio Code.app'"
 alias python="python3"
 
 ## Directory related aliases.
