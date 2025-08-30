@@ -12,9 +12,9 @@ Entries under the **Removed** section indicate items removed from the entire doc
 
 ## 2025-08-30
 
-### Changed
+### Removed
 
-- changed(alias): remove ' .' from code alias
+- removed(alias): remove ' .' from code alias
 
 ## 2025-08-26
 
