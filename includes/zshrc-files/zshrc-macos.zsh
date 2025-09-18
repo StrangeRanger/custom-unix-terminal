@@ -63,19 +63,19 @@ zsh_completion="${ZSH_CUSTOM:-${ZSH:-~/.oh-my-zsh}/custom}/plugins/zsh-completio
 ####
 # Helper to run a brew subcommand with a nice, consistent, colored log line.
 #
-# NOTE: This function is written in zsh, rather than bash. I'm not as familiar with zsh
-#   compared to bash, so this function was written with the help of ChatGPT.
+# NOTE: No error will be printed when running `brew doctor`, as it often returns non-zero
+#   exit codes even when everything is fine.
 _brew_exec() {
-    local subcmd=$1; shift
-    # Header
-    print -P -- "%F{blue}%B[INFO]%b%f %F{8}Executing:%f %F{8}$%f %B%F{white}brew%f%b %F{cyan}${subcmd}%f${*:+ ${*}}"
-    # Run and report
-    if brew "$subcmd" "$@"; then
+    local sub_cmd=$1; shift
+    print -P -- "%F{blue}%B[INFO]%b%f %F{8}Executing:%f %F{8}$%f %B%F{white}brew%f%b %F{cyan}${sub_cmd}%f${*:+ ${*}}"
+    if brew "$sub_cmd" "$@"; then
         print -P -- "%F{green}[OK]%f"
     else
-        local ec=$?
-        print -P -- "%F{red}[ERROR]%f exit %B${ec}%b"
-        return $ec
+        local error_code=$?
+        if [[ $sub_cmd != "doctor" ]]; then
+            print -P -- "%F{red}[ERROR]%f exit %B${error_code}%b"
+        fi
+        return $error_code
     fi
 }
 
