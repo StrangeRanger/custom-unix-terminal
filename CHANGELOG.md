@@ -10,6 +10,12 @@ Entries under the **Removed** section indicate items removed from the entire doc
 
 ## Unreleased
 
+## 2025-09-18
+
+### Changed
+
+- changed(alias func): _brew_exec() doesn't output errors when 'brew doctor' is run
+
 ## 2025-08-30
 
 ### Removed
