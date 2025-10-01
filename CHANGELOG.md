@@ -10,6 +10,12 @@ Entries under the **Removed** section indicate items removed from the entire doc
 
 ## Unreleased
 
+## 2025-09-30
+
+### Changed
+
+- changed(zshrc): update homebrew command-not-found handler path
+
 ## 2025-09-18
 
 ### Changed
