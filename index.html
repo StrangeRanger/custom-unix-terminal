@@ -1585,7 +1585,9 @@
 <span class="normal"><a href="#__codelineno-0-243">243</a></span>
 <span class="normal"><a href="#__codelineno-0-244">244</a></span>
 <span class="normal"><a href="#__codelineno-0-245">245</a></span>
-<span class="normal"><a href="#__codelineno-0-246">246</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1"></a><span class="c1">####[ Oh-My-Zsh Configurations ]############################################################</span>
+<span class="normal"><a href="#__codelineno-0-246">246</a></span>
+<span class="normal"><a href="#__codelineno-0-247">247</a></span>
+<span class="normal"><a href="#__codelineno-0-248">248</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1"></a><span class="c1">####[ Oh-My-Zsh Configurations ]############################################################</span>
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2"></a>
 </span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3"></a>
 </span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4"></a><span class="c1"># Path to your oh-my-zsh installation.</span>
@@ -1793,44 +1795,46 @@
 </span><span id="__span-0-206"><a id="__codelineno-0-206" name="__codelineno-0-206"></a><span class="o">[[</span><span class="w"> </span>-f<span class="w"> </span><span class="nv">$HOME</span>/.config/op/plugins.sh<span class="w"> </span><span class="o">]]</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">source</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$HOME</span><span class="s2">/.config/op/plugins.sh&quot;</span>
 </span><span id="__span-0-207"><a id="__codelineno-0-207" name="__codelineno-0-207"></a>
 </span><span id="__span-0-208"><a id="__codelineno-0-208" name="__codelineno-0-208"></a><span class="c1">## Homebrew Command Not Found Handler</span>
-</span><span id="__span-0-209"><a id="__codelineno-0-209" name="__codelineno-0-209"></a><span class="nv">HB_CNF_HANDLER</span><span class="o">=</span><span class="s2">&quot;</span><span class="k">$(</span>brew<span class="w"> </span>--repository<span class="k">)</span><span class="s2">/Library/Taps/homebrew/homebrew-command-not-found/handler.sh&quot;</span>
-</span><span id="__span-0-210"><a id="__codelineno-0-210" name="__codelineno-0-210"></a><span class="o">[[</span><span class="w"> </span>-f<span class="w"> </span><span class="nv">$HB_CNF_HANDLER</span><span class="w"> </span><span class="o">]]</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">source</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$HB_CNF_HANDLER</span><span class="s2">&quot;</span>
-</span><span id="__span-0-211"><a id="__codelineno-0-211" name="__codelineno-0-211"></a>
-</span><span id="__span-0-212"><a id="__codelineno-0-212" name="__codelineno-0-212"></a>
-</span><span id="__span-0-213"><a id="__codelineno-0-213" name="__codelineno-0-213"></a><span class="c1">####[ Zsh Style Configurations ]############################################################</span>
+</span><span id="__span-0-209"><a id="__codelineno-0-209" name="__codelineno-0-209"></a><span class="nv">HOMEBREW_COMMAND_NOT_FOUND_HANDLER</span><span class="o">=</span><span class="s2">&quot;</span><span class="k">$(</span>brew<span class="w"> </span>--repository<span class="k">)</span><span class="s2">/Library/Homebrew/command-not-found/handler.sh&quot;</span>
+</span><span id="__span-0-210"><a id="__codelineno-0-210" name="__codelineno-0-210"></a><span class="k">if</span><span class="w"> </span><span class="o">[[</span><span class="w"> </span>-f<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$HOMEBREW_COMMAND_NOT_FOUND_HANDLER</span><span class="s2">&quot;</span><span class="w"> </span><span class="o">]]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+</span><span id="__span-0-211"><a id="__codelineno-0-211" name="__codelineno-0-211"></a><span class="w">  </span><span class="nb">source</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$HOMEBREW_COMMAND_NOT_FOUND_HANDLER</span><span class="s2">&quot;</span>
+</span><span id="__span-0-212"><a id="__codelineno-0-212" name="__codelineno-0-212"></a><span class="k">fi</span>
+</span><span id="__span-0-213"><a id="__codelineno-0-213" name="__codelineno-0-213"></a>
 </span><span id="__span-0-214"><a id="__codelineno-0-214" name="__codelineno-0-214"></a>
-</span><span id="__span-0-215"><a id="__codelineno-0-215" name="__codelineno-0-215"></a>
-</span><span id="__span-0-216"><a id="__codelineno-0-216" name="__codelineno-0-216"></a><span class="c1"># Disable sort when completing `git checkout`.</span>
-</span><span id="__span-0-217"><a id="__codelineno-0-217" name="__codelineno-0-217"></a>zstyle<span class="w"> </span><span class="s1">&#39;:completion:*:git-checkout:*&#39;</span><span class="w"> </span>sort<span class="w"> </span><span class="nb">false</span>
-</span><span id="__span-0-218"><a id="__codelineno-0-218" name="__codelineno-0-218"></a><span class="c1"># Set descriptions format to enable group support.</span>
-</span><span id="__span-0-219"><a id="__codelineno-0-219" name="__codelineno-0-219"></a><span class="c1"># NOTE: Don&#39;t use escape sequences here, fzf-tab will ignore them.</span>
-</span><span id="__span-0-220"><a id="__codelineno-0-220" name="__codelineno-0-220"></a>zstyle<span class="w"> </span><span class="s1">&#39;:completion:*:descriptions&#39;</span><span class="w"> </span>format<span class="w"> </span><span class="s1">&#39;[%d]&#39;</span>
-</span><span id="__span-0-221"><a id="__codelineno-0-221" name="__codelineno-0-221"></a><span class="c1"># Set list-colors to enable filename colorizing.</span>
-</span><span id="__span-0-222"><a id="__codelineno-0-222" name="__codelineno-0-222"></a>zstyle<span class="w"> </span><span class="s1">&#39;:completion:*&#39;</span><span class="w"> </span>list-colors<span class="w"> </span><span class="si">${</span><span class="p">(s.:.)LS_COLORS</span><span class="si">}</span>
-</span><span id="__span-0-223"><a id="__codelineno-0-223" name="__codelineno-0-223"></a><span class="c1">## Preview directory&#39;s content with `eza` when completing `cd`.</span>
-</span><span id="__span-0-224"><a id="__codelineno-0-224" name="__codelineno-0-224"></a><span class="nb">hash</span><span class="w"> </span>eza<span class="w"> </span><span class="m">2</span>&gt;/dev/null<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-0-225"><a id="__codelineno-0-225" name="__codelineno-0-225"></a><span class="w">    </span><span class="o">&amp;&amp;</span><span class="w"> </span>zstyle<span class="w"> </span><span class="s1">&#39;:fzf-tab:complete:cd:*&#39;</span><span class="w"> </span>fzf-preview<span class="w"> </span><span class="s1">&#39;eza -1 --color=always $realpath&#39;</span>
-</span><span id="__span-0-226"><a id="__codelineno-0-226" name="__codelineno-0-226"></a><span class="c1"># Switch group using `&lt;` and `&gt;`.</span>
-</span><span id="__span-0-227"><a id="__codelineno-0-227" name="__codelineno-0-227"></a>zstyle<span class="w"> </span><span class="s1">&#39;:fzf-tab:*&#39;</span><span class="w"> </span>switch-group<span class="w"> </span><span class="s1">&#39;&lt;&#39;</span><span class="w"> </span><span class="s1">&#39;&gt;&#39;</span>
-</span><span id="__span-0-228"><a id="__codelineno-0-228" name="__codelineno-0-228"></a>
-</span><span id="__span-0-229"><a id="__codelineno-0-229" name="__codelineno-0-229"></a>
-</span><span id="__span-0-230"><a id="__codelineno-0-230" name="__codelineno-0-230"></a><span class="c1">####[ End of File Configurations ]##########################################################</span>
-</span><span id="__span-0-231"><a id="__codelineno-0-231" name="__codelineno-0-231"></a><span class="c1">#### These are configurations that are specified to be placed at the end of the file, by the</span>
-</span><span id="__span-0-232"><a id="__codelineno-0-232" name="__codelineno-0-232"></a><span class="c1">#### developer/documentation.</span>
-</span><span id="__span-0-233"><a id="__codelineno-0-233" name="__codelineno-0-233"></a>
-</span><span id="__span-0-234"><a id="__codelineno-0-234" name="__codelineno-0-234"></a>
-</span><span id="__span-0-235"><a id="__codelineno-0-235" name="__codelineno-0-235"></a><span class="c1"># Initialize Starship prompt, if it is installed and $ZSH_THEME is not set.</span>
-</span><span id="__span-0-236"><a id="__codelineno-0-236" name="__codelineno-0-236"></a><span class="nb">hash</span><span class="w"> </span>starship<span class="w"> </span><span class="m">2</span>&gt;/dev/null<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-0-237"><a id="__codelineno-0-237" name="__codelineno-0-237"></a><span class="w">    </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="o">[[</span><span class="w"> </span>-z<span class="w"> </span><span class="nv">$ZSH_THEME</span><span class="w"> </span><span class="o">]]</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-0-238"><a id="__codelineno-0-238" name="__codelineno-0-238"></a><span class="w">    </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">eval</span><span class="w"> </span><span class="s2">&quot;</span><span class="k">$(</span>starship<span class="w"> </span>init<span class="w"> </span>zsh<span class="k">)</span><span class="s2">&quot;</span>
-</span><span id="__span-0-239"><a id="__codelineno-0-239" name="__codelineno-0-239"></a>
-</span><span id="__span-0-240"><a id="__codelineno-0-240" name="__codelineno-0-240"></a>
-</span><span id="__span-0-241"><a id="__codelineno-0-241" name="__codelineno-0-241"></a><span class="c1">####[ Chezmoi Unmodified ]##################################################################</span>
-</span><span id="__span-0-242"><a id="__codelineno-0-242" name="__codelineno-0-242"></a><span class="c1">#### This section is left untouched by chezmoi when executing &#39;chezmoi update&#39; or &#39;chezmoi</span>
-</span><span id="__span-0-243"><a id="__codelineno-0-243" name="__codelineno-0-243"></a><span class="c1">#### apply&#39;.</span>
-</span><span id="__span-0-244"><a id="__codelineno-0-244" name="__codelineno-0-244"></a><span class="c1">#### DO NOT MODIFY THE COMMENT BELOW! It acts as the delimiter for chezmoi to know where to</span>
-</span><span id="__span-0-245"><a id="__codelineno-0-245" name="__codelineno-0-245"></a><span class="c1">#### stop modifying the file. If it&#39;s removed, chezmoi will remove everything below it.</span>
-</span><span id="__span-0-246"><a id="__codelineno-0-246" name="__codelineno-0-246"></a><span class="c1">#### chezmoi:unmodified</span>
+</span><span id="__span-0-215"><a id="__codelineno-0-215" name="__codelineno-0-215"></a><span class="c1">####[ Zsh Style Configurations ]############################################################</span>
+</span><span id="__span-0-216"><a id="__codelineno-0-216" name="__codelineno-0-216"></a>
+</span><span id="__span-0-217"><a id="__codelineno-0-217" name="__codelineno-0-217"></a>
+</span><span id="__span-0-218"><a id="__codelineno-0-218" name="__codelineno-0-218"></a><span class="c1"># Disable sort when completing `git checkout`.</span>
+</span><span id="__span-0-219"><a id="__codelineno-0-219" name="__codelineno-0-219"></a>zstyle<span class="w"> </span><span class="s1">&#39;:completion:*:git-checkout:*&#39;</span><span class="w"> </span>sort<span class="w"> </span><span class="nb">false</span>
+</span><span id="__span-0-220"><a id="__codelineno-0-220" name="__codelineno-0-220"></a><span class="c1"># Set descriptions format to enable group support.</span>
+</span><span id="__span-0-221"><a id="__codelineno-0-221" name="__codelineno-0-221"></a><span class="c1"># NOTE: Don&#39;t use escape sequences here, fzf-tab will ignore them.</span>
+</span><span id="__span-0-222"><a id="__codelineno-0-222" name="__codelineno-0-222"></a>zstyle<span class="w"> </span><span class="s1">&#39;:completion:*:descriptions&#39;</span><span class="w"> </span>format<span class="w"> </span><span class="s1">&#39;[%d]&#39;</span>
+</span><span id="__span-0-223"><a id="__codelineno-0-223" name="__codelineno-0-223"></a><span class="c1"># Set list-colors to enable filename colorizing.</span>
+</span><span id="__span-0-224"><a id="__codelineno-0-224" name="__codelineno-0-224"></a>zstyle<span class="w"> </span><span class="s1">&#39;:completion:*&#39;</span><span class="w"> </span>list-colors<span class="w"> </span><span class="si">${</span><span class="p">(s.:.)LS_COLORS</span><span class="si">}</span>
+</span><span id="__span-0-225"><a id="__codelineno-0-225" name="__codelineno-0-225"></a><span class="c1">## Preview directory&#39;s content with `eza` when completing `cd`.</span>
+</span><span id="__span-0-226"><a id="__codelineno-0-226" name="__codelineno-0-226"></a><span class="nb">hash</span><span class="w"> </span>eza<span class="w"> </span><span class="m">2</span>&gt;/dev/null<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-0-227"><a id="__codelineno-0-227" name="__codelineno-0-227"></a><span class="w">    </span><span class="o">&amp;&amp;</span><span class="w"> </span>zstyle<span class="w"> </span><span class="s1">&#39;:fzf-tab:complete:cd:*&#39;</span><span class="w"> </span>fzf-preview<span class="w"> </span><span class="s1">&#39;eza -1 --color=always $realpath&#39;</span>
+</span><span id="__span-0-228"><a id="__codelineno-0-228" name="__codelineno-0-228"></a><span class="c1"># Switch group using `&lt;` and `&gt;`.</span>
+</span><span id="__span-0-229"><a id="__codelineno-0-229" name="__codelineno-0-229"></a>zstyle<span class="w"> </span><span class="s1">&#39;:fzf-tab:*&#39;</span><span class="w"> </span>switch-group<span class="w"> </span><span class="s1">&#39;&lt;&#39;</span><span class="w"> </span><span class="s1">&#39;&gt;&#39;</span>
+</span><span id="__span-0-230"><a id="__codelineno-0-230" name="__codelineno-0-230"></a>
+</span><span id="__span-0-231"><a id="__codelineno-0-231" name="__codelineno-0-231"></a>
+</span><span id="__span-0-232"><a id="__codelineno-0-232" name="__codelineno-0-232"></a><span class="c1">####[ End of File Configurations ]##########################################################</span>
+</span><span id="__span-0-233"><a id="__codelineno-0-233" name="__codelineno-0-233"></a><span class="c1">#### These are configurations that are specified to be placed at the end of the file, by the</span>
+</span><span id="__span-0-234"><a id="__codelineno-0-234" name="__codelineno-0-234"></a><span class="c1">#### developer/documentation.</span>
+</span><span id="__span-0-235"><a id="__codelineno-0-235" name="__codelineno-0-235"></a>
+</span><span id="__span-0-236"><a id="__codelineno-0-236" name="__codelineno-0-236"></a>
+</span><span id="__span-0-237"><a id="__codelineno-0-237" name="__codelineno-0-237"></a><span class="c1"># Initialize Starship prompt, if it is installed and $ZSH_THEME is not set.</span>
+</span><span id="__span-0-238"><a id="__codelineno-0-238" name="__codelineno-0-238"></a><span class="nb">hash</span><span class="w"> </span>starship<span class="w"> </span><span class="m">2</span>&gt;/dev/null<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-0-239"><a id="__codelineno-0-239" name="__codelineno-0-239"></a><span class="w">    </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="o">[[</span><span class="w"> </span>-z<span class="w"> </span><span class="nv">$ZSH_THEME</span><span class="w"> </span><span class="o">]]</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-0-240"><a id="__codelineno-0-240" name="__codelineno-0-240"></a><span class="w">    </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">eval</span><span class="w"> </span><span class="s2">&quot;</span><span class="k">$(</span>starship<span class="w"> </span>init<span class="w"> </span>zsh<span class="k">)</span><span class="s2">&quot;</span>
+</span><span id="__span-0-241"><a id="__codelineno-0-241" name="__codelineno-0-241"></a>
+</span><span id="__span-0-242"><a id="__codelineno-0-242" name="__codelineno-0-242"></a>
+</span><span id="__span-0-243"><a id="__codelineno-0-243" name="__codelineno-0-243"></a><span class="c1">####[ Chezmoi Unmodified ]##################################################################</span>
+</span><span id="__span-0-244"><a id="__codelineno-0-244" name="__codelineno-0-244"></a><span class="c1">#### This section is left untouched by chezmoi when executing &#39;chezmoi update&#39; or &#39;chezmoi</span>
+</span><span id="__span-0-245"><a id="__codelineno-0-245" name="__codelineno-0-245"></a><span class="c1">#### apply&#39;.</span>
+</span><span id="__span-0-246"><a id="__codelineno-0-246" name="__codelineno-0-246"></a><span class="c1">#### DO NOT MODIFY THE COMMENT BELOW! It acts as the delimiter for chezmoi to know where to</span>
+</span><span id="__span-0-247"><a id="__codelineno-0-247" name="__codelineno-0-247"></a><span class="c1">#### stop modifying the file. If it&#39;s removed, chezmoi will remove everything below it.</span>
+</span><span id="__span-0-248"><a id="__codelineno-0-248" name="__codelineno-0-248"></a><span class="c1">#### chezmoi:unmodified</span>
 </span></code></pre></div></td></tr></table></div>
 </div>
 <div class="tabbed-block">
