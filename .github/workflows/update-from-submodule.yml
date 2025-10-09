@@ -63,7 +63,7 @@ jobs:
       - name: Commit and push changes
         shell: bash
         run: |
-          git add -A
+          git add .
           git commit -m "Update files based on submodule changes"
           git pull --rebase origin "${{ github.event.pull_request.head.ref }}"
           git push origin HEAD:"${{ github.event.pull_request.head.ref }}"
