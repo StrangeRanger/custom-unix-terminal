@@ -17,7 +17,7 @@ jobs:
 
     steps:
       - name: Checkout pull request branch with submodules
-        uses: actions/checkout@v5
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
         with:
           # Checkout the repository at the merge commit
           ref: ${{ github.event.pull_request.head.sha }}
@@ -32,7 +32,7 @@ jobs:
           fi
 
       - name: Import GPG key
-        uses: crazy-max/ghaction-import-gpg@v6
+        uses: crazy-max/ghaction-import-gpg@e89d40939c28e39f97cf32126055eeae86ba74ec # v6
         with:
           gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
           passphrase: ${{ secrets.GPG_PASSPHRASE }}
@@ -42,7 +42,7 @@ jobs:
           trust_level: 5
 
       - name: Set up Python
-        uses: actions/setup-python@v6
+        uses: actions/setup-python@e797f83bcb11b83ae66e0230d6156d7c80228e7c # v6
         with:
           python-version: '3.x'
 
