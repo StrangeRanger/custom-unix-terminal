@@ -1,5 +1,8 @@
 name: Build the site with MkDocs
 
+permissions:
+  contents: read
+
 on:
   pull_request:
     branches: [ main ]
