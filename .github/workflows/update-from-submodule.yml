@@ -1,14 +1,14 @@
 name: Update From Submodule
 
+permissions:
+  contents: write
+
 on:
   pull_request_target:
     types: [opened, synchronize]
     branches:
       - main
   workflow_dispatch:
-
-permissions:
-  contents: write
 
 jobs:
   update-files:
