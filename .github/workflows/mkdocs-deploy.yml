@@ -2,7 +2,7 @@ name: Deploy 'Custom Unix Terminal' GitHub Page
 
 on:
   push:
-    branches: ["main"]
+    branches: [ main ]
   workflow_dispatch:
 
 permissions:
