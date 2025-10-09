@@ -1,22 +1,23 @@
 name: Update From Submodule
 
 on:
-  pull_request_target:
+  pull_request:
     types: [opened, synchronize]
-    branches:
-      - main
+    branches: [ main ]
   workflow_dispatch:
 
 permissions:
   contents: write
 
 jobs:
-  update-files:
-    if: github.actor == 'renovate[bot]' && startsWith(github.event.pull_request.head.ref, 'renovate/submodules-')
+  update-from-submodule:
+    if: >
+      github.actor == 'renovate[bot]' && 
+      startsWith(github.event.pull_request.head.ref, 'renovate/submodules-')
+    
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout pull request branch with submodules
+      - name: Checkout PR branch with submodules
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
         with:
           # Checkout the repository at the merge commit
@@ -24,12 +25,19 @@ jobs:
           fetch-depth: 0
           submodules: true
 
-      - name: Validate PR source branch
+      - name: Validate PR source repository and branch
+        shell: bash
         run: |
-          if [[ ${{ github.event.pull_request.head.repo.full_name }} != '${{ github.repository }}' ]]; then
-            echo "Untrusted repository detected! Exiting.";
-            exit 1;
+          if [[ "${{ github.event.pull_request.head.repo.full_name }}" != "${{ github.repository }}" ]]; then
+            echo "Untrusted repository detected! Exiting..."
+            exit 1
           fi
+
+      - name: Configure git identity
+        shell: bash
+        run: |
+          git config --global user.name "renovate[bot]"
+          git config --global user.email "29139614+renovate[bot]@users.noreply.github.com"
 
       - name: Import GPG key
         uses: crazy-max/ghaction-import-gpg@e89d40939c28e39f97cf32126055eeae86ba74ec # v6
@@ -53,8 +61,9 @@ jobs:
         run: bash update-changelog.bash
 
       - name: Commit and push changes
+        shell: bash
         run: |
           git add .
           git commit -m "Update files based on submodule changes"
-          git pull --rebase origin ${{ github.event.pull_request.head.ref }}
-          git push origin HEAD:${{ github.event.pull_request.head.ref }}
+          git pull --rebase origin "${{ github.event.pull_request.head.ref }}"
+          git push origin HEAD:"${{ github.event.pull_request.head.ref }}"
