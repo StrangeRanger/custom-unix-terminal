@@ -7,5 +7,6 @@
   ],
   "git-submodules": {
     "enabled": true
-  }
+  },
+  "rebaseWhen": "behind-base-branch"
 }
