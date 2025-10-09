@@ -1,5 +1,8 @@
 name: Deploy 'Custom Unix Terminal' GitHub Page
 
+permissions:
+  contents: read
+
 on:
   push:
     branches: ["main"]
