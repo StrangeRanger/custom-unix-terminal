@@ -10,6 +10,12 @@ Entries under the **Removed** section indicate items removed from the entire doc
 
 ## Unreleased
 
+## 2025-12-11
+
+### Changed
+
+- changed(zshrc): refactor PATH and implement removal of dups in PATH
+
 ## 2025-09-30
 
 ### Changed
