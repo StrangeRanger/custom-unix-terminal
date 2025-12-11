@@ -187,15 +187,18 @@ Ctrl + O - Allows you to copy what you are currently typing, via 'Ctrl' + 'O'.'"
 # 1Password auth socket.
 export SSH_AUTH_SOCK="$HOME/.1password/agent.sock"
 
+orig_path="$PATH"
 ## Path purpose:
-##  - $HOME/.local/bin:User installed binaries.
-##  - $HOME/.dotnet/tools: .NET Core tools.
-##  - $HOME/.local/share/gem/ruby/3.3.0/bin: Ruby gems.
+##  - $HOME/.local/bin: Local binaries installed by the user.
+##  - $HOME/.dotnet/tools: Local .NET Core tools.
 ##  - /opt/nvim/bin: Neovim binary.
-export PATH="$HOME/.local/bin:$PATH"
-[[ -d $HOME/.dotnet/tools ]] && export PATH="$HOME/.dotnet/tools:$PATH"
-[[ -d $HOME/.local/share/gem/ruby/3.3.0/bin ]] && export PATH="$HOME/.local/share/gem/ruby/3.3.0/bin:$PATH"
-[[ -d /opt/nvim/bin ]] && export PATH="/opt/nvim/bin:$PATH"
+new_path="$HOME/.local/bin"
+[[ -d /opt/nvim/bin ]] && new_path="$new_path:/opt/nvim/bin"
+[[ -d $HOME/.dotnet/tools ]] && new_path="$new_path:$HOME/.dotnet/tools"
+PATH="$new_path:$orig_path"
+typeset -U path  # Ensure all dirs in PATH are unique, preserving the first occurrence.
+export PATH
+unset orig_path new_path
 
 # Modifies the colors of files and directories in the terminal.
 export LS_COLORS="di=34:ln=36:so=35:pi=1;33:ex=32:bd=34;46:cd=1;33;40:su=30;41:sg=30;46:tw=30;42:ow=30;1;43"
