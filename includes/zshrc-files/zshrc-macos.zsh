@@ -161,12 +161,20 @@ Ctrl + O - Allows you to copy what you are currently typing, via 'Ctrl' + 'O'.'"
 export SSH_AUTH_SOCK="$HOME/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
 
 hb_prefix="$(brew --prefix 2>/dev/null || echo "/opt/homebrew")"
-# Path purpose:
-#   - $hb_prefix/opt/trash-cli/bin: Homebrew installed trash-cli binary.
-#   - $HOME/.local/bin: User installed binaries.
-#   - $HOME/.cargo/bin: Rust installed binaries.
-export PATH="$hb_prefix/opt/trash-cli/bin:$HOME/.local/bin:$HOME/.cargo/bin:$PATH"
-unset hb_prefix
+orig_path="$PATH"
+## Path purpose:
+##  - $HOME/.local/bin: User installed binaries.
+##  - $HOME/.cargo/bin: Rust installed binaries.
+##  - $hb_prefix/bin: Homebrew installed user binaries.
+##  - $hb_prefix/sbin: Homebrew installed system binaries.
+##  - $hb_prefix/opt/trash-cli/bin: Homebrew installed trash-cli binary.
+new_path="$HOME/.local/bin:$HOME/.cargo/bin"
+new_path="$new_path:$hb_prefix/bin:$hb_prefix/sbin"
+new_path="$new_path:$hb_prefix/opt/trash-cli/bin"
+PATH="$new_path:$orig_path"
+typeset -U path  # Ensure all dirs in PATH are unique, preserving the first occurrence.
+export PATH
+unset hb_prefix orig_path new_path
 
 # Modifies the colors of files and directories when using `ls`.
 export LSCOLORS="exgxfxDxcxegDaabagacaD"
