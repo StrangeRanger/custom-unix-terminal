@@ -10,6 +10,20 @@ Entries under the **Removed** section indicate items removed from the entire doc
 
 ## Unreleased
 
+## 2025-12-27
+
+### Changed
+
+- changed(vim): lua max column is 88 with indents being 2
+
+### Fixed
+
+- fixed(vim): reduce parsers and fix incompatible setup
+
+### Added
+
+- added(zshrc): add tree-sitter to path if it exists at '/opt/tree-sitter'
+
 ## 2025-12-11
 
 ### Changed

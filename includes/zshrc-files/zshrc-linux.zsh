@@ -194,6 +194,7 @@ orig_path="$PATH"
 ##  - /opt/nvim/bin: Neovim binary.
 new_path="$HOME/.local/bin"
 [[ -d /opt/nvim/bin ]] && new_path="$new_path:/opt/nvim/bin"
+[[ -d /opt/tree-sitter/bin ]] && new_path="$new_path:/opt/tree-sitter/bin"
 [[ -d $HOME/.dotnet/tools ]] && new_path="$new_path:$HOME/.dotnet/tools"
 PATH="$new_path:$orig_path"
 typeset -U path  # Ensure all dirs in PATH are unique, preserving the first occurrence.
