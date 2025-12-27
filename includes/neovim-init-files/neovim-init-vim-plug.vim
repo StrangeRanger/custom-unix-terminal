@@ -69,7 +69,7 @@ augroup FiletypeConfigs
   autocmd Filetype cs setlocal colorcolumn=120
   " As recommended by the luarocks Style Guide:
   " https://github.com/luarocks/lua-style-guide/blob/master/README.md
-  autocmd Filetype lua setlocal tabstop=3 shiftwidth=3 softtabstop=3
+  autocmd Filetype lua setlocal colorcolumn=88 tabstop=2 shiftwidth=2 softtabstop=2
   autocmd Filetype html,css,vue,javascript,typescript setlocal colorcolumn=100 tabstop=2 shiftwidth=2 softtabstop=2
   autocmd Filetype vim setlocal tabstop=2 shiftwidth=2 softtabstop=2
 augroup END
@@ -113,14 +113,14 @@ let g:strip_whitespace_on_save = 1
 "let g:ale_use_neovim_diagnostics_api = 0
 
 
-""""[ Lua Configurations ]""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""[ Lua Configurations ]""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 
 " Load 'nvim-treesitter' configurations.
 lua dofile(vim.fn.stdpath('config') .. '/second_init.lua')
 
 
-""""[ Useful Commands ]"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""[ Useful Commands ]"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 
 " :NERDTree        - Opens NERDTree file system explorer.
@@ -129,5 +129,4 @@ lua dofile(vim.fn.stdpath('config') .. '/second_init.lua')
 " :ALEToggle       - Toggle ALE on/off.
 " :TSInstall       - Install treesitter parsers.
 " :TSUpdate        - Update treesitter parsers.
-" :TSInstallInfo   - Show treesitter information.
 
