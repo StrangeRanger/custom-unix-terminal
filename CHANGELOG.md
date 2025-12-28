@@ -10,6 +10,12 @@ Entries under the **Removed** section indicate items removed from the entire doc
 
 ## Unreleased
 
+## 2025-12-28
+
+### Changed
+
+- changed(vim): replace gurvbox colorscheme with onedark
+
 ## 2025-12-27
 
 ### Changed

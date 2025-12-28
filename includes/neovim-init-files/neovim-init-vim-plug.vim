@@ -13,8 +13,9 @@ Plug 'HiPhish/rainbow-delimiters.nvim'
 Plug 'vim-airline/vim-airline'
 " A collection of themes for vim-airline.
 Plug 'vim-airline/vim-airline-themes'
-" Retro groove color scheme for Vim.
-Plug 'sainnhe/gruvbox-material'
+" Dark and Light Themes for neovim >= 0.9 based on Atom One Dark & Atom One Light theme
+" written in lua with TreeSitter syntax highlight.
+Plug 'navarasu/onedark.nvim'
 " Check syntax in Vim asynchronously and fix files, with Language Server Protocol (LSP)
 " support.
 Plug 'dense-analysis/ale'
@@ -90,12 +91,9 @@ augroup END
 " Font: Power Line Font
 set guifont=MesloLGS_NF:h12
 
-"" Plugin: gruvbox-material
-colorscheme gruvbox-material
-set background=dark
-let g:gruvbox_material_foreground = 'original'
-let g:gruvbox_material_enable_bold = 1
-let g:gruvbox_material_enable_italic = 1
+"" Plugin: onedark
+let g:onedark_config = { 'style': 'darker' }
+colorscheme onedark
 
 "" Plugin: vim-airline
 let g:airline#extensions#tabline#enabled = 1
