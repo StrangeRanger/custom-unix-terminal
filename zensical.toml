@@ -1,0 +1,111 @@
+[project]
+site_name = "Custom Unix Terminal"
+site_url = "https://cut.hthompson.dev"
+site_description = "Custom configurations for Unix terminals."
+site_author = "Hunter T. (StrangeRanger)"
+repo_name = "Custom Unix Terminal"
+repo_url = "https://github.com/StrangeRanger/custom-unix-terminal"
+extra_css = ["stylesheets/extra.css"]
+
+[project.theme]
+language = "en"
+features = [
+    # A back-to-top button can be shown when the user, after scrolling down, starts to
+    # scroll up again. It's rendered centered and just below the header.
+    # DOCS: https://zensical.org/docs/setup/navigation/?h=top#back-to-top-button
+    "navigation.top",
+    # When search highlighting is enabled and a user clicks on a search result, Zensical
+    # will highlight all occurrences after following the link.
+    # DOCS: https://zensical.org/docs/setup/search/#search-highlighting
+    "search.highlight",
+]
+
+## Palette toggle for automatic mode
+[[project.theme.palette]]
+media = "(prefers-color-scheme)"
+primary = "blue"
+accent = "blue"
+toggle.icon = "lucide/sun-moon"
+toggle.name = "Switch to dark mode"
+
+## Palette toggle for dark mode
+[[project.theme.palette]]
+media = "(prefers-color-scheme: dark)"
+scheme = "slate"
+primary = "blue"
+accent = "blue"
+toggle.icon = "lucide/moon"
+toggle.name = "Switch to light mode"
+
+## Palette toggle for light mode
+[[project.theme.palette]]
+media = "(prefers-color-scheme: light)"
+scheme = "default"
+primary = "blue"
+accent = "blue"
+toggle.icon = "lucide/sun"
+toggle.name = "Switch to system preference"
+
+[project.theme.icon]
+repo = "fontawesome/brands/github"
+
+# The Attribute Lists extension allows to add HTML attributes and CSS classes to almost
+# every Markdown inline- and block-level element with a special syntax.
+# REQUIRED FOR: Non-codeblock annotations
+#   TODO: Check back to see if required at later phases of the "Phased transition strategy":
+#   https://zensical.org/compatibility/#phased-transition-strategy
+# DOCS: https://zensical.org/docs/setup/extensions/python-markdown/#attribute-lists
+[project.markdown_extensions.attr_list]
+
+## The Tabbed extension allows the usage of content tabs, a simple way to group related
+## content and code blocks under accessible tabs.
+## DOCS: https://facelessuser.github.io/pymdown-extensions/extensions/blocks/plugins/tab/
+[project.markdown_extensions.pymdownx.blocks.tab]
+alternate_style = true
+
+# The Admonition extension adds support for admonitions, more commonly known as call-outs,
+# which can be defined in Markdown by using a simple syntax.
+# DOCS: https://facelessuser.github.io/pymdown-extensions/extensions/blocks/plugins/admonition/
+[project.markdown_extensions.pymdownx.blocks.admonition]
+
+# The Details extension supercharges the Admonition extension, making the resulting
+# call-outs collapsible, allowing them to be opened and closed by the user.
+# DOCS: https://zensical.org/docs/setup/extensions/python-markdown-extensions/#details
+[project.markdown_extensions.pymdownx.blocks.details]
+
+## The Highlight extension adds support for syntax highlighting of code blocks (with the
+## help of SuperFences) and inline code blocks (with the help of InlineHilite).
+## REQUIRES: `pymdownx.superfences` and `pymdownx.inlinehilite` (for inline code blocks).
+## REQUIRED BY: `pymdownx.inlinehilite`
+## DOCS: https://zensical.org/docs/setup/extensions/python-markdown-extensions/#highlight
+[project.markdown_extensions.pymdownx.highlight]
+pygments_lang_class = true
+# auto_title = true # TODO: Test what this looks like.
+linenums = true
+# linenums_style = "pymdownx-inline" # TODO: Test what this looks like.
+anchor_linenums = true
+line_spans = "__span"
+
+# The InlineHilite extension add support for syntax highlighting of inline code blocks.
+# It's built on top of the Highlight extension, from which it sources its configuration.
+# REQUIRES: 'pymdownx.highlight'
+# REQUIRED BY: 'pymdownx.highlight'
+# DOCS: https://zensical.org/docs/setup/extensions/python-markdown-extensions/#inlinehilite
+[project.markdown_extensions.pymdownx.inlinehilite]
+
+# The SuperFences extension allows for arbitrary nesting of code and content blocks inside
+# each other, including admonitions, tabs, lists and all other elements.
+# REQUIRED BY: 'pymdownx.highlight'
+# DOCS: https://zensical.org/docs/setup/extensions/python-markdown-extensions/#superfences
+[project.markdown_extensions.pymdownx.superfences]
+
+# The Keys extension adds a simple syntax to allow for the rendering of keyboard keys and
+# combinations.
+# DOCS: https://zensical.org/docs/setup/extensions/python-markdown-extensions/#keys
+[project.markdown_extensions.pymdownx.keys]
+
+# The Snippets extension adds the ability to embed content from arbitrary files into a
+# document, including other documents or source files, by using a simple syntax.
+# DOCS: https://zensical.org/docs/setup/extensions/python-markdown-extensions/#snippets
+[project.markdown_extensions.pymdownx.snippets]
+
