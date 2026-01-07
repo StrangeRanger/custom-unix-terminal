@@ -22,7 +22,7 @@ The **NPM** section lists programs that can be installed using the system's defa
 
 /// tab | Third Party Package Manager
 
-{{ read_csv("includes/csv/useful-packages-tppm.csv") }}
+--8<-- "includes/tables/useful-packages-tppm.md"
 
 ///
 
@@ -30,7 +30,7 @@ The **NPM** section lists programs that can be installed using the system's defa
 
 Applicable Operating Systems: Linux
 
-{{ read_csv("includes/csv/useful-packages-npm.csv") }}
+--8<-- "includes/tables/useful-packages-npm.md"
 
 ///
 
@@ -84,7 +84,7 @@ Below is the content of my `.zshrc` file, divided into two sections: one for mac
 
 Below are all the plugins that I use, along with a brief description of their functionality:
 
-{{ read_csv("includes/csv/oh-my-zsh-plugins.csv") }}
+--8<-- "includes/tables/oh-my-zsh-plugins.md"
 
 #### Aliases
 
@@ -123,7 +123,7 @@ This difference arises from the distinct version of the `ls` command on macOS an
 
 Included below is a key that explains the values of `LSCOLORS` and `LS_COLORS` in my configurations:
 
-{{ read_csv("includes/csv/cli-colors-explained.csv") }}
+--8<-- "includes/tables/cli-colors-explained.md"
 
 I recommend visiting this [gist](https://gist.github.com/thomd/7667642) for an in-depth understanding of the `LS_COLORS` and `LSCOLORS` values.
 
