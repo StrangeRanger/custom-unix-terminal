@@ -14,8 +14,7 @@ Entries under the **Removed** section indicate items removed from the entire doc
 
 ### Changed
 
-- changed(nvim): add new TODO
-- changed(nvim): add new TODO
+- changed(nvim): add new TODOs
 - changed(nvim): modify comments
 
 ### Fixed
