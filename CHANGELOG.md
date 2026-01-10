@@ -10,6 +10,21 @@ Entries under the **Removed** section indicate items removed from the entire doc
 
 ## Unreleased
 
+## 2026-01-09
+
+### Changed
+
+- changed(nvim): add new TODOs
+- changed(nvim): modify comments
+
+### Fixed
+
+- fixed(nvim): add missing newline
+
+### Added
+
+- added(nvim): add 'folke/which-key.nvim' plugin
+
 ## 2025-12-28
 
 ### Changed
