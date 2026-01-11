@@ -60,7 +60,7 @@ To build and preview the documentation locally, you'll need:
 
 3. **Start the development server:**
    ```bash
-   uv run mkdocs serve
+   uv run zensical serve
    ```
 
 4. **Open your browser:**
@@ -75,7 +75,7 @@ git submodule update --init --remote submodules/dotfiles
 ```
 
 > [!NOTE]
-> The automation scripts do not require the dependencies installed via `uv`. Those dependencies are only needed for MkDocs site development and deployment.
+> The automation scripts do not require the dependencies installed via `uv`. Those dependencies are only needed for Zensical site development and deployment.
 
 ### `update_repo.py`
 
