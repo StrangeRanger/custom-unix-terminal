@@ -16,7 +16,7 @@ The following table consists of CLI programs that have been useful to me in my d
 The TPPM section features programs that can be installed via package managers like Homebrew, Pip, Cargo, Npm, Gem, or Git(1). For each program, I've included a brief description, the operating systems it supports, and the package managers available for installation.
 { .annotate }
 
-1. While all of these programs can be installed manually with `git`, they will only be marked as such if it is recommended by the program's documentation, myself, or if it's the only available method.
+1. While all of these programs can be installed manually with `git`, they will only be marked as such if it is recommended by the program's documentation, myself, or it's the only available method.
 
 The NPM section lists programs that can be installed using the system's default package manager. Since I primarily use Debian and Arch-based Linux distributions, all the programs in this section are confirmed to be installable via `apt` or `pacman`. For other Linux distributions, refer to [Repology](https://repology.org/) to see if the program is available via your distribution's package manager. Like the TPPM section, I've included additional information such as a brief description of each program and a link to its Repology page.
 
@@ -94,7 +94,7 @@ Below are aliases I've create, organized into two groups: Group 1 and Group 2. G
 
 /// tab | macOS
 
-```bash title=".zshrc"
+```zsh title=".zshrc"
 --8<-- "includes/zshrc-files/zshrc-macos-snippet.zsh:user_config"
 ```
 
@@ -102,7 +102,7 @@ Below are aliases I've create, organized into two groups: Group 1 and Group 2. G
 
 /// tab | Linux
 
-```bash title=".zshrc"
+```zsh title=".zshrc"
 --8<-- "includes/zshrc-files/zshrc-linux-snippet.zsh:user_config"
 ```
 
@@ -157,7 +157,7 @@ There are many terminal-based text editors to choose from, each with unique feat
 
 ### Neovim Resource File
 
-Like the `.zshrc` file for `zsh`, Neovim has its own resource file, located at `~/.config/nvim/init.vim`, where all the configurations for the editor are stored. This file contains settings, key mappings, and other configurations that define Neovim's behavior and appearance.
+Like the `.zshrc` file for `zsh`, Neovim has its own resource file, located at `~/.config/nvim/init.vim`, where all the configurations for the editor are stored. This file contains settings, key mappings, syntax highlighting, and other configurations that define Neovim's behavior and appearance.
 
 Below is the content of my `init.vim` file, divided into two sections: with plugins and without plugins. The former includes configurations for various plugins I use, while the latter is a more streamlined setup without any plugins. You can choose the configuration that best suits your needs and add it to your `~/.config/nvim/init.vim` file.
 
@@ -185,40 +185,6 @@ These configurations are designed for users who prefer a more straightforward se
 ```
 
 ///
-
-### Syntax Highlighting
-
-/// admonition | Assumptions
-
-This section assumes you are using a plugin manager like `vim-plug`, or are comfortable installing plugins manually.
-
-///
-
-Neovim leverages [TreeSitter](https://github.com/tree-sitter/tree-sitter) to provide features such as advanced syntax highlighting, offering more precision and speed than traditional regex-based methods. However, its default installation includes a [limited set of parsers](https://neovim.io/doc/user/treesitter.html) for programming languages. This is where the [nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter) plugin shines. Acting as an enhanced interface for TreeSitter, `nvim-treesitter` provides:
-
-- **Parser Management**: It automatically handles downloading, installing, and updating TreeSitter parsers for a wide range of languages.
-- **Enhanced Syntax Highlighting**: With custom configurations, it delivers consistent and accurate syntax highlighting tailored to each language.
-- **Advanced Code Features**: Besides highlighting, it enables and enhances features like structural code navigation, incremental selection, code folding, and extensions like rainbow parentheses.
-
-Below are my configurations for `nvim-treesitter`. Currently, they ensure that the specified parsers are automatically installed and loaded. To use these settings, add the following code to `~/.config/nvim/second_init.lua` (1):
-{ .annotate }
-
-1. `nvim-treesitter` configurations are written in Lua. Therefore, if your primary `init` file is written in Vimscript, you must(1) place these configurations in a separate Lua file; I've named mine `second_init.lua`. My `init.vim` file, provided [above](#__tabbed_5_1), sources this Lua file to load the `nvim-treesitter` settings.
-    { .annotate }
-
-   1. Technically, you can place the Lua code within the `init.vim` file, but using a separate Lua file keeps the configurations organized and easier to manage.
-
-
-```lua title="second_init.lua"
---8<-- "includes/neovim-init-files/neovim-init-lua.lua"
-```
-
-If you're **NOT** using the `init.vim` file I provided, you'll want to add the following line to your version of the file:
-
-```vim title="init.vim"
-" Load 'nvim-treesitter' configurations.
-lua dofile(vim.fn.stdpath('config') .. '/second_init.lua')
-```
 
 ## Terminal Profile
 
