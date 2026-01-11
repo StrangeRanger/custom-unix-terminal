@@ -33,8 +33,8 @@ from utils.constants import (
     NEOVIM_MARKERS,
     ZSH_ALIAS_MARKERS,
     ZSH_LS_COLORS_MARKERS,
-    MKDOCS_USER_CONFIG_MARKERS,
-    MKDOCS_LS_COLORS_MARKERS,
+    ZENSICAL_USER_CONFIG_MARKERS,
+    ZENSICAL_LS_COLORS_MARKERS,
 )
 
 
@@ -121,7 +121,7 @@ def zsh_config() -> None:
     Handles two types of processing:
         1. Full file operations: Copies entire source file, filtering chezmoi template
            actions.
-        2. Snippet operations: Extracts specific sections and wraps with MkDocs section
+        2. Snippet operations: Extracts specific sections and wraps with Zensical section
            markers.
 
     For snippet operations, extracts alias and `LS_COLORS` sections based on predefined
@@ -154,17 +154,17 @@ def zsh_config() -> None:
 
             if ZSH_ALIAS_MARKERS.start_marker in current_line:
                 ZSH_ALIAS_MARKERS.is_within_section = True
-                output_data.append(MKDOCS_USER_CONFIG_MARKERS.start_marker)
+                output_data.append(ZENSICAL_USER_CONFIG_MARKERS.start_marker)
             elif ZSH_LS_COLORS_MARKERS.start_marker in current_line:
                 ZSH_LS_COLORS_MARKERS.is_within_section = True
-                output_data.append(MKDOCS_LS_COLORS_MARKERS.start_marker)
+                output_data.append(ZENSICAL_LS_COLORS_MARKERS.start_marker)
 
             if (
                 ZSH_ALIAS_MARKERS.end_marker in current_line
                 and ZSH_ALIAS_MARKERS.is_within_section
             ):
                 ZSH_ALIAS_MARKERS.is_within_section = False
-                output_data.append(MKDOCS_USER_CONFIG_MARKERS.end_marker)
+                output_data.append(ZENSICAL_USER_CONFIG_MARKERS.end_marker)
             elif (
                 ZSH_LS_COLORS_MARKERS.end_marker in current_line
                 and ZSH_LS_COLORS_MARKERS.is_within_section
@@ -172,7 +172,7 @@ def zsh_config() -> None:
                 ZSH_LS_COLORS_MARKERS.is_within_section = False
                 if ZSH_LS_COLORS_MARKERS.hard_coded_inclusion:
                     output_data.extend(ZSH_LS_COLORS_MARKERS.hard_coded_inclusion)
-                output_data.append(MKDOCS_LS_COLORS_MARKERS.end_marker)
+                output_data.append(ZENSICAL_LS_COLORS_MARKERS.end_marker)
 
             if (
                 ZSH_ALIAS_MARKERS.is_within_section

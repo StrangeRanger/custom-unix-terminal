@@ -6,7 +6,7 @@ configuration files from the dotfiles submodule. It includes:
 - File path mappings for Neovim and zsh configuration variants
 - Section markers for extracting specific content from configuration files
 - Template delimiters for identifying chezmoi template blocks
-- MkDocs content markers for generated documentation snippets
+- Zensical content markers for generated documentation snippets
 
 The constants are organized by their functional purpose and are designed to be easily
 modified when upstream dotfile structures change.
@@ -90,14 +90,14 @@ ZSH_LS_COLORS_MARKERS: Final[SectionMarker] = SectionMarker(
     ),
 )
 
-# Section markers used in generated MkDocs content for the user configuration snippet.
-MKDOCS_USER_CONFIG_MARKERS: Final[SectionMarker] = SectionMarker(
+# Section markers used in generated Zensical content for the user configuration snippet.
+ZENSICAL_USER_CONFIG_MARKERS: Final[SectionMarker] = SectionMarker(
     start_marker="# --8<-- [start:user_config]\n",
     end_marker="# --8<-- [end:user_config]\n",
 )
 
-# Section markers used in generated MkDocs content for the LS_COLORS snippet.
-MKDOCS_LS_COLORS_MARKERS: Final[SectionMarker] = SectionMarker(
+# Section markers used in generated Zensical content for the LS_COLORS snippet.
+ZENSICAL_LS_COLORS_MARKERS: Final[SectionMarker] = SectionMarker(
     start_marker="# --8<-- [start:ls_colors]\n",
     end_marker="# --8<-- [end:ls_colors]\n",
 )
