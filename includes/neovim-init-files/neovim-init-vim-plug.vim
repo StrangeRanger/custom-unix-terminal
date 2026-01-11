@@ -113,11 +113,46 @@ let g:better_whitespace_enabled = 1
 let g:strip_whitespace_on_save = 1
 
 
-""""[ Lua Configurations ]""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""[ Lua-based Plugin Configurations ]"""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 
-" Load 'nvim-treesitter' configurations.
-lua dofile(vim.fn.stdpath('config') .. '/second_init.lua')
+lua << EOF
+----[ nvim-treesitter Configurations ]--------------------------------------------------
+
+require('nvim-treesitter').setup {
+  -- Directory to install parsers and queries to (prepended to `runtimepath` to have
+  -- priority)
+  install_dir = vim.fn.stdpath('data') .. '/site'
+}
+
+require('nvim-treesitter').install {
+  'awk',
+  'bash',
+  'comment',
+  'diff',
+  'lua',
+  'regex',
+  'python',
+  'vim',
+  'vimdoc',
+  'yaml',
+}
+
+vim.api.nvim_create_autocmd('FileType', {
+  callback = function(args)
+    -- Enable highlighting (Neovim core).
+    -- NOTE: pcall will prevent the absence of a parser from throwing an error.
+    pcall(vim.treesitter.start, args.buf)
+  end,
+})
+
+----[ mini.nvim Configurations ]--------------------------------------------------------
+
+-- TODO: Consider adding additional modules.
+require('mini.comment').setup()
+require('mini.move').setup()
+require('mini.pairs').setup()
+EOF
 
 
 """"[ Useful Commands ]"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
