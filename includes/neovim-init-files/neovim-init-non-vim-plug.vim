@@ -20,8 +20,6 @@ augroup FiletypeConfigs
   autocmd Filetype markdown,text,csv setlocal colorcolumn=0
   autocmd Filetype java setlocal colorcolumn=100
   autocmd Filetype cs setlocal colorcolumn=120
-  " As recommended by the luarocks Style Guide:
-  " https://github.com/luarocks/lua-style-guide/blob/master/README.md
   autocmd Filetype lua setlocal colorcolumn=88 tabstop=2 shiftwidth=2 softtabstop=2
   autocmd Filetype html,css,vue,javascript,typescript setlocal colorcolumn=100 tabstop=2 shiftwidth=2 softtabstop=2
   autocmd Filetype vim setlocal tabstop=2 shiftwidth=2 softtabstop=2

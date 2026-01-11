@@ -34,11 +34,8 @@ vim.api.nvim_create_autocmd('FileType', {
 ----[ mini.nvim Configurations ]--------------------------------------------------------
 
 
--- TODO: Check other modules to enable.
--- Module: mini.comment
+-- TODO: Consider adding additional modules.
 require('mini.comment').setup()
--- Module: mini.move
 require('mini.move').setup()
--- Module: mini.pairs
 require('mini.pairs').setup()
 

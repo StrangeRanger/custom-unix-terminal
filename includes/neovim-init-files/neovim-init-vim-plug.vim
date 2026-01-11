@@ -1,10 +1,14 @@
 """"[ vim-plug Configurations ]"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" TODO: Consider adding 'nvim-lspconfig' plugin.
+" TODO: Consider adding a dedicated completion plugin such as 'hrsh7th/nvim-cmp'.
+" TODO: Consider migrating from vim-plug to LazyVim.
+" TODO: Review existing plugins for further configuration options and optimizations.
 
 
 call plug#begin(stdpath('data') . '/plugged')
-" Make sure you use single quotes
+" Make sure you use single quotes.
 
-" Vim help for vim-plug itself
+" Vim help for vim-plug itself.
 Plug 'junegunn/vim-plug'
 
 " Rainbow delimiters for Neovim with Tree-sitter.
@@ -32,6 +36,9 @@ Plug 'fei6409/log-highlight.nvim'
 " Library of 40+ independent Lua modules improving overall Neovim (version 0.8 and higher)
 " experience with minimal effort.
 Plug 'echasnovski/mini.nvim'
+" Create key bindings that stick. WhichKey helps you remember your Neovim keymaps, by
+" showing available keybindings in a popup as you type.
+Plug 'folke/which-key.nvim'
 
 " Initialize plugin system
 call plug#end()
@@ -68,8 +75,6 @@ augroup FiletypeConfigs
   autocmd Filetype markdown,text,csv setlocal colorcolumn=0
   autocmd Filetype java setlocal colorcolumn=100
   autocmd Filetype cs setlocal colorcolumn=120
-  " As recommended by the luarocks Style Guide:
-  " https://github.com/luarocks/lua-style-guide/blob/master/README.md
   autocmd Filetype lua setlocal colorcolumn=88 tabstop=2 shiftwidth=2 softtabstop=2
   autocmd Filetype html,css,vue,javascript,typescript setlocal colorcolumn=100 tabstop=2 shiftwidth=2 softtabstop=2
   autocmd Filetype vim setlocal tabstop=2 shiftwidth=2 softtabstop=2
@@ -107,9 +112,6 @@ let g:airline_powerline_fonts = 1
 let g:better_whitespace_enabled = 1
 let g:strip_whitespace_on_save = 1
 
-"" Plugin: ale
-"let g:ale_use_neovim_diagnostics_api = 0
-
 
 """"[ Lua Configurations ]""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
@@ -121,10 +123,10 @@ lua dofile(vim.fn.stdpath('config') .. '/second_init.lua')
 """"[ Useful Commands ]"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 
-" :NERDTree        - Opens NERDTree file system explorer.
 " :StripWhitespace - Clean extra whitespace.
 " :ALEInfo         - Show ALE information.
 " :ALEToggle       - Toggle ALE on/off.
 " :TSInstall       - Install treesitter parsers.
 " :TSUpdate        - Update treesitter parsers.
+" :checkhealth     - Check the health of Neovim and installed plugins.
 
