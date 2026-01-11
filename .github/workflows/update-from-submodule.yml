@@ -12,9 +12,9 @@ permissions:
 jobs:
   update-from-submodule:
     if: >
-      github.actor == 'renovate[bot]' && 
+      github.actor == 'renovate[bot]' &&
       startsWith(github.event.pull_request.head.ref, 'renovate/submodules-')
-    
+
     runs-on: ubuntu-latest
     steps:
       - name: Checkout PR branch with submodules

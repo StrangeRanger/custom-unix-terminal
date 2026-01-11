@@ -22,5 +22,5 @@ jobs:
       - name: Install the project
         run: uv sync --locked
 
-      - name: Build the site with MkDocs
-        run: uv run mkdocs build --strict
+      - name: Build the site with Zensical
+        run: uv run zensical build
