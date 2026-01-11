@@ -1,4 +1,4 @@
-name: Build the site with MkDocs
+name: Build the site with Zensical
 
 on:
   pull_request:
