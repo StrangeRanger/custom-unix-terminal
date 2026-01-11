@@ -33,10 +33,6 @@ class SectionMarker:
 
 # Maps Neovim config variants to their source and destination paths.
 NEOVIM_CONFIG_PATHS: Final[dict[str, ConfigPath]] = {
-    "init_lua": ConfigPath(
-        src=Path("submodules/dotfiles/private_dot_config/nvim/second_init.lua"),
-        dest=Path("includes/neovim-init-files/neovim-init-lua.lua"),
-    ),
     "init_vim_plug": ConfigPath(
         src=Path("submodules/dotfiles/private_dot_config/nvim/init.vim"),
         dest=Path("includes/neovim-init-files/neovim-init-vim-plug.vim"),
