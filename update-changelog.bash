@@ -3,7 +3,7 @@
 # Automate the process of updating the CHANGELOG.md file, based on the latest commit
 # messages from the dotfiles submodule.
 #
-# Version: v1.1.2
+# Version: v1.1.3
 # License: MIT License
 #          Copyright (c) 2024-2025 Hunter T. (StrangeRanger)
 #
@@ -133,17 +133,25 @@ for type in "${!sections[@]}"; do
     } >> "$C_TMP_CHANGELOG"
 done
 
-awk -v new_entry="$(cat $C_TMP_CHANGELOG)" '
-   /^## Unreleased$/ {
-       print;
-       print "";
-       print new_entry;
-       next
-   }
-   { print }
+## NOTE: The function is necessary, as 'awk -v' on macOS doesn't support values with literal
+##  newline characters.
+awk -v new_entry_file="$C_TMP_CHANGELOG" '
+    function emit_file(path,    line) {
+        while ((getline line < path) > 0) print line
+        close(path)
+    }
+
+    /^## Unreleased$/ {
+        print
+        print ""
+        emit_file(new_entry_file)
+        next
+    }
+    { print }
 ' "$C_CHANGELOG" > "${C_CHANGELOG}.tmp"
 
 mv "${C_CHANGELOG}.tmp" "$C_CHANGELOG"
 
 echo "${C_INFO}Cleaning up..."
 rm "$C_TMP_CHANGELOG"
+
