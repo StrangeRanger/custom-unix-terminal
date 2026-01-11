@@ -10,6 +10,8 @@ Entries under the **Removed** section indicate items removed from the entire doc
 
 ## Unreleased
 
+## 2026-01-10
+
 ### Changed
 
 - changed(terminal): update macOS Terminal profile to use ++opt++ as the Meta key 
