@@ -2,13 +2,26 @@
 
 All notable changes to this project will be documented in this file. This includes changes to configuration files (such as `.zshrc`, Neovim configs), terminal profiles, aliases, functions, and plugins that are shared through this documentation. Changes to automation scripts, repository maintenance, dependency updates, and other backend changes are **not** included here.
 
-/// admonition | Note
+/// admonition | Note on Entries
 
 Entries under the **Removed** section indicate items removed from the entire document unless specified otherwise. If an item is removed from a specific section, it will be specified in the entry.
+
+Additionally, entries that are prefixed with `changed(...)`, `added(...)`, `removed(...)`, or similar notations, indicate updates were made from my [dotfiles](https://github.com/StrangeRanger/dotfiles) repository. They reflect changes made there that are then propagated to this documentation.
 
 ///
 
 ## Unreleased
+
+## 2026-01-11
+
+### Added
+
+- Added a new abbreviation for CLI.
+- Added additional information to the admonition in introduction of this changelog.
+
+### Removed
+
+- Removed "Syntax Highlighting" section. This section existed primarily because it's configurations where in a sperate Neovim init file. 
 
 ## 2026-01-10
 
