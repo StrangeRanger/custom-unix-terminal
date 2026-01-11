@@ -19,6 +19,10 @@ Additionally, entries that are prefixed with `changed(...)`, `added(...)`, `remo
 - Added a new abbreviation for CLI.
 - Added additional information to the admonition in introduction of this changelog.
 
+### Changed
+
+- changed(nvim): merge lua code into init.vim
+
 ### Removed
 
 - Removed "Syntax Highlighting" section. This section existed primarily because it's configurations where in a sperate Neovim init file. 
