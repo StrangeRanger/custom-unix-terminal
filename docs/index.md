@@ -13,16 +13,16 @@ This guide assumes you have a basic understanding of the Unix terminal and are c
 
 The following table consists of CLI programs that have been useful to me in my day-to-day work. These programs are divided into two categories: Third Party Package Managers (TPPM) and Native Package Managers (NPM).
 
-The **TPPM** section features programs that can be installed via package managers like Homebrew, Pip, Cargo, Npm, Gem, or Git(1). For each program, I've included a brief description, the operating systems it supports, and the package managers available for installation.
+The TPPM section features programs that can be installed via package managers like Homebrew, Pip, Cargo, Npm, Gem, or Git(1). For each program, I've included a brief description, the operating systems it supports, and the package managers available for installation.
 { .annotate }
 
 1. While all of these programs can be installed manually with `git`, they will only be marked as such if it is recommended by the program's documentation, myself, or if it's the only available method.
 
-The **NPM** section lists programs that can be installed using the system's default package manager. Since I primarily use Debian and Arch-based Linux distributions, all the programs in this section are confirmed to be installable via `apt` or `pacman`. For other Linux distributions, refer to [Repology](https://repology.org/) to see if the program is available via your distribution's package manager. Like the **TPPM** section, I've included additional information such as a brief description of each program and a link to its Repology page.
+The NPM section lists programs that can be installed using the system's default package manager. Since I primarily use Debian and Arch-based Linux distributions, all the programs in this section are confirmed to be installable via `apt` or `pacman`. For other Linux distributions, refer to [Repology](https://repology.org/) to see if the program is available via your distribution's package manager. Like the TPPM section, I've included additional information such as a brief description of each program and a link to its Repology page.
 
 /// tab | Third Party Package Manager
 
-{{ read_csv("includes/csv/useful-packages-tppm.csv") }}
+--8<-- "includes/tables/useful-packages-tppm.md"
 
 ///
 
@@ -30,7 +30,7 @@ The **NPM** section lists programs that can be installed using the system's defa
 
 Applicable Operating Systems: Linux
 
-{{ read_csv("includes/csv/useful-packages-npm.csv") }}
+--8<-- "includes/tables/useful-packages-npm.md"
 
 ///
 
@@ -84,7 +84,7 @@ Below is the content of my `.zshrc` file, divided into two sections: one for mac
 
 Below are all the plugins that I use, along with a brief description of their functionality:
 
-{{ read_csv("includes/csv/oh-my-zsh-plugins.csv") }}
+--8<-- "includes/tables/oh-my-zsh-plugins.md"
 
 #### Aliases
 
@@ -123,7 +123,7 @@ This difference arises from the distinct version of the `ls` command on macOS an
 
 Included below is a key that explains the values of `LSCOLORS` and `LS_COLORS` in my configurations:
 
-{{ read_csv("includes/csv/cli-colors-explained.csv") }}
+--8<-- "includes/tables/cli-colors-explained.md"
 
 I recommend visiting this [gist](https://gist.github.com/thomd/7667642) for an in-depth understanding of the `LS_COLORS` and `LSCOLORS` values.
 

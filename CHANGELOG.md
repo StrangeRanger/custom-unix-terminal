@@ -10,6 +10,11 @@ Entries under the **Removed** section indicate items removed from the entire doc
 
 ## Unreleased
 
+### Changed
+
+- changed(terminal): update macOS Terminal profile to use ++opt++ as the Meta key 
+- changed(project): convert project from mkdocs to zensical
+
 ## 2026-01-09
 
 ### Changed

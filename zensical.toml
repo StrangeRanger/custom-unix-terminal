@@ -1,0 +1,141 @@
+[project]
+site_name = "Custom Unix Terminal"
+site_url = "https://cut.hthompson.dev"
+site_description = "Custom configurations for Unix terminals."
+site_author = "Hunter T. (StrangeRanger)"
+repo_name = "Custom Unix Terminal"
+repo_url = "https://github.com/StrangeRanger/custom-unix-terminal"
+extra_css = ["stylesheets/extra.css"]
+
+###
+### [ Theme-based Configurations ]
+###
+
+[project.theme]
+language = "en"
+custom_dir = "overrides"
+logo = "images/logo.png"
+favicon = "images/favicon.png"
+features = [
+    # DOCS: https://zensical.org/docs/authoring/code-blocks/#code-copy-button
+    "content.code.copy",
+    # DOCS: https://zensical.org/docs/authoring/content-tabs/#linked-content-tabs
+    "content.tabs.link",
+    # DOCS: https://zensical.org/docs/setup/navigation/?h=top#back-to-top-button
+    "navigation.top",
+    # DOCS: https://zensical.org/docs/setup/search/#search-highlighting
+    "search.highlight",
+]
+
+## Palette toggle for automatic mode
+[[project.theme.palette]]
+media = "(prefers-color-scheme)"
+toggle.icon = "lucide/sun-moon"
+toggle.name = "Switch to dark mode"
+
+## Palette toggle for dark mode
+[[project.theme.palette]]
+media = "(prefers-color-scheme: dark)"
+scheme = "slate"
+primary = "blue"
+accent = "blue"
+toggle.icon = "lucide/moon"
+toggle.name = "Switch to light mode"
+
+## Palette toggle for light mode
+[[project.theme.palette]]
+media = "(prefers-color-scheme: light)"
+scheme = "default"
+primary = "blue"
+accent = "blue"
+toggle.icon = "lucide/sun"
+toggle.name = "Switch to system preference"
+
+[project.theme.icon]
+repo = "fontawesome/brands/github"
+
+###
+### [ Extra Configurations ]
+###
+
+[project.extra.analytics]
+provider = "matomo"
+
+###
+### [ Built-in Markdown Extensions ]
+###
+
+# DOCS: https://zensical.org/docs/setup/extensions/python-markdown/#abbreviations
+[project.markdown_extensions.abbr]
+
+# DOCS: https://zensical.org/docs/setup/extensions/python-markdown/#attribute-lists
+[project.markdown_extensions.attr_list]
+
+# DOCS: https://zensical.org/docs/setup/extensions/python-markdown/#definition-lists
+[project.markdown_extensions.def_list]
+
+# DOCS: https://zensical.org/docs/setup/extensions/python-markdown/#footnotes
+[project.markdown_extensions.footnotes]
+
+# DOCS: https://zensical.org/docs/setup/extensions/python-markdown/#markdown-in-html
+[project.markdown_extensions.md_in_html]
+
+# DOCS: https://zensical.org/docs/setup/extensions/python-markdown/#table-of-contents
+[project.markdown_extensions.toc]
+permalink = true
+
+###
+### [ Extensions Provided by pymdownx ]
+###
+
+# DOCS: https://facelessuser.github.io/pymdown-extensions/extensions/betterem/
+[project.markdown_extensions.pymdownx.betterem]
+smart_enable = "all"
+
+# DOCS: https://zensical.org/docs/setup/extensions/python-markdown-extensions/#caret-mark-tilde
+[project.markdown_extensions.pymdownx.caret]
+[project.markdown_extensions.pymdownx.mark]
+[project.markdown_extensions.pymdownx.tilde]
+
+# DOCS: https://facelessuser.github.io/pymdown-extensions/extensions/blocks/plugins/tab/
+[project.markdown_extensions.pymdownx.blocks.tab]
+alternate_style = true
+
+# DOCS: https://facelessuser.github.io/pymdown-extensions/extensions/blocks/plugins/admonition/
+[project.markdown_extensions.pymdownx.blocks.admonition]
+
+# DOCS: https://zensical.org/docs/setup/extensions/python-markdown-extensions/#details
+[project.markdown_extensions.pymdownx.blocks.details]
+
+## REQUIRES: `pymdownx.superfences` and `pymdownx.inlinehilite` (for inline code blocks).
+## REQUIRED BY: `pymdownx.inlinehilite`
+# DOCS: https://zensical.org/docs/setup/extensions/python-markdown-extensions/#highlight
+[project.markdown_extensions.pymdownx.highlight]
+pygments_lang_class = true
+linenums = true
+anchor_linenums = true
+line_spans = "__span"
+
+# REQUIRES: 'pymdownx.highlight'
+# REQUIRED BY: 'pymdownx.highlight'
+# DOCS: https://zensical.org/docs/setup/extensions/python-markdown-extensions/#inlinehilite
+[project.markdown_extensions.pymdownx.inlinehilite]
+
+# DOCS: https://zensical.org/docs/setup/extensions/python-markdown-extensions/#smartsymbols
+[project.markdown_extensions.pymdownx.smartsymbols]
+
+# REQUIRED BY: 'pymdownx.highlight'
+# DOCS: https://zensical.org/docs/setup/extensions/python-markdown-extensions/#superfences
+[project.markdown_extensions.pymdownx.superfences]
+
+# DOCS: https://zensical.org/docs/setup/extensions/python-markdown-extensions/#keys
+[project.markdown_extensions.pymdownx.keys]
+
+# DOCS: https://zensical.org/docs/setup/extensions/python-markdown-extensions/#tasklist
+[project.markdown_extensions.pymdownx.tasklist]
+custom_checkbox = true
+
+# DOCS: https://zensical.org/docs/setup/extensions/python-markdown-extensions/#snippets
+[project.markdown_extensions.pymdownx.snippets]
+auto_append = ["includes/abbreviations.md"]
+
