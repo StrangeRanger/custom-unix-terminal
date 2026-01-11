@@ -13,12 +13,12 @@ This guide assumes you have a basic understanding of the Unix terminal and are c
 
 The following table consists of CLI programs that have been useful to me in my day-to-day work. These programs are divided into two categories: Third Party Package Managers (TPPM) and Native Package Managers (NPM).
 
-The **TPPM** section features programs that can be installed via package managers like Homebrew, Pip, Cargo, Npm, Gem, or Git(1). For each program, I've included a brief description, the operating systems it supports, and the package managers available for installation.
+The TPPM section features programs that can be installed via package managers like Homebrew, Pip, Cargo, Npm, Gem, or Git(1). For each program, I've included a brief description, the operating systems it supports, and the package managers available for installation.
 { .annotate }
 
 1. While all of these programs can be installed manually with `git`, they will only be marked as such if it is recommended by the program's documentation, myself, or if it's the only available method.
 
-The **NPM** section lists programs that can be installed using the system's default package manager. Since I primarily use Debian and Arch-based Linux distributions, all the programs in this section are confirmed to be installable via `apt` or `pacman`. For other Linux distributions, refer to [Repology](https://repology.org/) to see if the program is available via your distribution's package manager. Like the **TPPM** section, I've included additional information such as a brief description of each program and a link to its Repology page.
+The NPM section lists programs that can be installed using the system's default package manager. Since I primarily use Debian and Arch-based Linux distributions, all the programs in this section are confirmed to be installable via `apt` or `pacman`. For other Linux distributions, refer to [Repology](https://repology.org/) to see if the program is available via your distribution's package manager. Like the TPPM section, I've included additional information such as a brief description of each program and a link to its Repology page.
 
 /// tab | Third Party Package Manager
 
