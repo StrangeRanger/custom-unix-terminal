@@ -76,14 +76,14 @@ _apt_exec() {
     fi
 
     # Header line
-    print -P -- "%F{blue}%B[INFO]%b%f %F{8}Executing:%f %F{8}$%f %B%F{white}sudo%f%b %B%F{white}apt%f%b %F{cyan}${subcmd}%f${flags_str}"
+    print -P "%F{blue}%B[INFO]%b%f %F{8}Executing:%f %F{8}$%f %B%F{white}sudo%f%b %B%F{white}apt%f%b %F{cyan}${subcmd}%f${flags_str}"
 
     # Execute
     if sudo apt "$subcmd" "${args[@]}"; then
-        print -P -- "%F{green}[OK]%f"
+        print -P "%F{green}[OK]%f"
     else
         local ec=$?
-        print -P -- "%F{red}[ERROR]%f exit %B${ec}%b"
+        print -P "%F{red}[ERROR]%f exit %B${ec}%b"
         return $ec
     fi
 }

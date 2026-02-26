@@ -67,13 +67,13 @@ zsh_completion="${ZSH_CUSTOM:-${ZSH:-~/.oh-my-zsh}/custom}/plugins/zsh-completio
 #   exit codes even when everything is fine.
 _brew_exec() {
     local sub_cmd=$1; shift
-    print -P -- "%F{blue}%B[INFO]%b%f %F{8}Executing:%f %F{8}$%f %B%F{white}brew%f%b %F{cyan}${sub_cmd}%f${*:+ ${*}}"
+    print -P "%F{blue}%B[INFO]%b%f %F{8}Executing:%f %F{8}$%f %B%F{white}brew%f%b %F{cyan}${sub_cmd}%f${*:+ ${*}}"
     if brew "$sub_cmd" "$@"; then
-        print -P -- "%F{green}[OK]%f"
+        print -P "%F{green}[OK]%f"
     else
         local error_code=$?
         if [[ $sub_cmd != "doctor" ]]; then
-            print -P -- "%F{red}[ERROR]%f exit %B${error_code}%b"
+            print -P "%F{red}[ERROR]%f exit %B${error_code}%b"
         fi
         return $error_code
     fi
