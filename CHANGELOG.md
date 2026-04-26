@@ -16,12 +16,12 @@ Additionally, entries that are prefixed with `changed(...)`, `added(...)`, `remo
 
 ### Changed
 
-- changed(nvim): replace 'vim-airline/vim-airline' and...
+- changed(nvim): replace 'vim-airline/vim-airline' and 'vim-airline/vim-airline' with 'nvim-lualine/lualine.nvim'
 
 ### Removed
 
-- removed(nvim): remove several tree-sitters to be installed
-
+- removed(nvim): remove several tree-sitters to be installed by default
+    - They are included by default in NeoVim 0.12.0
 
 ## 2026-03-21
 
