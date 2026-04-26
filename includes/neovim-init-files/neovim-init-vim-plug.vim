@@ -1,6 +1,7 @@
 """"[ vim-plug Configurations ]"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" TODO: Consider adding 'nvim-lspconfig' plugin.
-" TODO: Consider adding a dedicated completion plugin such as 'hrsh7th/nvim-cmp'.
+" TODO: Configure native LSP with vim.lsp.config() and vim.lsp.enable().
+" TODO: Consider 'nvim-lspconfig' only for shared server config definitions.
+" TODO: Configure built-in LSP completion with vim.lsp.completion.enable().
 " TODO: Consider migrating from vim-plug to LazyVim.
 " TODO: Review existing plugins for further configuration options and optimizations.
 
@@ -13,10 +14,8 @@ Plug 'junegunn/vim-plug'
 
 " Rainbow delimiters for Neovim with Tree-sitter.
 Plug 'HiPhish/rainbow-delimiters.nvim'
-" Lean & mean status/tabline for vim that's light as air.
-Plug 'vim-airline/vim-airline'
-" A collection of themes for vim-airline.
-Plug 'vim-airline/vim-airline-themes'
+" A blazing fast and easy to configure neovim statusline plugin written in pure lua.
+Plug 'nvim-lualine/lualine.nvim'
 " Dark and Light Themes for neovim >= 0.9 based on Atom One Dark & Atom One Light theme
 " written in lua with TreeSitter syntax highlight.
 Plug 'navarasu/onedark.nvim'
@@ -89,7 +88,6 @@ augroup SlnSettings
 augroup END
 
 
-
 """"[ vim-plug Plugin Configurations ]""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 
@@ -99,14 +97,6 @@ set guifont=MesloLGS_NF:h12
 "" Plugin: onedark
 let g:onedark_config = { 'style': 'darker' }
 colorscheme onedark
-
-"" Plugin: vim-airline
-let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#left_sep = ' '
-let g:airline#extensions#tabline#left_alt_sep = '|'
-let g:airline#extensions#tabline#formatter = 'default'
-let g:airline#extensions#ale#enabled = 1
-let g:airline_powerline_fonts = 1
 
 "" Plugin: better-whitespace
 let g:better_whitespace_enabled = 1
@@ -130,11 +120,8 @@ require('nvim-treesitter').install {
   'bash',
   'comment',
   'diff',
-  'lua',
   'regex',
   'python',
-  'vim',
-  'vimdoc',
   'yaml',
 }
 
@@ -152,6 +139,7 @@ vim.api.nvim_create_autocmd('FileType', {
 require('mini.comment').setup()
 require('mini.move').setup()
 require('mini.pairs').setup()
+require('lualine').setup()
 EOF
 
 
@@ -164,4 +152,3 @@ EOF
 " :TSInstall       - Install treesitter parsers.
 " :TSUpdate        - Update treesitter parsers.
 " :checkhealth     - Check the health of Neovim and installed plugins.
-
