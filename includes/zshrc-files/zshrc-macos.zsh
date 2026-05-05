@@ -106,7 +106,6 @@ source "$ZSH/oh-my-zsh.sh"
 ###
 
 ## General aliases.
-alias code="open -a 'Visual Studio Code.app'"
 alias python="python3"
 
 ## Directory related aliases.
