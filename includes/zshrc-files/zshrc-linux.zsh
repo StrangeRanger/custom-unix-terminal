@@ -118,8 +118,6 @@ pacman_update_and_cleanup() {
     yay && yay -Yc
     echo "[INFO] Executing: $ sudo pkgfile -u"
     sudo pkgfile -u
-    echo "[INFO] Executing: $ UpdateGrubConfigs"
-    sudo grub-mkconfig -o /boot/grub/grub.cfg
 }
 
 
