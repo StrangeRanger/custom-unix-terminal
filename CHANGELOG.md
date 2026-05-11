@@ -12,22 +12,17 @@ Additionally, entries that are prefixed with `changed(...)`, `added(...)`, `remo
 
 ## Unreleased
 
-## 2026-05-11
-
-
 ## 2026-05-10
 
 ### Removed
 
 - removed(zshrc): remove UpdateGrubConfigs from update_pacman
 
-
 ## 2026-05-05
 
 ### Removed
 
 - removed(zshrc): remove vscode alias
-
 
 ## 2026-04-26
 
