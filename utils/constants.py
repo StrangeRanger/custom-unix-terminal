@@ -14,21 +14,20 @@ modified when upstream dotfile structures change.
 
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Final, Tuple
+from typing import Final
 
 
-@dataclass
+@dataclass(frozen=True)
 class ConfigPath:
     src: Path
     dest: Path
 
 
-@dataclass
+@dataclass(frozen=True)
 class SectionMarker:
     start_marker: str
     end_marker: str
-    hard_coded_inclusion: Tuple[str, ...] | None = None
-    is_within_section: bool = False
+    hard_coded_inclusion: tuple[str, ...] | None = None
 
 
 # Maps Neovim config variants to their source and destination paths.
