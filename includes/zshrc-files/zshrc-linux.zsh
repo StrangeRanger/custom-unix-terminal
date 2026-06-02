@@ -1,3 +1,11 @@
+## GPG needs a valid TTY for pinentry. Without this, decryption can fail with misleading
+## errors (e.g. "public key decryption failed") when used via docker-credential-pass or
+## other subprocesses. Also keeps gpg-agent in sync with the current terminal (important for
+## tmux/SSH).
+export GPG_TTY=$(tty)
+gpg-connect-agent updatestartuptty /bye >/dev/null
+
+
 ####[ Oh-My-Zsh Configurations ]############################################################
 
 
@@ -110,8 +118,6 @@ pacman_update_and_cleanup() {
     yay && yay -Yc
     echo "[INFO] Executing: $ sudo pkgfile -u"
     sudo pkgfile -u
-    echo "[INFO] Executing: $ UpdateGrubConfigs"
-    sudo grub-mkconfig -o /boot/grub/grub.cfg
 }
 
 
