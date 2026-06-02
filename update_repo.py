@@ -10,6 +10,8 @@ The update flow is intentionally split into small steps:
 
 Most brittleness is isolated in ``utils.constants`` so upstream dotfile layout
 changes fail with targeted errors instead of silently generating partial files.
+
+NOTE: This script was rewritten with Codex.
 """
 
 from __future__ import annotations

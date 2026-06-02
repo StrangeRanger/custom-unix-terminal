@@ -4,6 +4,8 @@ The update script generates documentation includes from files in the dotfiles
 submodule. This module keeps the brittle, repository-specific details in one
 place: source/destination paths, section markers, and the render jobs that tie
 those pieces together.
+
+NOTE: This module was rewritten with Codex.
 """
 
 from dataclasses import dataclass
