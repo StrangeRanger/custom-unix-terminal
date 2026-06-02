@@ -60,17 +60,18 @@ def neovim_config() -> None:
         if operation == "init_vim_no_plug":
             data: list[str] = read_lines(paths.src)
             filtered_data: list[str] = []
+            is_within_section = False
 
             for current_line in data:
                 if NEOVIM_MARKERS.start_marker in current_line:
-                    NEOVIM_MARKERS.is_within_section = True
+                    is_within_section = True
                 if (
                     NEOVIM_MARKERS.end_marker in current_line
-                    and NEOVIM_MARKERS.is_within_section
+                    and is_within_section
                 ):
-                    NEOVIM_MARKERS.is_within_section = False
+                    is_within_section = False
                     break
-                if NEOVIM_MARKERS.is_within_section:
+                if is_within_section:
                     filtered_data.append(current_line)
             write_file(paths.dest, "".join(filtered_data))
         else:
@@ -133,6 +134,8 @@ def zsh_config() -> None:
     for file_operation, file_paths in ZSH_CONFIG_PATHS.items():
         data: list[str] = read_lines(file_paths.src)
         output_data: list[str] = []
+        is_within_alias_section = False
+        is_within_ls_colors_section = False
         line_number = 0
 
         while line_number < len(data):
@@ -153,31 +156,28 @@ def zsh_config() -> None:
                 continue
 
             if ZSH_ALIAS_MARKERS.start_marker in current_line:
-                ZSH_ALIAS_MARKERS.is_within_section = True
+                is_within_alias_section = True
                 output_data.append(ZENSICAL_USER_CONFIG_MARKERS.start_marker)
             elif ZSH_LS_COLORS_MARKERS.start_marker in current_line:
-                ZSH_LS_COLORS_MARKERS.is_within_section = True
+                is_within_ls_colors_section = True
                 output_data.append(ZENSICAL_LS_COLORS_MARKERS.start_marker)
 
             if (
                 ZSH_ALIAS_MARKERS.end_marker in current_line
-                and ZSH_ALIAS_MARKERS.is_within_section
+                and is_within_alias_section
             ):
-                ZSH_ALIAS_MARKERS.is_within_section = False
+                is_within_alias_section = False
                 output_data.append(ZENSICAL_USER_CONFIG_MARKERS.end_marker)
             elif (
                 ZSH_LS_COLORS_MARKERS.end_marker in current_line
-                and ZSH_LS_COLORS_MARKERS.is_within_section
+                and is_within_ls_colors_section
             ):
-                ZSH_LS_COLORS_MARKERS.is_within_section = False
+                is_within_ls_colors_section = False
                 if ZSH_LS_COLORS_MARKERS.hard_coded_inclusion:
                     output_data.extend(ZSH_LS_COLORS_MARKERS.hard_coded_inclusion)
                 output_data.append(ZENSICAL_LS_COLORS_MARKERS.end_marker)
 
-            if (
-                ZSH_ALIAS_MARKERS.is_within_section
-                or ZSH_LS_COLORS_MARKERS.is_within_section
-            ):
+            if is_within_alias_section or is_within_ls_colors_section:
                 output_data.append(current_line)
 
             line_number += 1
