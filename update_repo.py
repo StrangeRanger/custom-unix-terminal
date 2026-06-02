@@ -26,11 +26,14 @@ Example:
 
 # [ Imports ]###########################################################################
 
+from pathlib import Path
+
 from utils.file_utils import read_file, read_lines, write_file
 from utils.constants import (
     NEOVIM_CONFIG_PATHS,
     ZSH_CONFIG_PATHS,
     NEOVIM_MARKERS,
+    SectionMarker,
     ZSH_ALIAS_MARKERS,
     ZSH_LS_COLORS_MARKERS,
     ZENSICAL_USER_CONFIG_MARKERS,
@@ -41,38 +44,83 @@ from utils.constants import (
 # [ Functions ]#########################################################################
 
 
+def extract_between(
+    lines: list[str],
+    markers: SectionMarker,
+    *,
+    include_start: bool = True,
+    include_end: bool = False,
+    required: bool = True,
+) -> list[str]:
+    """Return lines inside a marker-delimited section.
+
+    Args:
+        lines: Source file contents split into newline-preserving lines.
+        markers: Marker pair that identifies the section to extract.
+        include_start: Include the line containing ``markers.start_marker``.
+        include_end: Include the line containing ``markers.end_marker``.
+        required: Raise ``ValueError`` when markers are missing. If ``False``,
+            return an empty list instead.
+
+    Returns:
+        Extracted lines in their original order.
+
+    Raises:
+        ValueError: The start or end marker was not found and ``required`` is
+            ``True``.
+    """
+    extracted_lines: list[str] = []
+    is_within_section = False
+    found_start_marker = False
+
+    for current_line in lines:
+        if not is_within_section:
+            if markers.start_marker in current_line:
+                found_start_marker = True
+                is_within_section = True
+                if include_start:
+                    extracted_lines.append(current_line)
+
+                # Keep the helper safe for single-line sections, even though the
+                # current config markers are expected to be on separate lines.
+                if markers.end_marker in current_line:
+                    if include_end and not include_start:
+                        extracted_lines.append(current_line)
+                    return extracted_lines
+
+            continue
+
+        if markers.end_marker in current_line:
+            if include_end:
+                extracted_lines.append(current_line)
+            return extracted_lines
+
+        extracted_lines.append(current_line)
+
+    if not required:
+        return []
+
+    # Marker drift should stop generation instead of silently writing partial files.
+    if not found_start_marker:
+        raise ValueError(f"Start marker not found: {markers.start_marker!r}")
+
+    raise ValueError(f"End marker not found: {markers.end_marker!r}")
+
+
 def neovim_config() -> None:
     """Process and write Neovim config file variants to the `includes` directory.
 
-    Handles two types of Neovim config processing:
-        1. `init_vim_no_plug`: Extracts content between designated section markers,
-           excluding plugin-related configurations.
-        2. Other variants: Copies the entire source file without modification.
+    The `init_vim_no_plug` variant extracts from the general configuration
+    marker through, but not including, the vim-plug marker. Other variants copy
+    the source file unchanged.
 
-    The function iterates through all Neovim config paths defined in
-    `NEOVIM_CONFIG_PATHS` and processes each according to its operation type.
-
-    Note:
-        The `init_vim_no_plug` operation relies on `NEOVIM_MARKERS` to identify
-        content boundaries. The end marker line itself is excluded from output.
+    Raises:
+        ValueError: The Neovim section markers are missing or reordered.
     """
     for operation, paths in NEOVIM_CONFIG_PATHS.items():
         if operation == "init_vim_no_plug":
             data: list[str] = read_lines(paths.src)
-            filtered_data: list[str] = []
-            is_within_section = False
-
-            for current_line in data:
-                if NEOVIM_MARKERS.start_marker in current_line:
-                    is_within_section = True
-                if (
-                    NEOVIM_MARKERS.end_marker in current_line
-                    and is_within_section
-                ):
-                    is_within_section = False
-                    break
-                if is_within_section:
-                    filtered_data.append(current_line)
+            filtered_data = extract_between(data, NEOVIM_MARKERS)
             write_file(paths.dest, "".join(filtered_data))
         else:
             data: str = read_file(paths.src)
@@ -115,72 +163,72 @@ def chezmoi_edge_case(current_line: str, data: list[str], line_number: int) -> i
     return 1
 
 
+def filter_chezmoi_template_actions(data: list[str], file_path: Path) -> list[str]:
+    """Remove chezmoi template action lines before writing shell snippets.
+
+    Args:
+        data: Source zsh template contents split into newline-preserving lines.
+        file_path: Source path used only for debug output.
+
+    Returns:
+        Lines with chezmoi action delimiters removed. Some known branch content is
+        skipped by `chezmoi_edge_case()` to preserve the intended generated zsh
+        output.
+    """
+    output_data: list[str] = []
+    line_number = 0
+
+    while line_number < len(data):
+        current_line = data[line_number]
+
+        ## DEBUG: The below lines help with debugging...
+        print(f"Processing line {line_number + 1} of {file_path}")
+        print(f"Line: {current_line}")
+
+        if current_line.lstrip().startswith("{{"):
+            # Chezmoi directives are not valid shell output; skip the directive and
+            # any branch content that this repository intentionally omits.
+            skip_line_count = chezmoi_edge_case(current_line, data, line_number)
+            line_number += skip_line_count
+            continue
+
+        output_data.append(current_line)
+        line_number += 1
+
+    return output_data
+
+
 def zsh_config() -> None:
     """Process and write zsh config file variants and snippets to the `includes`
     directory.
 
-    Handles two types of processing:
-        1. Full file operations: Copies entire source file, filtering chezmoi template
-           actions.
-        2. Snippet operations: Extracts specific sections and wraps with Zensical section
-           markers.
+    Full zsh outputs are the source templates with chezmoi actions filtered out.
+    Snippet outputs extract the aliases and `LS_COLORS` sections, then wrap them
+    with Zensical include markers.
 
-    For snippet operations, extracts alias and `LS_COLORS` sections based on predefined
-    markers and optionally appends hard-coded content.
-
-    Note:
-        Includes debug output for CI/CD troubleshooting.
+    Raises:
+        ValueError: A required zsh snippet section marker is missing or reordered.
     """
     for file_operation, file_paths in ZSH_CONFIG_PATHS.items():
         data: list[str] = read_lines(file_paths.src)
-        output_data: list[str] = []
-        is_within_alias_section = False
-        is_within_ls_colors_section = False
-        line_number = 0
+        output_data = filter_chezmoi_template_actions(data, file_paths.src)
 
-        while line_number < len(data):
-            current_line = data[line_number]
+        if file_operation.endswith("snippet"):
+            alias_lines = extract_between(output_data, ZSH_ALIAS_MARKERS)
+            ls_colors_lines = extract_between(output_data, ZSH_LS_COLORS_MARKERS)
+            if ZSH_LS_COLORS_MARKERS.hard_coded_inclusion:
+                ls_colors_lines.extend(ZSH_LS_COLORS_MARKERS.hard_coded_inclusion)
 
-            ## DEBUG: The below lines help with debugging...
-            print(f"Processing line {line_number + 1} of {file_paths.src}")
-            print(f"Line: {current_line}")
-
-            if current_line.lstrip().startswith("{{"):
-                skip_line_count = chezmoi_edge_case(current_line, data, line_number)
-                line_number += skip_line_count
-                continue
-
-            if not file_operation.endswith("snippet"):
-                output_data.append(current_line)
-                line_number += 1
-                continue
-
-            if ZSH_ALIAS_MARKERS.start_marker in current_line:
-                is_within_alias_section = True
-                output_data.append(ZENSICAL_USER_CONFIG_MARKERS.start_marker)
-            elif ZSH_LS_COLORS_MARKERS.start_marker in current_line:
-                is_within_ls_colors_section = True
-                output_data.append(ZENSICAL_LS_COLORS_MARKERS.start_marker)
-
-            if (
-                ZSH_ALIAS_MARKERS.end_marker in current_line
-                and is_within_alias_section
-            ):
-                is_within_alias_section = False
-                output_data.append(ZENSICAL_USER_CONFIG_MARKERS.end_marker)
-            elif (
-                ZSH_LS_COLORS_MARKERS.end_marker in current_line
-                and is_within_ls_colors_section
-            ):
-                is_within_ls_colors_section = False
-                if ZSH_LS_COLORS_MARKERS.hard_coded_inclusion:
-                    output_data.extend(ZSH_LS_COLORS_MARKERS.hard_coded_inclusion)
-                output_data.append(ZENSICAL_LS_COLORS_MARKERS.end_marker)
-
-            if is_within_alias_section or is_within_ls_colors_section:
-                output_data.append(current_line)
-
-            line_number += 1
+            output_data = [
+                ZENSICAL_USER_CONFIG_MARKERS.start_marker,
+                # Expand the extracted lines into the output list; join() expects
+                # a flat list of strings, not nested lists.
+                *alias_lines,
+                ZENSICAL_USER_CONFIG_MARKERS.end_marker,
+                ZENSICAL_LS_COLORS_MARKERS.start_marker,
+                *ls_colors_lines,
+                ZENSICAL_LS_COLORS_MARKERS.end_marker,
+            ]
 
         write_file(file_paths.dest, "".join(output_data))
 
