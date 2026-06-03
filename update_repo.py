@@ -83,6 +83,11 @@ def find_marker(lines: list[str], marker: str, *, start_at: int = 0) -> int | No
 
     The returned number starts at 0 because Python lists start counting at 0.
     Returns ``None`` when the marker is not found.
+
+    Args:
+        lines: Lines to search through.
+        marker: Text to look for inside each line.
+        start_at: Line number to start searching from. This also starts at 0.
     """
     for index in range(start_at, len(lines)):
         if marker in lines[index]:
@@ -193,6 +198,16 @@ def parse_chezmoi_if_block(
     This script only understands one ``if`` with an optional ``else``. It raises
     an error for more complicated blocks so template changes do not get handled
     incorrectly without anyone noticing.
+
+    Args:
+        lines: Template file contents as a list of lines.
+        start_index: Line number where the opening chezmoi ``if`` starts. This
+            starts at 0 because Python lists start counting at 0.
+        source_label: Name to show in error messages.
+
+    Raises:
+        ValueError: The block has duplicate ``else`` lines, contains another
+            ``if`` block, or does not have a closing ``end`` line.
     """
     then_lines: list[str] = []
     else_lines: list[str] | None = None
