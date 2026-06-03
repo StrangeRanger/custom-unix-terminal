@@ -475,19 +475,6 @@ def check_outputs(generated_files: Iterable[GeneratedFile]) -> bool:
     return is_current
 
 
-# [ Old function names kept for compatibility ] ################################
-
-
-def neovim_config() -> None:
-    """Keep the old Neovim-only update function available."""
-    write_outputs(generate_neovim_outputs())
-
-
-def zsh_config() -> None:
-    """Keep the old zsh-only update function available."""
-    write_outputs(generate_zsh_outputs())
-
-
 # [ Command-line interface ] ###################################################
 
 
@@ -498,12 +485,14 @@ def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
         formatter_class=argparse.RawDescriptionHelpFormatter,
     )
     parser.add_argument(
-        "-c", "--check",
+        "-c",
+        "--check",
         action="store_true",
         help="verify generated files are current without writing them",
     )
     parser.add_argument(
-        "-d", "--debug",
+        "-d",
+        "--debug",
         action="store_true",
         help="show detailed rendering decisions",
     )

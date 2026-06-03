@@ -156,11 +156,3 @@ ZSH_JOBS: Final[tuple[RenderJob, ...]] = (
         kind=RenderKind.ZSH_SNIPPET,
     ),
 )
-
-# Compatibility aliases for older imports and one-off scripts.
-NEOVIM_CONFIG_PATHS: Final[dict[str, ConfigPath]] = {
-    job.name: job.paths for job in NEOVIM_JOBS
-}
-ZSH_CONFIG_PATHS: Final[dict[str, ConfigPath]] = {
-    job.name: job.paths for job in ZSH_JOBS
-}

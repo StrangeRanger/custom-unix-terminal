@@ -23,8 +23,3 @@ def write_text(
     path = Path(file_path)
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(data, encoding=encoding)
-
-
-# Backwards-compatible aliases for older imports.
-read_file = read_text
-write_file = write_text
