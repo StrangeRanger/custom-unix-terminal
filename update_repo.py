@@ -4,8 +4,8 @@
 The update flow is intentionally split into small steps:
 
 1. Read a configured source file.
-2. Render repository-specific chezmoi template choices when needed.
-3. Extract configured sections when needed.
+2. Resolve repository-specific chezmoi template choices when needed.
+3. Copy configured sections when needed.
 4. Write or check the generated include files.
 
 Most brittleness is isolated in ``utils.constants`` so upstream dotfile layout
@@ -39,9 +39,12 @@ TEMPLATE_ELSE = "{{- else -}}"
 TEMPLATE_END = "{{- end }}"
 
 
+# [ Data containers ] ##########################################################
+
+
 @dataclass(frozen=True)
 class GeneratedFile:
-    """A generated file that can be written or checked."""
+    """Details for one file this script creates or compares."""
 
     name: str
     source: Path
@@ -51,41 +54,40 @@ class GeneratedFile:
 
 @dataclass(frozen=True)
 class ChezmoiIfBlock:
-    """A simple chezmoi if/else/end block extracted from a zsh template."""
+    """The parts of one small chezmoi if/else/end section in a zsh file."""
 
     then_lines: list[str]
     else_lines: list[str] | None
     end_index: int
 
 
+# [ General helpers ] ##########################################################
+
+
 def count_lines(text: str) -> int:
-    """Return a human-friendly line count for logging."""
+    """Count text lines in the same way people usually count file lines."""
     return len(text.splitlines())
 
 
 def configure_logging(debug: bool) -> None:
-    """Configure console logging for the update run."""
+    """Set how much progress information the script prints."""
     level = logging.DEBUG if debug else logging.INFO
     logging.basicConfig(level=level, format="[%(levelname)s] %(message)s")
 
 
-def is_template_directive(line: str) -> bool:
-    """Return whether a line starts with a chezmoi template action."""
-    return line.lstrip().startswith(TEMPLATE_PREFIX)
+# [ Section extraction helpers ] ###############################################
 
 
-def is_gui_if_directive(line: str) -> bool:
-    """Return whether a template directive opens the supported GUI condition."""
-    return (
-        is_template_directive(line)
-        and line.lstrip().startswith("{{ if")
-        and GUI_CONDITION in line
-    )
+def find_marker(lines: list[str], marker: str, *, start_at: int = 0) -> int | None:
+    """Find the first line number that contains ``marker``.
 
-
-def is_if_directive(line: str) -> bool:
-    """Return whether a template directive opens any chezmoi if block."""
-    return is_template_directive(line) and line.lstrip().startswith("{{ if")
+    The returned number starts at 0 because Python lists start counting at 0.
+    Returns ``None`` when the marker is not found.
+    """
+    for index in range(start_at, len(lines)):
+        if marker in lines[index]:
+            return index
+    return None
 
 
 def extract_section(
@@ -97,22 +99,23 @@ def extract_section(
     required: bool = True,
     source_label: str = "input",
 ) -> list[str]:
-    """Extract lines inside a marker-delimited section.
+    """Copy a block of lines between two known marker strings.
 
     Args:
-        lines: Source contents split into newline-preserving lines.
-        markers: Marker pair that identifies the section to extract.
-        include_start: Include the line containing ``markers.start_marker``.
-        include_end: Include the line containing ``markers.end_marker``.
-        required: Raise ``ValueError`` when markers are missing. If ``False``,
-            return an empty list instead.
-        source_label: Human-readable source name for logs and errors.
+        lines: File contents as a list of lines. Each line still includes its
+            ending newline character, if it had one.
+        markers: The start and end text that identify the block to copy.
+        include_start: Include the line that contains the start marker.
+        include_end: Include the line that contains the end marker.
+        required: If ``True``, stop with an error when a marker is missing. If
+            ``False``, return an empty list when a marker is missing.
+        source_label: Name to show in log messages and errors.
 
     Returns:
-        Extracted lines in their original order.
+        The copied lines, in the same order they appeared in the source file.
 
     Raises:
-        ValueError: A required start or end marker was not found.
+        ValueError: A required start or end marker could not be found.
     """
     start_index = find_marker(lines, markers.start_marker)
     if start_index is None:
@@ -157,12 +160,26 @@ def extract_section(
     return section
 
 
-def find_marker(lines: list[str], marker: str, *, start_at: int = 0) -> int | None:
-    """Return the first index containing ``marker`` at or after ``start_at``."""
-    for index in range(start_at, len(lines)):
-        if marker in lines[index]:
-            return index
-    return None
+# [ Chezmoi template helpers] ##################################################
+
+
+def is_template_directive(line: str) -> bool:
+    """Check whether a line starts with a chezmoi template command."""
+    return line.lstrip().startswith(TEMPLATE_PREFIX)
+
+
+def is_gui_if_directive(line: str) -> bool:
+    """Check whether a line starts the GUI-only chezmoi condition we support."""
+    return (
+        is_template_directive(line)
+        and line.lstrip().startswith("{{ if")
+        and GUI_CONDITION in line
+    )
+
+
+def is_if_directive(line: str) -> bool:
+    """Check whether a line starts any chezmoi if statement."""
+    return is_template_directive(line) and line.lstrip().startswith("{{ if")
 
 
 def parse_chezmoi_if_block(
@@ -171,10 +188,11 @@ def parse_chezmoi_if_block(
     *,
     source_label: str,
 ) -> ChezmoiIfBlock:
-    """Parse the simple chezmoi if blocks used by the zsh templates.
+    """Read one simple chezmoi if block from a zsh template.
 
-    The current templates only need one level of ``if`` with an optional ``else``.
-    Raising on nested or unclosed blocks makes upstream template changes obvious.
+    This script only understands one ``if`` with an optional ``else``. It raises
+    an error for more complicated blocks so template changes do not get handled
+    incorrectly without anyone noticing.
     """
     then_lines: list[str] = []
     else_lines: list[str] | None = None
@@ -209,11 +227,11 @@ def parse_chezmoi_if_block(
 
 
 def render_zsh_template_for_docs(lines: list[str], *, source_label: str) -> list[str]:
-    """Render the small chezmoi subset used by zsh templates for docs output.
+    """Turn zsh template lines into plain zsh lines for documentation.
 
-    The docs output intentionally keeps the non-GUI branch when a GUI condition
-    has an ``else`` block. If the GUI condition has no ``else`` block, the body is
-    kept to preserve the historical generated output.
+    When the template has separate GUI and non-GUI versions, the documentation
+    uses the non-GUI version. If there is no non-GUI version, the GUI-only lines
+    are kept so the generated documentation stays the same as before.
     """
     output_lines: list[str] = []
     dropped_directives = 0
@@ -276,8 +294,11 @@ def render_zsh_template_for_docs(lines: list[str], *, source_label: str) -> list
     return output_lines
 
 
+# [ Documentation content builders ] ###########################################
+
+
 def build_zsh_snippet(rendered_lines: list[str], *, source_label: str) -> str:
-    """Build a Zensical zsh snippet from rendered zsh lines."""
+    """Create the smaller zsh snippet used by the Zensical documentation."""
     output_lines: list[str] = []
 
     for section in ZSH_SNIPPET_SECTIONS:
@@ -316,7 +337,7 @@ def build_zsh_snippet(rendered_lines: list[str], *, source_label: str) -> str:
 
 
 def render_neovim_job(job: RenderJob) -> GeneratedFile:
-    """Render one Neovim output job."""
+    """Create the content for one generated Neovim documentation file."""
     if job.kind == RenderKind.COPY:
         content = read_text(job.paths.src)
     elif job.kind == RenderKind.EXTRACT_SECTION:
@@ -345,7 +366,7 @@ def render_neovim_job(job: RenderJob) -> GeneratedFile:
 
 
 def render_zsh_job(job: RenderJob) -> GeneratedFile:
-    """Render one zsh output job."""
+    """Create the content for one generated zsh documentation file."""
     rendered_lines = render_zsh_template_for_docs(
         read_lines(job.paths.src),
         source_label=str(job.paths.src),
@@ -369,29 +390,32 @@ def render_zsh_job(job: RenderJob) -> GeneratedFile:
 
 
 def generate_neovim_outputs() -> list[GeneratedFile]:
-    """Generate all configured Neovim outputs in memory."""
+    """Create all Neovim documentation files without writing them yet."""
     return [render_neovim_job(job) for job in NEOVIM_JOBS]
 
 
 def generate_zsh_outputs() -> list[GeneratedFile]:
-    """Generate all configured zsh outputs in memory."""
+    """Create all zsh documentation files without writing them yet."""
     return [render_zsh_job(job) for job in ZSH_JOBS]
 
 
 def generate_outputs() -> list[GeneratedFile]:
-    """Generate every configured output in memory."""
+    """Create every documentation file without writing anything yet."""
     return [*generate_neovim_outputs(), *generate_zsh_outputs()]
 
 
+# [ Generated file operations ] ################################################
+
+
 def write_outputs(generated_files: Sequence[GeneratedFile]) -> None:
-    """Write generated files to disk."""
+    """Save generated files to their destination paths."""
     for generated_file in generated_files:
         write_text(generated_file.destination, generated_file.content)
         LOGGER.info("Wrote %s", generated_file.destination)
 
 
 def check_outputs(generated_files: Sequence[GeneratedFile]) -> bool:
-    """Return whether generated content matches files already on disk."""
+    """Check whether the saved files already match the generated content."""
     is_current = True
 
     for generated_file in generated_files:
@@ -410,18 +434,24 @@ def check_outputs(generated_files: Sequence[GeneratedFile]) -> bool:
     return is_current
 
 
+# [ Old function names kept for compatibility ] ################################
+
+
 def neovim_config() -> None:
-    """Compatibility wrapper that writes only Neovim outputs."""
+    """Keep the old Neovim-only update function available."""
     write_outputs(generate_neovim_outputs())
 
 
 def zsh_config() -> None:
-    """Compatibility wrapper that writes only zsh outputs."""
+    """Keep the old zsh-only update function available."""
     write_outputs(generate_zsh_outputs())
 
 
+# [ Command-line interface ] ###################################################
+
+
 def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
-    """Parse command-line arguments."""
+    """Read the command-line options passed to this script."""
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
         "--check",
@@ -437,7 +467,7 @@ def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
 
 
 def main(argv: Sequence[str] | None = None) -> int:
-    """Generate or check repository include files."""
+    """Run the script: either update generated files or check if they are current."""
     args = parse_args(argv)
     configure_logging(debug=args.debug)
 
@@ -450,6 +480,8 @@ def main(argv: Sequence[str] | None = None) -> int:
     write_outputs(generated_files)
     return 0
 
+
+# [ Dunder Main ] ##############################################################
 
 if __name__ == "__main__":
     raise SystemExit(main())
