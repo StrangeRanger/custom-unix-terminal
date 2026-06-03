@@ -1,4 +1,10 @@
-"""Small filesystem helpers used by update_repo.py."""
+"""Text-file helpers shared by the repository update scripts.
+
+This module centralizes simple UTF-8 file operations used by ``update_repo.py``:
+reading a whole file, reading newline-preserving lines, and writing text while
+creating parent directories when needed. It also keeps older ``read_file`` and
+``write_file`` names available for compatibility.
+"""
 
 from pathlib import Path
 

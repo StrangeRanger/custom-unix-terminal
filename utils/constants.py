@@ -1,11 +1,12 @@
-"""Configuration for the repository update automation.
+"""Repository-specific configuration for ``update_repo.py``.
 
-The update script generates documentation includes from files in the dotfiles
-submodule. This module keeps the brittle, repository-specific details in one
-place: source/destination paths, section markers, and the render jobs that tie
-those pieces together.
+This module defines the small data structures and constants used to generate
+documentation include files from the dotfiles submodule. It keeps source paths,
+destination paths, section markers, snippet wrapper markers, and render jobs in
+one place so the update script can focus on reading, transforming, and writing
+files.
 
-NOTE: This module was rewritten with Codex.
+NOTE: This script was rewritten with Codex and modified by Hunter T.
 """
 
 from dataclasses import dataclass
