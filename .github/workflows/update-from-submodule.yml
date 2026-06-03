@@ -54,11 +54,11 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Run repo update script
-        run: python update_repo.py
-
       - name: Run update repo tests
         run: python -m unittest discover -s tests
+
+      - name: Run repo update script
+        run: python update_repo.py
 
       - name: Verify generated files are current
         run: python update_repo.py --check

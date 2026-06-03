@@ -23,9 +23,6 @@ jobs:
       - name: Install the project
         run: uv sync --locked
 
-      - name: Run update repo tests
-        run: python -m unittest discover -s tests
-
       - name: Verify generated files are current
         run: python update_repo.py --check
 
