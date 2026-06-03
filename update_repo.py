@@ -29,7 +29,7 @@ import argparse
 import logging
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Sequence
+from collections.abc import Sequence, Iterable
 
 from utils.constants import (
     NEOVIM_JOBS,
@@ -448,14 +448,14 @@ def generate_outputs() -> list[GeneratedFile]:
 # [ Generated file operations ] ################################################
 
 
-def write_outputs(generated_files: Sequence[GeneratedFile]) -> None:
+def write_outputs(generated_files: Iterable[GeneratedFile]) -> None:
     """Save generated files to their destination paths."""
     for generated_file in generated_files:
         write_text(generated_file.destination, generated_file.content)
         LOGGER.info("Wrote %s", generated_file.destination)
 
 
-def check_outputs(generated_files: Sequence[GeneratedFile]) -> bool:
+def check_outputs(generated_files: Iterable[GeneratedFile]) -> bool:
     """Check whether the saved files already match the generated content."""
     is_current = True
 
