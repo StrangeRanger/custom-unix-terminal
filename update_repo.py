@@ -1,17 +1,26 @@
 #!/usr/bin/env python3
-"""Generate documentation includes from the dotfiles submodule.
+"""Generate checked-in documentation snippets from the dotfiles submodule.
 
-The update flow is intentionally split into small steps:
+This script keeps the documentation include files in sync with the source
+configuration files stored under ``submodules/dotfiles``. It reads the configured
+Neovim and zsh source files, prepares the documentation-friendly versions, and
+either writes the generated include files or checks that the checked-in files are
+already current.
+
+The main update flow is:
 
 1. Read a configured source file.
-2. Resolve repository-specific chezmoi template choices when needed.
-3. Copy configured sections when needed.
-4. Write or check the generated include files.
+2. Resolve the small chezmoi template patterns used by zsh files.
+3. Copy configured sections when only part of a source file belongs in docs.
+4. Build ``GeneratedFile`` objects that describe the intended output files.
+5. Write those files, or compare them with the files already on disk.
 
-Most brittleness is isolated in ``utils.constants`` so upstream dotfile layout
-changes fail with targeted errors instead of silently generating partial files.
+The exact source paths, destination paths, and section markers live in
+``utils.constants``. Keeping that configuration separate makes source layout
+changes fail with targeted errors instead of silently producing partial or
+misleading documentation.
 
-NOTE: This script was rewritten with Codex.
+NOTE: This script was rewritten with Codex and modified by Hunter T.
 """
 
 from __future__ import annotations
@@ -59,6 +68,23 @@ class ChezmoiIfBlock:
     then_lines: list[str]
     else_lines: list[str] | None
     end_index: int
+
+
+class DescriptionFirstArgumentParser(argparse.ArgumentParser):
+    """Argument parser that prints the description before the usage line."""
+
+    def format_help(self) -> str:
+        """Build help text with description, usage, then options."""
+        help_text = super().format_help()
+
+        if not self.description:
+            return help_text
+
+        description_text = f"{self.description}\n\n"
+        if description_text not in help_text:
+            return help_text
+
+        return f"{description_text}{help_text.replace(description_text, '', 1)}"
 
 
 # [ General helpers ] ##########################################################
@@ -467,14 +493,17 @@ def zsh_config() -> None:
 
 def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
     """Read the command-line options passed to this script."""
-    parser = argparse.ArgumentParser(description=__doc__)
+    parser = DescriptionFirstArgumentParser(
+        description=(__doc__ or "").split("\n\n", maxsplit=1)[0],
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+    )
     parser.add_argument(
-        "--check",
+        "-c", "--check",
         action="store_true",
         help="verify generated files are current without writing them",
     )
     parser.add_argument(
-        "--debug",
+        "-d", "--debug",
         action="store_true",
         help="show detailed rendering decisions",
     )
