@@ -27,9 +27,9 @@ from __future__ import annotations
 
 import argparse
 import logging
+from collections.abc import Iterable, Sequence
 from dataclasses import dataclass
 from pathlib import Path
-from collections.abc import Sequence, Iterable
 
 from utils.constants import (
     NEOVIM_JOBS,
@@ -37,15 +37,12 @@ from utils.constants import (
     ZSH_SNIPPET_SECTIONS,
     RenderJob,
     RenderKind,
-    SectionMarker,
 )
+from utils.chezmoi_utils import render_zsh_template_for_docs
 from utils.file_utils import read_lines, read_text, write_text
+from utils.section_utils import extract_section
 
 LOGGER = logging.getLogger(__name__)
-GUI_CONDITION = "data.isGUIEnvironment"
-TEMPLATE_PREFIX = "{{"
-TEMPLATE_ELSE = "{{- else -}}"
-TEMPLATE_END = "{{- end }}"
 
 
 # [ Data containers ] ##########################################################
@@ -61,15 +58,6 @@ class GeneratedFile:
     content: str
 
 
-@dataclass(frozen=True)
-class ChezmoiIfBlock:
-    """The parts of one small chezmoi if/else/end section in a zsh file."""
-
-    then_lines: list[str]
-    else_lines: list[str] | None
-    end_index: int
-
-
 # [ General helpers ] ##########################################################
 
 
@@ -82,314 +70,6 @@ def configure_logging(debug: bool) -> None:
     """Set how much progress information the script prints."""
     level = logging.DEBUG if debug else logging.INFO
     logging.basicConfig(level=level, format="[%(levelname)s] %(message)s")
-
-
-# [ Section extraction helpers ] ###############################################
-
-
-def find_marker(lines: list[str], marker: str, *, start_at: int = 0) -> int | None:
-    """Find the first line number that contains ``marker``.
-
-    The returned number starts at 0 because Python lists start counting at 0.
-    Returns ``None`` when the marker is not found.
-
-    Args:
-        lines: Lines to search through.
-        marker: Text to look for inside each line.
-        start_at: Line number to start searching from. This also starts at 0.
-    """
-    for index in range(start_at, len(lines)):
-        if marker in lines[index]:
-            return index
-    return None
-
-
-def handle_missing_marker(
-    marker_kind: str,
-    marker: str,
-    *,
-    required: bool,
-    source_label: str,
-) -> None:
-    """Log optional missing markers or raise for required ones."""
-    if required:
-        raise ValueError(f"{source_label}: {marker_kind} marker not found: {marker!r}")
-
-    LOGGER.debug(
-        "%s: optional %s marker not found: %r",
-        source_label,
-        marker_kind,
-        marker,
-    )
-
-
-def find_section_bounds(
-    lines: list[str],
-    markers: SectionMarker,
-    *,
-    required: bool,
-    source_label: str,
-) -> tuple[int, int] | None:
-    """Find the start and end line numbers for a configured section."""
-    start_index = find_marker(lines, markers.start_marker)
-    if start_index is None:
-        handle_missing_marker(
-            "start",
-            markers.start_marker,
-            required=required,
-            source_label=source_label,
-        )
-        return None
-
-    end_index = find_marker(lines, markers.end_marker, start_at=start_index)
-    if end_index is None:
-        handle_missing_marker(
-            "end",
-            markers.end_marker,
-            required=required,
-            source_label=source_label,
-        )
-        return None
-
-    return start_index, end_index
-
-
-def copy_section_lines(
-    lines: list[str],
-    start_index: int,
-    end_index: int,
-    *,
-    include_start: bool,
-    include_end: bool,
-) -> list[str]:
-    """Copy selected lines using already-found section bounds."""
-    if start_index == end_index:
-        return [lines[start_index]] if include_start or include_end else []
-
-    first_index = start_index if include_start else start_index + 1
-    last_index = end_index + 1 if include_end else end_index
-    return lines[first_index:last_index]
-
-
-def extract_section(
-    lines: list[str],
-    markers: SectionMarker,
-    *,
-    include_start: bool = True,
-    include_end: bool = False,
-    required: bool = True,
-    source_label: str = "input",
-) -> list[str]:
-    """Copy a block of lines between two known marker strings.
-
-    Args:
-        lines: File contents as a list of lines. Each line still includes its
-            ending newline character, if it had one.
-        markers: The start and end text that identify the block to copy.
-        include_start: Include the line that contains the start marker.
-        include_end: Include the line that contains the end marker.
-        required: If ``True``, stop with an error when a marker is missing. If
-            ``False``, return an empty list when a marker is missing.
-        source_label: Name to show in log messages and errors.
-
-    Returns:
-        The copied lines, in the same order they appeared in the source file.
-
-    Raises:
-        ValueError: A required start or end marker could not be found.
-    """
-    bounds = find_section_bounds(
-        lines,
-        markers,
-        required=required,
-        source_label=source_label,
-    )
-    if bounds is None:
-        return []
-
-    start_index, end_index = bounds
-    section = copy_section_lines(
-        lines,
-        start_index,
-        end_index,
-        include_start=include_start,
-        include_end=include_end,
-    )
-
-    LOGGER.debug(
-        "%s: extracted lines %d-%d using %r -> %r (%d line(s))",
-        source_label,
-        start_index + 1,
-        end_index + 1,
-        markers.start_marker,
-        markers.end_marker,
-        len(section),
-    )
-    return section
-
-
-# [ Chezmoi template helpers] ##################################################
-
-
-def is_template_directive(line: str) -> bool:
-    """Check whether a line starts with a chezmoi template command."""
-    return line.lstrip().startswith(TEMPLATE_PREFIX)
-
-
-def is_gui_if_directive(line: str) -> bool:
-    """Check whether a line starts the GUI-only chezmoi condition we support."""
-    return (
-        is_template_directive(line)
-        and line.lstrip().startswith("{{ if")
-        and GUI_CONDITION in line
-    )
-
-
-def is_if_directive(line: str) -> bool:
-    """Check whether a line starts any chezmoi if statement."""
-    return is_template_directive(line) and line.lstrip().startswith("{{ if")
-
-
-def parse_chezmoi_if_block(
-    lines: list[str],
-    start_index: int,
-    *,
-    source_label: str,
-) -> ChezmoiIfBlock:
-    """Read one simple chezmoi if block from a zsh template.
-
-    This script only understands one ``if`` with an optional ``else``. It raises
-    an error for more complicated blocks so template changes do not get handled
-    incorrectly without anyone noticing.
-
-    Args:
-        lines: Template file contents as a list of lines.
-        start_index: Line number where the opening chezmoi ``if`` starts. This
-            starts at 0 because Python lists start counting at 0.
-        source_label: Name to show in error messages.
-
-    Raises:
-        ValueError: The block has duplicate ``else`` lines, contains another
-            ``if`` block, or does not have a closing ``end`` line.
-    """
-    then_lines: list[str] = []
-    else_lines: list[str] | None = None
-    # active_lines points at the list that should receive body lines as we scan.
-    # It starts with the "if" body and switches to the "else" body if one exists.
-    active_lines = then_lines
-
-    for index in range(start_index + 1, len(lines)):
-        current_line = lines[index]
-        stripped_line = current_line.strip()
-
-        if stripped_line == TEMPLATE_ELSE:
-            if else_lines is not None:
-                raise ValueError(f"{source_label}:{index + 1}: duplicate chezmoi else")
-            else_lines = []
-            active_lines = else_lines
-            continue
-
-        if stripped_line == TEMPLATE_END:
-            return ChezmoiIfBlock(
-                then_lines=then_lines,
-                else_lines=else_lines,
-                end_index=index,
-            )
-
-        if is_if_directive(current_line):
-            raise ValueError(
-                f"{source_label}:{index + 1}: nested chezmoi if blocks are not supported"
-            )
-
-        active_lines.append(current_line)
-
-    raise ValueError(f"{source_label}:{start_index + 1}: unclosed chezmoi if block")
-
-
-def resolve_gui_if_block(
-    lines: list[str],
-    start_index: int,
-    *,
-    source_label: str,
-) -> tuple[list[str], int, int]:
-    """Choose the zsh lines to keep from one supported GUI template block."""
-    block = parse_chezmoi_if_block(lines, start_index, source_label=source_label)
-    # Docs should show the non-GUI setup when the template offers one.
-    # If no "else" exists, keep the GUI body to preserve older output.
-    selected_lines = (
-        block.else_lines if block.else_lines is not None else block.then_lines
-    )
-    selected_branch = "else/non-GUI" if block.else_lines is not None else "then/no-else"
-
-    LOGGER.debug(
-        "%s:%d: selected %s branch from GUI block (%d line(s))",
-        source_label,
-        start_index + 1,
-        selected_branch,
-        len(selected_lines),
-    )
-
-    # Count the template-only lines removed from the final zsh output.
-    dropped_directives = 3 if block.else_lines is not None else 2
-    return selected_lines, block.end_index + 1, dropped_directives
-
-
-def render_zsh_template_for_docs(lines: list[str], *, source_label: str) -> list[str]:
-    """Turn zsh template lines into plain zsh lines for documentation.
-
-    When the template has separate GUI and non-GUI versions, the documentation
-    uses the non-GUI version. If there is no non-GUI version, the GUI-only lines
-    are kept so the generated documentation stays the same as before.
-    """
-    output_lines: list[str] = []
-    dropped_directives = 0
-    resolved_blocks = 0
-    index = 0
-
-    while index < len(lines):
-        current_line = lines[index]
-
-        if not is_template_directive(current_line):
-            output_lines.append(current_line)
-            index += 1
-            continue
-
-        if is_gui_if_directive(current_line):
-            selected_lines, next_index, dropped_count = resolve_gui_if_block(
-                lines,
-                index,
-                source_label=source_label,
-            )
-            output_lines.extend(selected_lines)
-            dropped_directives += dropped_count
-            resolved_blocks += 1
-            index = next_index
-            continue
-
-        if is_if_directive(current_line):
-            raise ValueError(
-                f"{source_label}:{index + 1}: unsupported chezmoi if directive"
-            )
-
-        LOGGER.debug(
-            "%s:%d: dropped template directive: %s",
-            source_label,
-            index + 1,
-            current_line.strip(),
-        )
-        dropped_directives += 1
-        index += 1
-
-    LOGGER.info(
-        "Rendered %s: %d source line(s) -> %d output line(s), "
-        "dropped %d directive(s), resolved %d block(s)",
-        source_label,
-        len(lines),
-        len(output_lines),
-        dropped_directives,
-        resolved_blocks,
-    )
-    return output_lines
 
 
 # [ Documentation content builders ] ###########################################

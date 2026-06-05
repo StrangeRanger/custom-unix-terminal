@@ -8,15 +8,13 @@ from update_repo import (
     GeneratedFile,
     build_zsh_snippet,
     check_outputs,
-    extract_section,
-    find_marker,
     generate_outputs,
     parse_args,
-    parse_chezmoi_if_block,
-    render_zsh_template_for_docs,
 )
+from utils.chezmoi_utils import parse_chezmoi_if_block, render_zsh_template_for_docs
 from utils.constants import SectionMarker
 from utils.file_utils import read_text
+from utils.section_utils import extract_section, find_marker
 
 
 class FindMarkerTests(unittest.TestCase):
