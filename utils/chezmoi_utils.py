@@ -1,8 +1,8 @@
 """Helpers for rendering supported chezmoi zsh templates for documentation.
 
-This module handles only the small subset of chezmoi template syntax used by the
-zsh source files. Unsupported or more complex template blocks raise errors so
-source template changes do not silently produce misleading documentation.
+This module handles only the small subset of chezmoi template syntax used by the zsh
+source files. Unsupported or more complex template blocks raise errors so source
+template changes do not silently produce misleading documentation.
 """
 
 from __future__ import annotations
@@ -136,9 +136,9 @@ def _resolve_gui_if_block(
 def render_zsh_template_for_docs(lines: list[str], *, source_label: str) -> list[str]:
     """Turn zsh template lines into plain zsh lines for documentation.
 
-    When the template has separate GUI and non-GUI versions, the documentation
-    uses the non-GUI version. If there is no non-GUI version, the GUI-only lines
-    are kept so the generated documentation stays the same as before.
+    When the template has separate GUI and non-GUI versions, the documentation uses the
+    non-GUI version. If there is no non-GUI version, the GUI-only lines are kept so the
+    generated documentation stays the same as before.
 
     Args:
         lines: Template file contents as a list of lines.
