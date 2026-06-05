@@ -17,9 +17,6 @@ LOGGER = logging.getLogger(__name__)
 def find_marker(lines: list[str], marker: str, *, start_at: int = 0) -> int | None:
     """Find the first line number that contains ``marker``.
 
-    The returned number starts at 0 because Python lists start counting at 0.
-    Returns ``None`` when the marker is not found.
-
     Args:
         lines: Lines to search through.
         marker: Text to look for inside each line.
@@ -38,7 +35,14 @@ def handle_missing_marker(
     required: bool,
     source_label: str,
 ) -> None:
-    """Log optional missing markers or raise for required ones."""
+    """Log optional missing markers or raise for required ones.
+
+    Args:
+        marker_kind: Human-readable marker type, such as ``"start"`` or ``"end"``.
+        marker: Marker text that could not be found.
+        required: If ``True``, raise an error instead of logging.
+        source_label: Name to show in log messages and errors.
+    """
     if required:
         raise ValueError(f"{source_label}: {marker_kind} marker not found: {marker!r}")
 
@@ -57,7 +61,18 @@ def find_section_bounds(
     required: bool,
     source_label: str,
 ) -> tuple[int, int] | None:
-    """Find the start and end line numbers for a configured section."""
+    """Find the start and end line numbers for a configured section.
+
+    Args:
+        lines: Lines to search through.
+        markers: The start and end text that identify the section.
+        required: If ``True``, raise an error when either marker is missing. If
+            ``False``, return ``None`` when either marker is missing.
+        source_label: Name to show in log messages and errors.
+
+    Raises:
+        ValueError: A required start or end marker could not be found.
+    """
     start_index = find_marker(lines, markers.start_marker)
     if start_index is None:
         handle_missing_marker(
@@ -89,7 +104,15 @@ def copy_section_lines(
     include_start: bool,
     include_end: bool,
 ) -> list[str]:
-    """Copy selected lines using already-found section bounds."""
+    """Copy selected lines using already-found section bounds.
+
+    Args:
+        lines: Lines to copy from.
+        start_index: Line number containing the start marker. This starts at 0.
+        end_index: Line number containing the end marker. This starts at 0.
+        include_start: Include the line at ``start_index`` in the result.
+        include_end: Include the line at ``end_index`` in the result.
+    """
     if start_index == end_index:
         return [lines[start_index]] if include_start or include_end else []
 
