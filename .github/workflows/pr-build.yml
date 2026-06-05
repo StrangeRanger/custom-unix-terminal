@@ -15,12 +15,16 @@ jobs:
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
         with:
           fetch-depth: 1
+          submodules: true
 
       - name: Install uv
         uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b # v8.1.0
 
       - name: Install the project
         run: uv sync --locked
+
+      - name: Verify generated files are current
+        run: python update_repo.py --check
 
       - name: Build the site with Zensical
         run: uv run zensical build
