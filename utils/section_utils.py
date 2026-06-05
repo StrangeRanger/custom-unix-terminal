@@ -14,7 +14,7 @@ from utils.constants import SectionMarker
 LOGGER = logging.getLogger(__name__)
 
 
-def find_marker(lines: list[str], marker: str, *, start_at: int = 0) -> int | None:
+def _find_marker(lines: list[str], marker: str, *, start_at: int = 0) -> int | None:
     """Find the first line number that contains ``marker``.
 
     Args:
@@ -28,7 +28,7 @@ def find_marker(lines: list[str], marker: str, *, start_at: int = 0) -> int | No
     return None
 
 
-def handle_missing_marker(
+def _handle_missing_marker(
     marker_kind: str,
     marker: str,
     *,
@@ -54,7 +54,7 @@ def handle_missing_marker(
     )
 
 
-def find_section_bounds(
+def _find_section_bounds(
     lines: list[str],
     markers: SectionMarker,
     *,
@@ -73,9 +73,9 @@ def find_section_bounds(
     Raises:
         ValueError: A required start or end marker could not be found.
     """
-    start_index = find_marker(lines, markers.start_marker)
+    start_index = _find_marker(lines, markers.start_marker)
     if start_index is None:
-        handle_missing_marker(
+        _handle_missing_marker(
             "start",
             markers.start_marker,
             required=required,
@@ -83,9 +83,9 @@ def find_section_bounds(
         )
         return None
 
-    end_index = find_marker(lines, markers.end_marker, start_at=start_index)
+    end_index = _find_marker(lines, markers.end_marker, start_at=start_index)
     if end_index is None:
-        handle_missing_marker(
+        _handle_missing_marker(
             "end",
             markers.end_marker,
             required=required,
@@ -96,7 +96,7 @@ def find_section_bounds(
     return start_index, end_index
 
 
-def copy_section_lines(
+def _copy_section_lines(
     lines: list[str],
     start_index: int,
     end_index: int,
@@ -148,7 +148,7 @@ def extract_section(
     Raises:
         ValueError: A required start or end marker could not be found.
     """
-    bounds = find_section_bounds(
+    bounds = _find_section_bounds(
         lines,
         markers,
         required=required,
@@ -158,7 +158,7 @@ def extract_section(
         return []
 
     start_index, end_index = bounds
-    section = copy_section_lines(
+    section = _copy_section_lines(
         lines,
         start_index,
         end_index,
