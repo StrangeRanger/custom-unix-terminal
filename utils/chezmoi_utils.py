@@ -34,18 +34,12 @@ def _is_template_directive(line: str) -> bool:
 
 def _is_gui_if_directive(line: str) -> bool:
     """Check whether a line starts the GUI-only chezmoi condition we support."""
-    return (
-        is_template_directive(line)
-        and line.lstrip().startswith(TEMPLATE_IF_PREFIXES)
-        and GUI_CONDITION in line
-    )
+    return line.lstrip().startswith(TEMPLATE_IF_PREFIXES) and GUI_CONDITION in line
 
 
 def _is_if_directive(line: str) -> bool:
     """Check whether a line starts any chezmoi if statement."""
-    return is_template_directive(line) and line.lstrip().startswith(
-        TEMPLATE_IF_PREFIXES
-    )
+    return line.lstrip().startswith(TEMPLATE_IF_PREFIXES)
 
 
 def _parse_chezmoi_if_block(
@@ -56,19 +50,18 @@ def _parse_chezmoi_if_block(
 ) -> _ChezmoiIfBlock:
     """Read one simple chezmoi if block from a zsh template.
 
-    This script only understands one ``if`` with an optional ``else``. It raises
-    an error for more complicated blocks so template changes do not get handled
-    incorrectly without anyone noticing.
+    This script only understands one ``if`` with an optional ``else``. It raises an
+    error for more complicated blocks so template changes do not get handled incorrectly
+    without anyone noticing.
 
     Args:
         lines: Template file contents as a list of lines.
-        start_index: Line number where the opening chezmoi ``if`` starts. This
-            starts at 0 because Python lists start counting at 0.
+        start_index: Line number where the opening chezmoi ``if`` starts.
         source_label: Name to show in error messages.
 
     Raises:
-        ValueError: The block has duplicate ``else`` lines, contains another
-            ``if`` block, or does not have a closing ``end`` line.
+        ValueError: The block has duplicate ``else`` lines, contains another ``if``
+            block, or does not have a closing ``end`` line.
     """
     then_lines: list[str] = []
     else_lines: list[str] | None = None
@@ -110,7 +103,13 @@ def _resolve_gui_if_block(
     *,
     source_label: str,
 ) -> tuple[list[str], int, int]:
-    """Choose the zsh lines to keep from one supported GUI template block."""
+    """Choose the zsh lines to keep from one supported GUI template block.
+
+    Args:
+        lines: Template file contents as a list of lines.
+        start_index: Line number where the opening chezmoi ``if`` starts.
+        source_label: Name to show in debug messages.
+    """
     block = _parse_chezmoi_if_block(lines, start_index, source_label=source_label)
     # Docs should show the non-GUI setup when the template offers one.
     # If no "else" exists, keep the GUI body to preserve older output.
@@ -128,7 +127,9 @@ def _resolve_gui_if_block(
     )
 
     # Count the template-only lines removed from the final zsh output.
-    dropped_directives = 3 if block.else_lines is not None else 2
+    body_line_count = len(block.then_lines) + len(block.else_lines or [])
+    source_line_count = block.end_index - start_index + 1
+    dropped_directives = source_line_count - body_line_count
     return selected_lines, block.end_index + 1, dropped_directives
 
 
@@ -138,6 +139,13 @@ def render_zsh_template_for_docs(lines: list[str], *, source_label: str) -> list
     When the template has separate GUI and non-GUI versions, the documentation
     uses the non-GUI version. If there is no non-GUI version, the GUI-only lines
     are kept so the generated documentation stays the same as before.
+
+    Args:
+        lines: Template file contents as a list of lines.
+        source_label: Name to show in info, debug, and error messages.
+
+    Raises:
+        ValueError: The template contains unsupported directives or blocks.
     """
     output_lines: list[str] = []
     dropped_directives = 0
