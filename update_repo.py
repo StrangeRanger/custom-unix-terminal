@@ -70,23 +70,6 @@ class ChezmoiIfBlock:
     end_index: int
 
 
-class DescriptionFirstArgumentParser(argparse.ArgumentParser):
-    """Argument parser that prints the description before the usage line."""
-
-    def format_help(self) -> str:
-        """Build help text with description, usage, then options."""
-        help_text = super().format_help()
-
-        if not self.description:
-            return help_text
-
-        description_text = f"{self.description}\n\n"
-        if description_text not in help_text:
-            return help_text
-
-        return f"{description_text}{help_text.replace(description_text, '', 1)}"
-
-
 # [ General helpers ] ##########################################################
 
 
@@ -213,6 +196,7 @@ def is_if_directive(line: str) -> bool:
     return is_template_directive(line) and line.lstrip().startswith("{{ if")
 
 
+# TODO: Review and understand function and arguments...
 def parse_chezmoi_if_block(
     lines: list[str],
     start_index: int,
@@ -267,6 +251,7 @@ def parse_chezmoi_if_block(
     raise ValueError(f"{source_label}:{start_index + 1}: unclosed chezmoi if block")
 
 
+# TODO: Review and understand function and arguments...
 def render_zsh_template_for_docs(lines: list[str], *, source_label: str) -> list[str]:
     """Turn zsh template lines into plain zsh lines for documentation.
 
@@ -338,6 +323,7 @@ def render_zsh_template_for_docs(lines: list[str], *, source_label: str) -> list
 # [ Documentation content builders ] ###########################################
 
 
+# TODO: Review and understand function and arguments...
 def build_zsh_snippet(rendered_lines: list[str], *, source_label: str) -> str:
     """Create the smaller zsh snippet used by the Zensical documentation."""
     output_lines: list[str] = []
@@ -406,6 +392,7 @@ def render_neovim_job(job: RenderJob) -> GeneratedFile:
     return GeneratedFile(job.name, job.paths.src, job.paths.dest, content)
 
 
+# TODO: Review and understand function and arguments...
 def render_zsh_job(job: RenderJob) -> GeneratedFile:
     """Create the content for one generated zsh documentation file."""
     rendered_lines = render_zsh_template_for_docs(
@@ -480,10 +467,7 @@ def check_outputs(generated_files: Iterable[GeneratedFile]) -> bool:
 
 def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
     """Read the command-line options passed to this script."""
-    parser = DescriptionFirstArgumentParser(
-        description=(__doc__ or "").split("\n\n", maxsplit=1)[0],
-        formatter_class=argparse.RawDescriptionHelpFormatter,
-    )
+    parser = argparse.ArgumentParser()
     parser.add_argument(
         "-c",
         "--check",
@@ -515,6 +499,7 @@ def main(argv: Sequence[str] | None = None) -> int:
 
 
 # [ Dunder Main ] ##############################################################
+
 
 if __name__ == "__main__":
     raise SystemExit(main())
