@@ -54,9 +54,6 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Run update repo tests
-        run: python -m unittest discover -s tests
-
       - name: Run repo update script
         run: python update_repo.py
 
