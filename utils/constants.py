@@ -5,8 +5,6 @@ documentation include files from the dotfiles submodule. It keeps source paths,
 destination paths, section markers, snippet wrapper markers, and render jobs in
 one place so the update script can focus on reading, transforming, and writing
 files.
-
-NOTE: This module was rewritten with Codex and modified by Hunter T.
 """
 
 from dataclasses import dataclass

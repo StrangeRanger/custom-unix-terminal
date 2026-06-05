@@ -20,7 +20,7 @@ The exact source paths, destination paths, and section markers live in
 changes fail with targeted errors instead of silently producing partial or
 misleading documentation.
 
-NOTE: This script was rewritten with Codex and modified by Hunter T.
+NOTE: Almost all the Python scripts were rewritten with Codex and modified by Hunter T.
 """
 
 from __future__ import annotations
