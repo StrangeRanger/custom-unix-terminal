@@ -20,7 +20,7 @@ def _find_marker(lines: list[str], marker: str, *, start_at: int = 0) -> int | N
     Args:
         lines: Lines to search through.
         marker: Text to look for inside each line.
-        start_at: Line number to start searching from. This also starts at 0.
+        start_at: Line number to start searching from.
     """
     for index in range(start_at, len(lines)):
         if marker in lines[index]:
@@ -133,8 +133,7 @@ def extract_section(
     """Copy a block of lines between two known marker strings.
 
     Args:
-        lines: File contents as a list of lines. Each line still includes its
-            ending newline character, if it had one.
+        lines: File contents as a list of lines.
         markers: The start and end text that identify the block to copy.
         include_start: Include the line that contains the start marker.
         include_end: Include the line that contains the end marker.
