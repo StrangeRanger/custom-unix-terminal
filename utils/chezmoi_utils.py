@@ -43,7 +43,9 @@ def is_gui_if_directive(line: str) -> bool:
 
 def is_if_directive(line: str) -> bool:
     """Check whether a line starts any chezmoi if statement."""
-    return is_template_directive(line) and line.lstrip().startswith(TEMPLATE_IF_PREFIXES)
+    return is_template_directive(line) and line.lstrip().startswith(
+        TEMPLATE_IF_PREFIXES
+    )
 
 
 def parse_chezmoi_if_block(
