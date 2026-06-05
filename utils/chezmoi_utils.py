@@ -19,7 +19,7 @@ TEMPLATE_END = "{{- end }}"
 
 
 @dataclass(frozen=True)
-class ChezmoiIfBlock:
+class _ChezmoiIfBlock:
     """The parts of one small chezmoi if/else/end section in a zsh file."""
 
     then_lines: list[str]
@@ -27,12 +27,12 @@ class ChezmoiIfBlock:
     end_index: int
 
 
-def is_template_directive(line: str) -> bool:
+def _is_template_directive(line: str) -> bool:
     """Check whether a line starts with a chezmoi template command."""
     return line.lstrip().startswith(TEMPLATE_PREFIX)
 
 
-def is_gui_if_directive(line: str) -> bool:
+def _is_gui_if_directive(line: str) -> bool:
     """Check whether a line starts the GUI-only chezmoi condition we support."""
     return (
         is_template_directive(line)
@@ -41,19 +41,19 @@ def is_gui_if_directive(line: str) -> bool:
     )
 
 
-def is_if_directive(line: str) -> bool:
+def _is_if_directive(line: str) -> bool:
     """Check whether a line starts any chezmoi if statement."""
     return is_template_directive(line) and line.lstrip().startswith(
         TEMPLATE_IF_PREFIXES
     )
 
 
-def parse_chezmoi_if_block(
+def _parse_chezmoi_if_block(
     lines: list[str],
     start_index: int,
     *,
     source_label: str,
-) -> ChezmoiIfBlock:
+) -> _ChezmoiIfBlock:
     """Read one simple chezmoi if block from a zsh template.
 
     This script only understands one ``if`` with an optional ``else``. It raises
@@ -88,13 +88,13 @@ def parse_chezmoi_if_block(
             continue
 
         if stripped_line == TEMPLATE_END:
-            return ChezmoiIfBlock(
+            return _ChezmoiIfBlock(
                 then_lines=then_lines,
                 else_lines=else_lines,
                 end_index=index,
             )
 
-        if is_if_directive(current_line):
+        if _is_if_directive(current_line):
             raise ValueError(
                 f"{source_label}:{index + 1}: nested chezmoi if blocks are not supported"
             )
@@ -104,14 +104,14 @@ def parse_chezmoi_if_block(
     raise ValueError(f"{source_label}:{start_index + 1}: unclosed chezmoi if block")
 
 
-def resolve_gui_if_block(
+def _resolve_gui_if_block(
     lines: list[str],
     start_index: int,
     *,
     source_label: str,
 ) -> tuple[list[str], int, int]:
     """Choose the zsh lines to keep from one supported GUI template block."""
-    block = parse_chezmoi_if_block(lines, start_index, source_label=source_label)
+    block = _parse_chezmoi_if_block(lines, start_index, source_label=source_label)
     # Docs should show the non-GUI setup when the template offers one.
     # If no "else" exists, keep the GUI body to preserve older output.
     selected_lines = (
@@ -147,13 +147,13 @@ def render_zsh_template_for_docs(lines: list[str], *, source_label: str) -> list
     while index < len(lines):
         current_line = lines[index]
 
-        if not is_template_directive(current_line):
+        if not _is_template_directive(current_line):
             output_lines.append(current_line)
             index += 1
             continue
 
-        if is_gui_if_directive(current_line):
-            selected_lines, next_index, dropped_count = resolve_gui_if_block(
+        if _is_gui_if_directive(current_line):
+            selected_lines, next_index, dropped_count = _resolve_gui_if_block(
                 lines,
                 index,
                 source_label=source_label,
@@ -164,7 +164,7 @@ def render_zsh_template_for_docs(lines: list[str], *, source_label: str) -> list
             index = next_index
             continue
 
-        if is_if_directive(current_line):
+        if _is_if_directive(current_line):
             raise ValueError(
                 f"{source_label}:{index + 1}: unsupported chezmoi if directive"
             )
