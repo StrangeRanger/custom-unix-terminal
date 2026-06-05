@@ -7,20 +7,12 @@ Neovim and zsh source files, prepares the documentation-friendly versions, and
 either writes the generated include files or checks that the checked-in files are
 already current.
 
-The main update flow is:
-
-1. Read a configured source file.
-2. Resolve the small chezmoi template patterns used by zsh files.
-3. Copy configured sections when only part of a source file belongs in docs.
-4. Build ``GeneratedFile`` objects that describe the intended output files.
-5. Write those files, or compare them with the files already on disk.
-
 The exact source paths, destination paths, and section markers live in
 ``utils.constants``. Keeping that configuration separate makes source layout
 changes fail with targeted errors instead of silently producing partial or
 misleading documentation.
 
-NOTE: This script was rewritten with Codex and modified by Hunter T.
+NOTE: Almost all the Python scripts were rewritten with Codex and modified by Hunter T.
 """
 
 from __future__ import annotations
@@ -76,15 +68,18 @@ def configure_logging(debug: bool) -> None:
 
 
 def build_zsh_snippet(rendered_lines: list[str], *, source_label: str) -> str:
-    """Create the smaller zsh snippet used by the Zensical documentation."""
+    """Create the smaller zsh snippet used by the Zensical documentation.
+
+    Args:
+        rendered_lines: Zsh source lines after chezmoi template directives are resolved.
+        source_label: Name to show in log messages and errors.
+    """
     output_lines: list[str] = []
 
     for section in ZSH_SNIPPET_SECTIONS:
         section_lines = extract_section(
             rendered_lines,
             section.source,
-            include_start=True,
-            include_end=False,
             source_label=source_label,
         )
 
@@ -117,7 +112,11 @@ def build_zsh_snippet(rendered_lines: list[str], *, source_label: str) -> str:
 
 
 def render_neovim_job(job: RenderJob) -> GeneratedFile:
-    """Create the content for one generated Neovim documentation file."""
+    """Create the content for one generated Neovim documentation file.
+
+    Args:
+        job: Neovim render job describing the source, destination, and render mode.
+    """
     if job.kind == RenderKind.COPY:
         content = read_text(job.paths.src)
     elif job.kind == RenderKind.EXTRACT_SECTION:
@@ -127,8 +126,6 @@ def render_neovim_job(job: RenderJob) -> GeneratedFile:
             extract_section(
                 read_lines(job.paths.src),
                 job.section,
-                include_start=True,
-                include_end=False,
                 source_label=str(job.paths.src),
             )
         )
@@ -146,7 +143,11 @@ def render_neovim_job(job: RenderJob) -> GeneratedFile:
 
 
 def render_zsh_job(job: RenderJob) -> GeneratedFile:
-    """Create the content for one generated zsh documentation file."""
+    """Create the content for one generated zsh documentation file.
+
+    Args:
+        job: Zsh render job describing the source, destination, and render mode.
+    """
     rendered_lines = render_zsh_template_for_docs(
         read_lines(job.paths.src),
         source_label=str(job.paths.src),

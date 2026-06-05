@@ -14,16 +14,13 @@ from utils.constants import SectionMarker
 LOGGER = logging.getLogger(__name__)
 
 
-def find_marker(lines: list[str], marker: str, *, start_at: int = 0) -> int | None:
+def _find_marker(lines: list[str], marker: str, *, start_at: int = 0) -> int | None:
     """Find the first line number that contains ``marker``.
-
-    The returned number starts at 0 because Python lists start counting at 0.
-    Returns ``None`` when the marker is not found.
 
     Args:
         lines: Lines to search through.
         marker: Text to look for inside each line.
-        start_at: Line number to start searching from. This also starts at 0.
+        start_at: Line number to start searching from.
     """
     for index in range(start_at, len(lines)):
         if marker in lines[index]:
@@ -31,14 +28,24 @@ def find_marker(lines: list[str], marker: str, *, start_at: int = 0) -> int | No
     return None
 
 
-def handle_missing_marker(
+def _handle_missing_marker(
     marker_kind: str,
     marker: str,
     *,
     required: bool,
     source_label: str,
 ) -> None:
-    """Log optional missing markers or raise for required ones."""
+    """Log optional missing markers or raise for required ones.
+
+    Args:
+        marker_kind: Human-readable marker type, such as ``"start"`` or ``"end"``.
+        marker: Marker text that could not be found.
+        required: If ``True``, raise an error instead of logging.
+        source_label: Name to show in log messages and errors.
+
+    Raises:
+        ValueError: The marker is required and could not be found.
+    """
     if required:
         raise ValueError(f"{source_label}: {marker_kind} marker not found: {marker!r}")
 
@@ -50,17 +57,28 @@ def handle_missing_marker(
     )
 
 
-def find_section_bounds(
+def _find_section_bounds(
     lines: list[str],
     markers: SectionMarker,
     *,
     required: bool,
     source_label: str,
 ) -> tuple[int, int] | None:
-    """Find the start and end line numbers for a configured section."""
-    start_index = find_marker(lines, markers.start_marker)
+    """Find the start and end line numbers for a configured section.
+
+    Args:
+        lines: Lines to search through.
+        markers: The start and end text that identify the section.
+        required: If ``True``, raise an error when either marker is missing. If
+            ``False``, return ``None`` when either marker is missing.
+        source_label: Name to show in log messages and errors.
+
+    Raises:
+        ValueError: A required start or end marker could not be found.
+    """
+    start_index = _find_marker(lines, markers.start_marker)
     if start_index is None:
-        handle_missing_marker(
+        _handle_missing_marker(
             "start",
             markers.start_marker,
             required=required,
@@ -68,9 +86,9 @@ def find_section_bounds(
         )
         return None
 
-    end_index = find_marker(lines, markers.end_marker, start_at=start_index)
+    end_index = _find_marker(lines, markers.end_marker, start_at=start_index)
     if end_index is None:
-        handle_missing_marker(
+        _handle_missing_marker(
             "end",
             markers.end_marker,
             required=required,
@@ -81,7 +99,7 @@ def find_section_bounds(
     return start_index, end_index
 
 
-def copy_section_lines(
+def _copy_section_lines(
     lines: list[str],
     start_index: int,
     end_index: int,
@@ -89,7 +107,15 @@ def copy_section_lines(
     include_start: bool,
     include_end: bool,
 ) -> list[str]:
-    """Copy selected lines using already-found section bounds."""
+    """Copy selected lines using already-found section bounds.
+
+    Args:
+        lines: Lines to copy from.
+        start_index: Line number containing the start marker. This starts at 0.
+        end_index: Line number containing the end marker. This starts at 0.
+        include_start: Include the line at ``start_index`` in the result.
+        include_end: Include the line at ``end_index`` in the result.
+    """
     if start_index == end_index:
         return [lines[start_index]] if include_start or include_end else []
 
@@ -110,8 +136,7 @@ def extract_section(
     """Copy a block of lines between two known marker strings.
 
     Args:
-        lines: File contents as a list of lines. Each line still includes its
-            ending newline character, if it had one.
+        lines: File contents as a list of lines.
         markers: The start and end text that identify the block to copy.
         include_start: Include the line that contains the start marker.
         include_end: Include the line that contains the end marker.
@@ -125,7 +150,7 @@ def extract_section(
     Raises:
         ValueError: A required start or end marker could not be found.
     """
-    bounds = find_section_bounds(
+    bounds = _find_section_bounds(
         lines,
         markers,
         required=required,
@@ -135,7 +160,7 @@ def extract_section(
         return []
 
     start_index, end_index = bounds
-    section = copy_section_lines(
+    section = _copy_section_lines(
         lines,
         start_index,
         end_index,
