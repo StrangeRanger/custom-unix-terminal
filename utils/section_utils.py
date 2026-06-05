@@ -42,6 +42,9 @@ def _handle_missing_marker(
         marker: Marker text that could not be found.
         required: If ``True``, raise an error instead of logging.
         source_label: Name to show in log messages and errors.
+
+    Raises:
+        ValueError: The marker is required and could not be found.
     """
     if required:
         raise ValueError(f"{source_label}: {marker_kind} marker not found: {marker!r}")
