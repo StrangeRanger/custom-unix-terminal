@@ -1,197 +1,258 @@
 #!/usr/bin/env python3
-"""Configuration file update automation script.
+"""Generate checked-in documentation snippets from the dotfiles submodule.
 
-This script automates the process of updating Neovim and zsh configuration files in the
-`includes` directory by extracting relevant sections from dotfiles stored in the
-`submodules/dotfiles` submodule.
+This script keeps the documentation include files in sync with the source
+configuration files stored under ``submodules/dotfiles``. It reads the configured
+Neovim and zsh source files, prepares the documentation-friendly versions, and
+either writes the generated include files or checks that the checked-in files are
+already current.
 
-The script handles two main types of configuration updates:
-    - Neovim configuration files with selective content extraction
-    - Zsh configuration files with snippet-based processing
+The main update flow is:
 
-Notes:
-    - This script is, unfortunately, fragile by nature. Changes to upstream marker text
-      or chezmoi template layout can silently break extractions. When this occurs,
-      adjust the markers in the constants module or update the `chezmoi_edge_case`
-      function as needed.
-    - No external dependencies are required; a virtual environment is not necessary.
+1. Read a configured source file.
+2. Resolve the small chezmoi template patterns used by zsh files.
+3. Copy configured sections when only part of a source file belongs in docs.
+4. Build ``GeneratedFile`` objects that describe the intended output files.
+5. Write those files, or compare them with the files already on disk.
 
-Example:
-    Run the script directly to update all configuration files:
+The exact source paths, destination paths, and section markers live in
+``utils.constants``. Keeping that configuration separate makes source layout
+changes fail with targeted errors instead of silently producing partial or
+misleading documentation.
 
-    ```bash
-    $ python3 update_repo.py
-    ```
+NOTE: This script was rewritten with Codex and modified by Hunter T.
 """
 
-# [ Imports ]###########################################################################
+from __future__ import annotations
 
-from utils.file_utils import read_file, read_lines, write_file
+import argparse
+import logging
+from collections.abc import Iterable, Sequence
+from dataclasses import dataclass
+from pathlib import Path
+
 from utils.constants import (
-    NEOVIM_CONFIG_PATHS,
-    ZSH_CONFIG_PATHS,
-    NEOVIM_MARKERS,
-    ZSH_ALIAS_MARKERS,
-    ZSH_LS_COLORS_MARKERS,
-    ZENSICAL_USER_CONFIG_MARKERS,
-    ZENSICAL_LS_COLORS_MARKERS,
+    NEOVIM_JOBS,
+    ZSH_JOBS,
+    ZSH_SNIPPET_SECTIONS,
+    RenderJob,
+    RenderKind,
 )
+from utils.chezmoi_utils import render_zsh_template_for_docs
+from utils.file_utils import read_lines, read_text, write_text
+from utils.section_utils import extract_section
+
+LOGGER = logging.getLogger(__name__)
 
 
-# [ Functions ]#########################################################################
+# [ Data containers ] ##########################################################
 
 
-def neovim_config() -> None:
-    """Process and write Neovim config file variants to the `includes` directory.
+@dataclass(frozen=True)
+class GeneratedFile:
+    """Details for one file this script creates or compares."""
 
-    Handles two types of Neovim config processing:
-        1. `init_vim_no_plug`: Extracts content between designated section markers,
-           excluding plugin-related configurations.
-        2. Other variants: Copies the entire source file without modification.
+    name: str
+    source: Path
+    destination: Path
+    content: str
 
-    The function iterates through all Neovim config paths defined in
-    `NEOVIM_CONFIG_PATHS` and processes each according to its operation type.
 
-    Note:
-        The `init_vim_no_plug` operation relies on `NEOVIM_MARKERS` to identify
-        content boundaries. The end marker line itself is excluded from output.
-    """
-    for operation, paths in NEOVIM_CONFIG_PATHS.items():
-        if operation == "init_vim_no_plug":
-            data: list[str] = read_lines(paths.src)
-            filtered_data: list[str] = []
-            is_within_section = False
+# [ General helpers ] ##########################################################
 
-            for current_line in data:
-                if NEOVIM_MARKERS.start_marker in current_line:
-                    is_within_section = True
-                if (
-                    NEOVIM_MARKERS.end_marker in current_line
-                    and is_within_section
-                ):
-                    is_within_section = False
-                    break
-                if is_within_section:
-                    filtered_data.append(current_line)
-            write_file(paths.dest, "".join(filtered_data))
+
+def count_lines(text: str) -> int:
+    """Count text lines in the same way people usually count file lines."""
+    return len(text.splitlines())
+
+
+def configure_logging(debug: bool) -> None:
+    """Set how much progress information the script prints."""
+    level = logging.DEBUG if debug else logging.INFO
+    logging.basicConfig(level=level, format="[%(levelname)s] %(message)s")
+
+
+# [ Documentation content builders ] ###########################################
+
+
+def build_zsh_snippet(rendered_lines: list[str], *, source_label: str) -> str:
+    """Create the smaller zsh snippet used by the Zensical documentation."""
+    output_lines: list[str] = []
+
+    for section in ZSH_SNIPPET_SECTIONS:
+        section_lines = extract_section(
+            rendered_lines,
+            section.source,
+            include_start=True,
+            include_end=False,
+            source_label=source_label,
+        )
+
+        if section.source.hard_coded_inclusion:
+            # Some docs snippets include helper lines that are implied by the
+            # source section but are not physically inside the copied range.
+            LOGGER.debug(
+                "%s: appended %d hard-coded line(s) after %r section",
+                source_label,
+                len(section.source.hard_coded_inclusion),
+                section.source.start_marker,
+            )
+            section_lines = [*section_lines, *section.source.hard_coded_inclusion]
+
+        output_lines.extend(
+            [
+                section.wrapper.start_marker,
+                *section_lines,
+                section.wrapper.end_marker,
+            ]
+        )
+        LOGGER.info(
+            "Built snippet section %r from %s (%d line(s))",
+            section.wrapper.start_marker.strip(),
+            source_label,
+            len(section_lines),
+        )
+
+    return "".join(output_lines)
+
+
+def render_neovim_job(job: RenderJob) -> GeneratedFile:
+    """Create the content for one generated Neovim documentation file."""
+    if job.kind == RenderKind.COPY:
+        content = read_text(job.paths.src)
+    elif job.kind == RenderKind.EXTRACT_SECTION:
+        if job.section is None:
+            raise ValueError(f"{job.name}: extract job is missing section markers")
+        content = "".join(
+            extract_section(
+                read_lines(job.paths.src),
+                job.section,
+                include_start=True,
+                include_end=False,
+                source_label=str(job.paths.src),
+            )
+        )
+    else:
+        raise ValueError(f"{job.name}: unsupported Neovim render kind: {job.kind}")
+
+    LOGGER.info(
+        "Prepared %s: %s -> %s (%d line(s))",
+        job.name,
+        job.paths.src,
+        job.paths.dest,
+        count_lines(content),
+    )
+    return GeneratedFile(job.name, job.paths.src, job.paths.dest, content)
+
+
+def render_zsh_job(job: RenderJob) -> GeneratedFile:
+    """Create the content for one generated zsh documentation file."""
+    rendered_lines = render_zsh_template_for_docs(
+        read_lines(job.paths.src),
+        source_label=str(job.paths.src),
+    )
+
+    if job.kind == RenderKind.ZSH_FULL:
+        content = "".join(rendered_lines)
+    elif job.kind == RenderKind.ZSH_SNIPPET:
+        content = build_zsh_snippet(rendered_lines, source_label=str(job.paths.src))
+    else:
+        raise ValueError(f"{job.name}: unsupported zsh render kind: {job.kind}")
+
+    LOGGER.info(
+        "Prepared %s: %s -> %s (%d line(s))",
+        job.name,
+        job.paths.src,
+        job.paths.dest,
+        count_lines(content),
+    )
+    return GeneratedFile(job.name, job.paths.src, job.paths.dest, content)
+
+
+def generate_neovim_outputs() -> list[GeneratedFile]:
+    """Create all Neovim documentation files without writing them yet."""
+    return [render_neovim_job(job) for job in NEOVIM_JOBS]
+
+
+def generate_zsh_outputs() -> list[GeneratedFile]:
+    """Create all zsh documentation files without writing them yet."""
+    return [render_zsh_job(job) for job in ZSH_JOBS]
+
+
+def generate_outputs() -> list[GeneratedFile]:
+    """Create every documentation file without writing anything yet."""
+    return [*generate_neovim_outputs(), *generate_zsh_outputs()]
+
+
+# [ Generated file operations ] ################################################
+
+
+def write_outputs(generated_files: Iterable[GeneratedFile]) -> None:
+    """Save generated files to their destination paths."""
+    for generated_file in generated_files:
+        write_text(generated_file.destination, generated_file.content)
+        LOGGER.info("Wrote %s", generated_file.destination)
+
+
+def check_outputs(generated_files: Iterable[GeneratedFile]) -> bool:
+    """Check whether the saved files already match the generated content."""
+    is_current = True
+
+    for generated_file in generated_files:
+        # Check mode reports every mismatch instead of stopping at the first one.
+        if not generated_file.destination.exists():
+            LOGGER.error("Missing generated file: %s", generated_file.destination)
+            is_current = False
+            continue
+
+        current_content = read_text(generated_file.destination)
+        if current_content != generated_file.content:
+            LOGGER.error("Out of date: %s", generated_file.destination)
+            is_current = False
         else:
-            data: str = read_file(paths.src)
-            write_file(paths.dest, data)
+            LOGGER.info("Up to date: %s", generated_file.destination)
+
+    return is_current
 
 
-def chezmoi_edge_case(current_line: str, data: list[str], line_number: int) -> int:
-    """Calculate the number of lines to skip for chezmoi template actions.
-
-    Handles special cases in chezmoi template processing by analyzing the current line
-    and subsequent lines to determine how many lines should be skipped during zsh
-    configuration processing.
-
-    Note:
-        This function's logic is tightly coupled to the current structure of the
-        dotfiles. Changes to the upstream chezmoi template layout may require updates
-        to the pattern matching logic.
-
-    Args:
-        current_line: The current line being processed, which contains a chezmoi
-            template delimiter.
-        data: Complete list of lines from the source zsh configuration file.
-        line_number: Zero-based index of the current line within the data list.
-
-    Returns:
-        Number of lines to skip (minimum 1).
-    """
-    if "data.isGUIEnvironment" in current_line:
-        if (
-            "plugins=(" in data[line_number + 1]
-            and "plugins=(" in data[line_number + 2]
-        ):
-            return 3
-        elif (
-            "hash xdg-open" in data[line_number + 1]
-            and "{{- end }}" in data[line_number + 2]
-        ):
-            return 1
-
-    return 1
+# [ Command-line interface ] ###################################################
 
 
-def zsh_config() -> None:
-    """Process and write zsh config file variants and snippets to the `includes`
-    directory.
-
-    Handles two types of processing:
-        1. Full file operations: Copies entire source file, filtering chezmoi template
-           actions.
-        2. Snippet operations: Extracts specific sections and wraps with Zensical section
-           markers.
-
-    For snippet operations, extracts alias and `LS_COLORS` sections based on predefined
-    markers and optionally appends hard-coded content.
-
-    Note:
-        Includes debug output for CI/CD troubleshooting.
-    """
-    for file_operation, file_paths in ZSH_CONFIG_PATHS.items():
-        data: list[str] = read_lines(file_paths.src)
-        output_data: list[str] = []
-        is_within_alias_section = False
-        is_within_ls_colors_section = False
-        line_number = 0
-
-        while line_number < len(data):
-            current_line = data[line_number]
-
-            ## DEBUG: The below lines help with debugging...
-            print(f"Processing line {line_number + 1} of {file_paths.src}")
-            print(f"Line: {current_line}")
-
-            if current_line.lstrip().startswith("{{"):
-                skip_line_count = chezmoi_edge_case(current_line, data, line_number)
-                line_number += skip_line_count
-                continue
-
-            if not file_operation.endswith("snippet"):
-                output_data.append(current_line)
-                line_number += 1
-                continue
-
-            if ZSH_ALIAS_MARKERS.start_marker in current_line:
-                is_within_alias_section = True
-                output_data.append(ZENSICAL_USER_CONFIG_MARKERS.start_marker)
-            elif ZSH_LS_COLORS_MARKERS.start_marker in current_line:
-                is_within_ls_colors_section = True
-                output_data.append(ZENSICAL_LS_COLORS_MARKERS.start_marker)
-
-            if (
-                ZSH_ALIAS_MARKERS.end_marker in current_line
-                and is_within_alias_section
-            ):
-                is_within_alias_section = False
-                output_data.append(ZENSICAL_USER_CONFIG_MARKERS.end_marker)
-            elif (
-                ZSH_LS_COLORS_MARKERS.end_marker in current_line
-                and is_within_ls_colors_section
-            ):
-                is_within_ls_colors_section = False
-                if ZSH_LS_COLORS_MARKERS.hard_coded_inclusion:
-                    output_data.extend(ZSH_LS_COLORS_MARKERS.hard_coded_inclusion)
-                output_data.append(ZENSICAL_LS_COLORS_MARKERS.end_marker)
-
-            if is_within_alias_section or is_within_ls_colors_section:
-                output_data.append(current_line)
-
-            line_number += 1
-
-        write_file(file_paths.dest, "".join(output_data))
+def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
+    """Read the command-line options passed to this script."""
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "-c",
+        "--check",
+        action="store_true",
+        help="verify generated files are current without writing them",
+    )
+    parser.add_argument(
+        "-d",
+        "--debug",
+        action="store_true",
+        help="show detailed rendering decisions",
+    )
+    return parser.parse_args(argv)
 
 
-def main() -> None:
-    """Execute all configuration file update routines."""
-    neovim_config()
-    zsh_config()
+def main(argv: Sequence[str] | None = None) -> int:
+    """Run the script: either update generated files or check if they are current."""
+    args = parse_args(argv)
+    configure_logging(debug=args.debug)
+
+    LOGGER.info("Generating repository include files")
+    generated_files = generate_outputs()
+
+    if args.check:
+        return 0 if check_outputs(generated_files) else 1
+
+    write_outputs(generated_files)
+    return 0
 
 
-# [ Dunder Main ]#######################################################################
+# [ Dunder Main ] ##############################################################
+
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())

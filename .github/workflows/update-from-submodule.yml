@@ -55,7 +55,10 @@ jobs:
           python-version: '3.x'
 
       - name: Run repo update script
-        run: python update_repo.py
+        run: python update_repo.py --debug
+
+      - name: Verify generated files are current
+        run: python update_repo.py --check
 
       - name: Run CHANGELOG update script
         run: bash update-changelog.bash
