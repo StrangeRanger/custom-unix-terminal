@@ -83,8 +83,6 @@ def build_zsh_snippet(rendered_lines: list[str], *, source_label: str) -> str:
         section_lines = extract_section(
             rendered_lines,
             section.source,
-            include_start=True,
-            include_end=False,
             source_label=source_label,
         )
 
@@ -127,8 +125,6 @@ def render_neovim_job(job: RenderJob) -> GeneratedFile:
             extract_section(
                 read_lines(job.paths.src),
                 job.section,
-                include_start=True,
-                include_end=False,
                 source_label=str(job.paths.src),
             )
         )
