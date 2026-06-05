@@ -104,6 +104,73 @@ def find_marker(lines: list[str], marker: str, *, start_at: int = 0) -> int | No
     return None
 
 
+def handle_missing_marker(
+    marker_kind: str,
+    marker: str,
+    *,
+    required: bool,
+    source_label: str,
+) -> None:
+    """Log optional missing markers or raise for required ones."""
+    if required:
+        raise ValueError(f"{source_label}: {marker_kind} marker not found: {marker!r}")
+
+    LOGGER.debug(
+        "%s: optional %s marker not found: %r",
+        source_label,
+        marker_kind,
+        marker,
+    )
+
+
+def find_section_bounds(
+    lines: list[str],
+    markers: SectionMarker,
+    *,
+    required: bool,
+    source_label: str,
+) -> tuple[int, int] | None:
+    """Find the start and end line numbers for a configured section."""
+    start_index = find_marker(lines, markers.start_marker)
+    if start_index is None:
+        handle_missing_marker(
+            "start",
+            markers.start_marker,
+            required=required,
+            source_label=source_label,
+        )
+        return None
+
+    end_index = find_marker(lines, markers.end_marker, start_at=start_index)
+    if end_index is None:
+        handle_missing_marker(
+            "end",
+            markers.end_marker,
+            required=required,
+            source_label=source_label,
+        )
+        return None
+
+    return start_index, end_index
+
+
+def copy_section_lines(
+    lines: list[str],
+    start_index: int,
+    end_index: int,
+    *,
+    include_start: bool,
+    include_end: bool,
+) -> list[str]:
+    """Copy selected lines using already-found section bounds."""
+    if start_index == end_index:
+        return [lines[start_index]] if include_start or include_end else []
+
+    first_index = start_index if include_start else start_index + 1
+    last_index = end_index + 1 if include_end else end_index
+    return lines[first_index:last_index]
+
+
 def extract_section(
     lines: list[str],
     markers: SectionMarker,
@@ -131,36 +198,23 @@ def extract_section(
     Raises:
         ValueError: A required start or end marker could not be found.
     """
-    start_index = find_marker(lines, markers.start_marker)
-    if start_index is None:
-        if required:
-            raise ValueError(
-                f"{source_label}: start marker not found: {markers.start_marker!r}"
-            )
-        LOGGER.debug(
-            "%s: optional start marker not found: %r",
-            source_label,
-            markers.start_marker,
-        )
+    bounds = find_section_bounds(
+        lines,
+        markers,
+        required=required,
+        source_label=source_label,
+    )
+    if bounds is None:
         return []
 
-    end_index = find_marker(lines, markers.end_marker, start_at=start_index)
-    if end_index is None:
-        if required:
-            raise ValueError(
-                f"{source_label}: end marker not found: {markers.end_marker!r}"
-            )
-        LOGGER.debug(
-            "%s: optional end marker not found: %r", source_label, markers.end_marker
-        )
-        return []
-
-    if start_index == end_index:
-        section = [lines[start_index]] if include_start or include_end else []
-    else:
-        first_index = start_index if include_start else start_index + 1
-        last_index = end_index + 1 if include_end else end_index
-        section = lines[first_index:last_index]
+    start_index, end_index = bounds
+    section = copy_section_lines(
+        lines,
+        start_index,
+        end_index,
+        include_start=include_start,
+        include_end=include_end,
+    )
 
     LOGGER.debug(
         "%s: extracted lines %d-%d using %r -> %r (%d line(s))",
@@ -252,6 +306,34 @@ def parse_chezmoi_if_block(
     raise ValueError(f"{source_label}:{start_index + 1}: unclosed chezmoi if block")
 
 
+def resolve_gui_if_block(
+    lines: list[str],
+    start_index: int,
+    *,
+    source_label: str,
+) -> tuple[list[str], int, int]:
+    """Choose the zsh lines to keep from one supported GUI template block."""
+    block = parse_chezmoi_if_block(lines, start_index, source_label=source_label)
+    # Docs should show the non-GUI setup when the template offers one.
+    # If no "else" exists, keep the GUI body to preserve older output.
+    selected_lines = (
+        block.else_lines if block.else_lines is not None else block.then_lines
+    )
+    selected_branch = "else/non-GUI" if block.else_lines is not None else "then/no-else"
+
+    LOGGER.debug(
+        "%s:%d: selected %s branch from GUI block (%d line(s))",
+        source_label,
+        start_index + 1,
+        selected_branch,
+        len(selected_lines),
+    )
+
+    # Count the template-only lines removed from the final zsh output.
+    dropped_directives = 3 if block.else_lines is not None else 2
+    return selected_lines, block.end_index + 1, dropped_directives
+
+
 def render_zsh_template_for_docs(lines: list[str], *, source_label: str) -> list[str]:
     """Turn zsh template lines into plain zsh lines for documentation.
 
@@ -273,28 +355,15 @@ def render_zsh_template_for_docs(lines: list[str], *, source_label: str) -> list
             continue
 
         if is_gui_if_directive(current_line):
-            block = parse_chezmoi_if_block(lines, index, source_label=source_label)
-            # Docs should show the non-GUI setup when the template offers one.
-            # If no "else" exists, keep the GUI body to preserve older output.
-            selected_lines = (
-                block.else_lines if block.else_lines is not None else block.then_lines
-            )
-            selected_branch = (
-                "else/non-GUI" if block.else_lines is not None else "then/no-else"
-            )
-
-            LOGGER.debug(
-                "%s:%d: selected %s branch from GUI block (%d line(s))",
-                source_label,
-                index + 1,
-                selected_branch,
-                len(selected_lines),
+            selected_lines, next_index, dropped_count = resolve_gui_if_block(
+                lines,
+                index,
+                source_label=source_label,
             )
             output_lines.extend(selected_lines)
-            # Count the template-only lines removed from the final zsh output.
-            dropped_directives += 3 if block.else_lines is not None else 2
+            dropped_directives += dropped_count
             resolved_blocks += 1
-            index = block.end_index + 1
+            index = next_index
             continue
 
         if is_if_directive(current_line):
