@@ -12,6 +12,36 @@ Additionally, entries that are prefixed with `changed(...)`, `added(...)`, `remo
 
 ## Unreleased
 
+## 2026-05-10
+
+### Removed
+
+- removed(zshrc): remove UpdateGrubConfigs from update_pacman
+
+## 2026-05-05
+
+### Removed
+
+- removed(zshrc): remove vscode alias
+
+## 2026-04-26
+
+### Changed
+
+- changed(nvim): replace 'vim-airline/vim-airline' and 'vim-airline/vim-airline' with 'nvim-lualine/lualine.nvim'
+
+### Removed
+
+- removed(nvim): remove several tree-sitters to be installed by default
+    - They are included by default in NeoVim 0.12.0
+
+## 2026-03-21
+
+### Added
+
+- added(zshrc): ensure GPG interactive auth works with tools like docker creds helper
+
+
 ## 2026-02-26
 
 ### Added
