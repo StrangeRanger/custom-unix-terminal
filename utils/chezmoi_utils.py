@@ -74,7 +74,7 @@ def parse_chezmoi_if_block(
     else_lines: list[str] | None = None
     # active_lines points at the list that should receive body lines as we scan.
     # It starts with the "if" body and switches to the "else" body if one exists.
-    active_lines = then_lines
+    active_lines: list[str] = then_lines
 
     for index in range(start_index + 1, len(lines)):
         current_line = lines[index]
