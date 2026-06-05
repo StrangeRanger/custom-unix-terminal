@@ -196,7 +196,6 @@ def is_if_directive(line: str) -> bool:
     return is_template_directive(line) and line.lstrip().startswith("{{ if")
 
 
-# TODO: Review and understand function and arguments...
 def parse_chezmoi_if_block(
     lines: list[str],
     start_index: int,
@@ -221,6 +220,8 @@ def parse_chezmoi_if_block(
     """
     then_lines: list[str] = []
     else_lines: list[str] | None = None
+    # active_lines points at the list that should receive body lines as we scan.
+    # It starts with the "if" body and switches to the "else" body if one exists.
     active_lines = then_lines
 
     for index in range(start_index + 1, len(lines)):
@@ -251,7 +252,6 @@ def parse_chezmoi_if_block(
     raise ValueError(f"{source_label}:{start_index + 1}: unclosed chezmoi if block")
 
 
-# TODO: Review and understand function and arguments...
 def render_zsh_template_for_docs(lines: list[str], *, source_label: str) -> list[str]:
     """Turn zsh template lines into plain zsh lines for documentation.
 
@@ -274,6 +274,8 @@ def render_zsh_template_for_docs(lines: list[str], *, source_label: str) -> list
 
         if is_gui_if_directive(current_line):
             block = parse_chezmoi_if_block(lines, index, source_label=source_label)
+            # Docs should show the non-GUI setup when the template offers one.
+            # If no "else" exists, keep the GUI body to preserve older output.
             selected_lines = (
                 block.else_lines if block.else_lines is not None else block.then_lines
             )
@@ -289,6 +291,7 @@ def render_zsh_template_for_docs(lines: list[str], *, source_label: str) -> list
                 len(selected_lines),
             )
             output_lines.extend(selected_lines)
+            # Count the template-only lines removed from the final zsh output.
             dropped_directives += 3 if block.else_lines is not None else 2
             resolved_blocks += 1
             index = block.end_index + 1
@@ -323,7 +326,6 @@ def render_zsh_template_for_docs(lines: list[str], *, source_label: str) -> list
 # [ Documentation content builders ] ###########################################
 
 
-# TODO: Review and understand function and arguments...
 def build_zsh_snippet(rendered_lines: list[str], *, source_label: str) -> str:
     """Create the smaller zsh snippet used by the Zensical documentation."""
     output_lines: list[str] = []
@@ -338,6 +340,8 @@ def build_zsh_snippet(rendered_lines: list[str], *, source_label: str) -> str:
         )
 
         if section.source.hard_coded_inclusion:
+            # Some docs snippets include helper lines that are implied by the
+            # source section but are not physically inside the copied range.
             LOGGER.debug(
                 "%s: appended %d hard-coded line(s) after %r section",
                 source_label,
@@ -392,7 +396,6 @@ def render_neovim_job(job: RenderJob) -> GeneratedFile:
     return GeneratedFile(job.name, job.paths.src, job.paths.dest, content)
 
 
-# TODO: Review and understand function and arguments...
 def render_zsh_job(job: RenderJob) -> GeneratedFile:
     """Create the content for one generated zsh documentation file."""
     rendered_lines = render_zsh_template_for_docs(
@@ -447,6 +450,7 @@ def check_outputs(generated_files: Iterable[GeneratedFile]) -> bool:
     is_current = True
 
     for generated_file in generated_files:
+        # Check mode reports every mismatch instead of stopping at the first one.
         if not generated_file.destination.exists():
             LOGGER.error("Missing generated file: %s", generated_file.destination)
             is_current = False
