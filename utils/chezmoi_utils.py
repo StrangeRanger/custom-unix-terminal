@@ -13,6 +13,7 @@ from dataclasses import dataclass
 LOGGER = logging.getLogger(__name__)
 GUI_CONDITION = "data.isGUIEnvironment"
 TEMPLATE_PREFIX = "{{"
+TEMPLATE_IF_PREFIXES = ("{{ if", "{{- if")
 TEMPLATE_ELSE = "{{- else -}}"
 TEMPLATE_END = "{{- end }}"
 
@@ -35,14 +36,14 @@ def is_gui_if_directive(line: str) -> bool:
     """Check whether a line starts the GUI-only chezmoi condition we support."""
     return (
         is_template_directive(line)
-        and line.lstrip().startswith("{{ if")
+        and line.lstrip().startswith(TEMPLATE_IF_PREFIXES)
         and GUI_CONDITION in line
     )
 
 
 def is_if_directive(line: str) -> bool:
     """Check whether a line starts any chezmoi if statement."""
-    return is_template_directive(line) and line.lstrip().startswith("{{ if")
+    return is_template_directive(line) and line.lstrip().startswith(TEMPLATE_IF_PREFIXES)
 
 
 def parse_chezmoi_if_block(
