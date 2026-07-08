@@ -12,6 +12,12 @@ Additionally, entries that are prefixed with `changed(...)`, `added(...)`, `remo
 
 ## Unreleased
 
+## 2026-07-08
+
+### Removed
+
+- removed(zshrc): remove 'update_grub_config' alias
+
 ## 2026-05-10
 
 ### Removed
