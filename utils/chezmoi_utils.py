@@ -12,8 +12,10 @@ from dataclasses import dataclass
 
 LOGGER = logging.getLogger(__name__)
 GUI_CONDITION = "data.isGUIEnvironment"
+PACKAGE_MANAGER_CONDITION = "$data.packageManager"
 TEMPLATE_PREFIX = "{{"
 TEMPLATE_IF_PREFIXES = ("{{ if", "{{- if")
+TEMPLATE_ELSE_IF_PREFIXES = ("{{ else if", "{{- else if")
 TEMPLATE_ELSE = "{{- else -}}"
 TEMPLATE_END = "{{- end }}"
 
@@ -24,6 +26,7 @@ class _ChezmoiIfBlock:
 
     then_lines: list[str]
     else_lines: list[str] | None
+    branch_lines: list[list[str]]
     end_index: int
 
 
@@ -37,9 +40,22 @@ def _is_gui_if_directive(line: str) -> bool:
     return line.lstrip().startswith(TEMPLATE_IF_PREFIXES) and GUI_CONDITION in line
 
 
+def _is_package_manager_if_directive(line: str) -> bool:
+    """Check whether a line starts the package-manager condition we support."""
+    return (
+        line.lstrip().startswith(TEMPLATE_IF_PREFIXES)
+        and PACKAGE_MANAGER_CONDITION in line
+    )
+
+
 def _is_if_directive(line: str) -> bool:
     """Check whether a line starts any chezmoi if statement."""
     return line.lstrip().startswith(TEMPLATE_IF_PREFIXES)
+
+
+def _is_else_if_directive(line: str) -> bool:
+    """Check whether a line starts a chezmoi else-if statement."""
+    return line.lstrip().startswith(TEMPLATE_ELSE_IF_PREFIXES)
 
 
 def _parse_chezmoi_if_block(
@@ -65,6 +81,7 @@ def _parse_chezmoi_if_block(
     """
     then_lines: list[str] = []
     else_lines: list[str] | None = None
+    branch_lines: list[list[str]] = [then_lines]
     # active_lines points at the list that should receive body lines as we scan.
     # It starts with the "if" body and switches to the "else" body if one exists.
     active_lines: list[str] = then_lines
@@ -77,6 +94,20 @@ def _parse_chezmoi_if_block(
             if else_lines is not None:
                 raise ValueError(f"{source_label}:{index + 1}: duplicate chezmoi else")
             else_lines = []
+            branch_lines.append(else_lines)
+            active_lines = else_lines
+            continue
+
+        if _is_else_if_directive(current_line):
+            if else_lines is None:
+                else_lines = []
+            elif else_lines:
+                else_lines = []
+            else:
+                raise ValueError(
+                    f"{source_label}:{index + 1}: empty chezmoi else-if branch"
+                )
+            branch_lines.append(else_lines)
             active_lines = else_lines
             continue
 
@@ -84,6 +115,7 @@ def _parse_chezmoi_if_block(
             return _ChezmoiIfBlock(
                 then_lines=then_lines,
                 else_lines=else_lines,
+                branch_lines=branch_lines,
                 end_index=index,
             )
 
@@ -133,6 +165,32 @@ def _resolve_gui_if_block(
     return selected_lines, block.end_index + 1, dropped_directives
 
 
+def _resolve_package_manager_if_block(
+    lines: list[str],
+    start_index: int,
+    *,
+    source_label: str,
+) -> tuple[list[str], int, int]:
+    """Keep every package-manager branch while removing template directives."""
+    block = _parse_chezmoi_if_block(lines, start_index, source_label=source_label)
+    selected_lines = [
+        branch_line
+        for branch_lines in block.branch_lines
+        for branch_line in branch_lines
+    ]
+
+    LOGGER.debug(
+        "%s:%d: selected all branches from package-manager block (%d line(s))",
+        source_label,
+        start_index + 1,
+        len(selected_lines),
+    )
+
+    source_line_count = block.end_index - start_index + 1
+    dropped_directives = source_line_count - len(selected_lines)
+    return selected_lines, block.end_index + 1, dropped_directives
+
+
 def render_zsh_template_for_docs(lines: list[str], *, source_label: str) -> list[str]:
     """Turn zsh template lines into plain zsh lines for documentation.
 
@@ -172,6 +230,20 @@ def render_zsh_template_for_docs(lines: list[str], *, source_label: str) -> list
             index = next_index
             continue
 
+        if _is_package_manager_if_directive(current_line):
+            selected_lines, next_index, dropped_count = (
+                _resolve_package_manager_if_block(
+                    lines,
+                    index,
+                    source_label=source_label,
+                )
+            )
+            output_lines.extend(selected_lines)
+            dropped_directives += dropped_count
+            resolved_blocks += 1
+            index = next_index
+            continue
+
         if _is_if_directive(current_line):
             raise ValueError(
                 f"{source_label}:{index + 1}: unsupported chezmoi if directive"
@@ -196,3 +268,4 @@ def render_zsh_template_for_docs(lines: list[str], *, source_label: str) -> list
         resolved_blocks,
     )
     return output_lines
+
