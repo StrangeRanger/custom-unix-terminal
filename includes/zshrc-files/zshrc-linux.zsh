@@ -104,7 +104,6 @@ apt_update_and_cleanup() {
     _apt_exec autoremove -y || return $?
     _apt_exec autoclean     || return $?
 }
-
 ####
 # Perform the update, upgrade, and cleanup of packages managed by Pacman. Additionally, GRUB
 # configurations are updated to include snapshot changes.
@@ -139,9 +138,6 @@ source "$ZSH/oh-my-zsh.sh"
 ## General aliases.
 alias python="python3"
 hash xdg-open 2>/dev/null && alias open="xdg-open"
-
-## Configuration related aliases.
-alias update_grub_config="sudo grub-mkconfig -o /boot/grub/grub.cfg"
 
 ## File action related aliases.
 alias format_csharp_code="find . -name '*.cs' -type f -exec clang-format --style='file:$HOME/Programs/Mine/Formatter Configs/CSharp_clang-format/_clang-format' -i {} +"

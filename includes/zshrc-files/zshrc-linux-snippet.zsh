@@ -10,9 +10,6 @@
 alias python="python3"
 hash xdg-open 2>/dev/null && alias open="xdg-open"
 
-## Configuration related aliases.
-alias update_grub_config="sudo grub-mkconfig -o /boot/grub/grub.cfg"
-
 ## File action related aliases.
 alias format_csharp_code="find . -name '*.cs' -type f -exec clang-format --style='file:$HOME/Programs/Mine/Formatter Configs/CSharp_clang-format/_clang-format' -i {} +"
 alias delete_local_git_branches="git branch | grep -v 'main' | xargs git branch -D"
