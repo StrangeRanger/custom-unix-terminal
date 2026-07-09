@@ -66,10 +66,6 @@ def _parse_chezmoi_if_block(
 ) -> _ChezmoiIfBlock:
     """Read one simple chezmoi if block from a zsh template.
 
-    This script only understands one ``if`` with an optional ``else``. It raises an
-    error for more complicated blocks so template changes do not get handled incorrectly
-    without anyone noticing.
-
     Args:
         lines: Template file contents as a list of lines.
         start_index: Line number where the opening chezmoi ``if`` starts.
