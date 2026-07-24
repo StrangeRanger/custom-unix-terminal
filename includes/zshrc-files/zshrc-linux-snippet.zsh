@@ -17,6 +17,7 @@ alias delete_local_git_branches="git branch | grep -v 'main' | xargs git branch 
 ## Update based aliases.
 alias update_apt="apt_update_and_cleanup"
 alias update_pacman="pacman_update_and_cleanup"
+alias update_dnf="dnf_update_and_cleanup"
 
 ## Systemd aliases.
 alias start_bluetooth="sudo systemctl start bluetooth.service"
