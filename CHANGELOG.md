@@ -12,6 +12,16 @@ Additionally, entries that are prefixed with `changed(...)`, `added(...)`, `remo
 
 ## Unreleased
 
+## 2026-07-24
+
+### Added
+
+- added(zshrc): add 'update_dnf' alias
+
+### Changed
+
+- changed(zshrc): generalize package manager command execution helper
+
 ## 2026-07-08
 
 ### Removed

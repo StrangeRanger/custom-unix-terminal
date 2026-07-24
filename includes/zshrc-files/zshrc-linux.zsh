@@ -74,7 +74,8 @@ zsh_completion="${ZSH_CUSTOM:-${ZSH:-~/.oh-my-zsh}/custom}/plugins/zsh-completio
 #
 # NOTE: This function is written in zsh, rather than bash. I'm not as familiar with zsh
 #   compared to bash, so this function was written with the help of ChatGPT.
-_apt_exec() {
+_pkg_exec() {
+    local pkg=$1; shift
     local subcmd=$1; shift
     local args=("$@")
     local flags_str=""
@@ -84,10 +85,10 @@ _apt_exec() {
     fi
 
     # Header line
-    print -P "%F{blue}%B[INFO]%b%f %F{8}Executing:%f %F{8}$%f %B%F{white}sudo%f%b %B%F{white}apt%f%b %F{cyan}${subcmd}%f${flags_str}"
+    print -P "%F{blue}%B[INFO]%b%f %F{8}Executing:%f %F{8}$%f %B%F{white}sudo%f%b %B%F{white}${pkg}%f%b %F{cyan}${subcmd}%f${flags_str}"
 
     # Execute
-    if sudo apt "$subcmd" "${args[@]}"; then
+    if sudo "$pkg" "$subcmd" "${args[@]}"; then
         print -P "%F{green}[OK]%f"
     else
         local ec=$?
@@ -99,14 +100,13 @@ _apt_exec() {
 ####
 # Perform the update, upgrade, and cleanup of packages managed by the Apt Package Manager.
 apt_update_and_cleanup() {
-    _apt_exec update        || return $?
-    _apt_exec upgrade -y    || return $?
-    _apt_exec autoremove -y || return $?
-    _apt_exec autoclean     || return $?
+    _pkg_exec apt-get update        || return $?
+    _pkg_exec apt-get upgrade -y    || return $?
+    _pkg_exec apt-get autoremove -y || return $?
+    _pkg_exec apt-get autoclean     || return $?
 }
 ####
-# Perform the update, upgrade, and cleanup of packages managed by Pacman. Additionally, GRUB
-# configurations are updated to include snapshot changes.
+# Perform the update, upgrade, and cleanup of packages managed by Pacman.
 #
 # NOTE: This function may be updated in the future to coincide with the updates made to the
 #   `apt_update_and_cleanup` function.
@@ -117,6 +117,12 @@ pacman_update_and_cleanup() {
     yay && yay -Yc
     echo "[INFO] Executing: $ sudo pkgfile -u"
     sudo pkgfile -u
+}
+####
+# Perform the update, upgrade, and cleanup of packages managed by DNF.
+dnf_update_and_cleanup() {
+    _pkg_exec dnf update     || return $?
+    _pkg_exec dnf autoremove || return $?
 }
 
 
@@ -146,6 +152,7 @@ alias delete_local_git_branches="git branch | grep -v 'main' | xargs git branch 
 ## Update based aliases.
 alias update_apt="apt_update_and_cleanup"
 alias update_pacman="pacman_update_and_cleanup"
+alias update_dnf="dnf_update_and_cleanup"
 
 ## Systemd aliases.
 alias start_bluetooth="sudo systemctl start bluetooth.service"
