@@ -12,6 +12,20 @@ Additionally, entries that are prefixed with `changed(...)`, `added(...)`, `remo
 
 ## Unreleased
 
+## 2026-10-04
+
+### Added
+
+- added(nvim): add 'render-markdown.nvim' plugin
+
+### Changed
+
+- changed(nvim): add new TODO
+
+### Fixed
+
+- fixed(nvim): fix bad comment symbol
+
 ## 2026-07-24
 
 ### Added
