@@ -26,6 +26,8 @@ Plug 'dense-analysis/ale'
 Plug 'ntpeters/vim-better-whitespace'
 " An incremental parsing system for programming tools.
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+" Improve viewing Markdown in Neovim.
+Plug 'MeanderingProgrammer/render-markdown.nvim'
 " Highlight columns in CSV and TSV files and run queries in SQL-like language.
 Plug 'mechatroner/rainbow_csv'
 " A simple and lightweight Neovim plugin that brings syntax highlighting to generic log
@@ -140,15 +142,21 @@ require('mini.comment').setup()
 require('mini.move').setup()
 require('mini.pairs').setup()
 require('lualine').setup()
+
+----[ render-markdown.nvim Configurations ]--------------------------------------------
+
+-- TODO: Consider adding additional configuration options.
+require('render-markdown').setup({})
 EOF
 
 
 """"[ Useful Commands ]"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 
-" :StripWhitespace - Clean extra whitespace.
-" :ALEInfo         - Show ALE information.
-" :ALEToggle       - Toggle ALE on/off.
-" :TSInstall       - Install treesitter parsers.
-" :TSUpdate        - Update treesitter parsers.
-" :checkhealth     - Check the health of Neovim and installed plugins.
+" :StripWhitespace          - Clean extra whitespace.
+" :ALEInfo                  - Show ALE information.
+" :ALEToggle                - Toggle ALE on/off.
+" :RenderMarkdown [command] - Render Markdown actions.
+" :TSInstall                - Install treesitter parsers.
+" :TSUpdate                 - Update treesitter parsers.
+" :checkhealth              - Check the health of Neovim and installed plugins.
