@@ -123,6 +123,8 @@ require('nvim-treesitter').install {
   'comment',
   'diff',
   'regex',
+  'markdown',
+  'markdown_inline',
   'python',
   'yaml',
 }

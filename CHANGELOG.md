@@ -16,6 +16,7 @@ Additionally, entries that are prefixed with `changed(...)`, `added(...)`, `remo
 
 ### Added
 
+- added(nvim): add new default treesitters to install
 - added(nvim): add 'render-markdown.nvim' plugin
 
 ### Changed
